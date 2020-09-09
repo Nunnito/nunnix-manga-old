@@ -12,52 +12,60 @@ manga_slider_size = 15
 
 
 class NunnixManga_TMO(QObject):
-	manga_source = lectortmo
+    manga_source = lectortmo
 
-	popular_mangas = pyqtSignal(list, str, arguments=["popular_data", "manga_type"])
+    popular_mangas = pyqtSignal(
+        list, str, arguments=["popular_data", "manga_type"])
 
-	if sys.platform == "linux":
-		thumbnail_dir = str(Path.home()) + "/.cache/nunnix-manga/thumbnails/"
-		manga_save_dir = str(Path.home()) + "/.cache/nunnix-manga/manga-cache/"
-	if sys.platform == "wdownload_and_save_manga_coversdownload_and_save_manga_coversin32":
-		thumbnail_dir = "file:///" + str(Path.home()) + "\\AppData\\Local\\nunnix-manga\\cache\\"
-		manga_save_dir = "file:///" + str(Path.home()) + "\\AppData\\Local\\nunnix-manga\\manga-cache\\"
+    if sys.platform == "linux":
+        thumbnail_dir = str(Path.home()) + "/.cache/nunnix-manga/thumbnails/"
+        manga_save_dir = str(Path.home()) + "/.cache/nunnix-manga/manga-cache/"
+    if sys.platform == "win32":
+        thumbnail_dir = "file:///" + \
+            str(Path.home()) + "\\AppData\\Local\\nunnix-manga\\cache\\"
+        manga_save_dir = "file:///" + \
+            str(Path.home()) + "\\AppData\\Local\\nunnix-manga\\manga-cache\\"
 
-	def __init__(self):
-		QObject.__init__(self)
+    def __init__(self):
+        QObject.__init__(self)
 
-	@pyqtSlot(str)
-	def change_manga_source(self, manga_source):
-		exec("self.manga_source = {}".format(manga_source))
+    @pyqtSlot(str)
+    def change_manga_source(self, manga_source):
+        exec("self.manga_source = {}".format(manga_source))
 
-	@pyqtSlot(str)
-	def get_manga_popular_covers(self, demography):
-		popular = threading.Thread(target=self.get_manga_popular_covers_thread, args=[demography])
-		popular.start()
+    @pyqtSlot(str)
+    def get_manga_popular_covers(self, demography):
+        popular = threading.Thread(
+            target=self.get_manga_popular_covers_thread, args=[demography])
+        popular.start()
 
-	def get_manga_popular_covers_thread(self, demography):
+    def get_manga_popular_covers_thread(self, demography):
 
-		if demography == "popular":
-			manga_data_slider = self.manga_source.get_manga_popular()
-		if demography == "seinen":
-			manga_data_slider = self.manga_source.search_manga(category="seinen")
+        if demography == "popular":
+            manga_data_slider = self.manga_source.get_manga_popular()
+        if demography == "seinen":
+            manga_data_slider = self.manga_source.search_manga(
+                category="seinen")
 
-		manga_links_covers = ([cover["manga_cover"] for cover in manga_data_slider])
-		manga_links = ([link["manga_link"] for link in manga_data_slider])
+        manga_links_covers = ([cover["manga_cover"]
+                               for cover in manga_data_slider])
+        manga_links = ([link["manga_link"] for link in manga_data_slider])
 
-		covers = []
-		manga_names = []
+        covers = []
+        manga_names = []
 
-		self.manga_source.download_and_save_manga_covers(manga_links_covers, manga_links, manga_slider_size)
+        self.manga_source.download_and_save_manga_covers(
+            manga_links_covers, manga_links, manga_slider_size)
 
-		for manga_link in manga_links:
-			covers.append(self.thumbnail_dir + manga_link.replace("/", "").replace(":", "") + ".jpg")
+        for manga_link in manga_links:
+            covers.append(self.thumbnail_dir + manga_link.replace("/", "").replace(":", "") + ".jpg")
 
-		for manga_name in manga_data_slider:
-			manga_names.append(manga_name["manga_name"].strip())
+        for manga_name in manga_data_slider:
+            manga_names.append(manga_name["manga_name"].strip())
 
-		popular_mangas = [covers[0:manga_slider_size], manga_names[0:manga_slider_size], manga_links[0:manga_slider_size]]
-		self.popular_mangas.emit(popular_mangas, demography)
+        popular_mangas = [covers[0:manga_slider_size],
+                          manga_names[0:manga_slider_size], manga_links[0:manga_slider_size]]
+        self.popular_mangas.emit(popular_mangas, demography)
 
 
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
