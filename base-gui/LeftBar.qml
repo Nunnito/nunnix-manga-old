@@ -24,4 +24,11 @@ Rectangle {
 			icon.height: height / 3
 		}
 	}
+
+	
+	MouseArea {
+		z: -1
+		hoverEnabled: true
+		anchors.fill: parent
+	}
 }

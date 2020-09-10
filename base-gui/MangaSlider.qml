@@ -2,12 +2,17 @@ import QtQuick.Controls 2.15
 import QtQuick 2.15
 
 Flickable {
-	width: parent.parent.width
+	width: main_window.width - leftbar.width - layout.spacing - flickable_slider.nav_button_size * 9
 	height: manga_slider_row.height
 
-	contentWidth: manga_slider_row.width + manga_slider_row.height
+	contentWidth: manga_slider_row.width - manga_slider_row.height
 	contentHeight: manga_slider_row.height
 
+    rebound: Transition {
+        NumberAnimation {properties: "x"; duration: 500; easing.type: Easing.OutBounce}
+    }
+
+	interactive: false
 	Row {
 		id: manga_slider_row
 		spacing: 20 * scaling_factor

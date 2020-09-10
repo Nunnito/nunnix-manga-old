@@ -113,4 +113,12 @@ Rectangle {
 	TapHandler {
 		onDoubleTapped: visibility === 2 ? showMaximized() : showNormal()
 	}
+
+	
+	MouseArea {
+		anchors.fill: parent
+		hoverEnabled: true
+		acceptedButtons: Qt.NoButton 
+	}
+	
 }
