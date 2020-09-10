@@ -1,4 +1,5 @@
 from requests.exceptions import ConnectionError, ReadTimeout
+from concurrent.futures import ThreadPoolExecutor
 from tempfile import TemporaryDirectory
 from bs4 import BeautifulSoup
 from pathlib import Path
@@ -481,32 +482,25 @@ def search_manga(
     return page_data
 
 
-def download_and_save_manga_covers(covers_links, manga_links, max_covers=15, threads=5):
+def download_and_save_manga_covers(covers_links, manga_links, max_covers=15):
     """Auxiliary function that allows to execute multiple instances of the "download_image_cover" function.
 
     Args:
         covers_links (list): List of all thumbnails links.
         manga (list): List of all manga links.
-        threads (int, optional): Threads to run at the same time.
         max_covers (int, optional): Max number of covers to download.
     """
-    max_threads = threads
-    for number in range(len(manga_links)):
+    pool = ThreadPoolExecutor()
+    for number in range(max_covers):
         manga_link = manga_links[number].replace("/", "").replace(":", "")
         cover_link = covers_links[number]
 
         # Start threads
-        download_thread = threading.Thread(target=download_image_cover, args=[cover_link, manga_link])
-        download_thread.start()
-
-        # If "number" equals "max_threads", wait until the current threads have finished
-        if number == max_threads:
-            download_thread.join()
-            max_threads += threads - 1
+        pool.submit(download_image_cover, cover_link, manga_link)
         print("Image to download:", cover_link)
 
-        if number == max_covers - 1:
-            break
+    # Wait until all threads are finished.
+    pool.shutdown(wait=True)
 
 
 def download_image_cover(cover_link, manga_link):
