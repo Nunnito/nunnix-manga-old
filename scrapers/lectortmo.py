@@ -4,7 +4,6 @@ from tempfile import TemporaryDirectory
 from bs4 import BeautifulSoup
 from pathlib import Path
 from PIL import Image
-import threading
 import requests
 import sys
 import os
@@ -53,7 +52,7 @@ def get_manga_data(url):
 
     while True:
         try:
-            src = requests.get(url, headers=headers, timeout=5)  # Get page source
+            src = requests.get(url, headers=headers, timeout=10)  # Get page source
             break
         except(ReadTimeout, ConnectionError):
             pass

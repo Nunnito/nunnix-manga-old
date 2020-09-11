@@ -35,8 +35,19 @@ ApplicationWindow {
 			spacing: 40 * scaling_factor
 
 			LeftBar {id: leftbar}  // Lateral bar
-			Explore {}
+			StackLayout {
+				id: stack_layout
 
+				height: parent.height
+				width: main_window.width - leftbar.width - layout.spacing
+
+				Explore {}
+				Rectangle {
+					width: 250
+					height: 250
+					color: "red"
+				}
+			}
 		}
 	}
 }

@@ -12,7 +12,7 @@ manga_slider_size = 15
 
 
 class NunnixManga_TMO(QObject):
-    manga_source = mangakatana
+    manga_source = lectortmo
 
     slider_data = pyqtSignal(list, str, arguments=["manga_data", "manga_type"])
 

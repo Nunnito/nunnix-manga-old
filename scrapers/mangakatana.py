@@ -4,7 +4,6 @@ from tempfile import TemporaryDirectory
 from bs4 import BeautifulSoup
 from pathlib import Path
 from PIL import Image
-import threading
 import requests
 import sys
 import os

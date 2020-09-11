@@ -9,7 +9,7 @@ Flickable {
 	contentHeight: manga_slider_row.height
 
     rebound: Transition {
-        NumberAnimation {properties: "x"; duration: 500; easing.type: Easing.OutBounce}
+        NumberAnimation {properties: "x"; duration: 1000; easing.type: Easing.OutBounce}
     }
 
 	interactive: false

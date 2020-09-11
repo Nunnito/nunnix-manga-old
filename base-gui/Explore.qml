@@ -8,7 +8,7 @@ Flickable {
     property int nav_button_size: 32 * scaling_factor
     id: flickable_slider
 
-    width: parent.width - leftbar.width - layout.spacing
+    width: main_window.width - leftbar.width - layout.spacing
     height: parent.height
     contentHeight: slider_col.height
 
@@ -233,4 +233,13 @@ Flickable {
             }
 		}
 	}
+
+    
+    MouseArea {
+        z: -1
+        anchors.fill: parent
+        onPressed: interactive = false
+        onReleased: interactive = true
+    }
+    
 }
