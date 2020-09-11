@@ -12,10 +12,10 @@ config_file = open("config.json", "r").read()
 
 
 class NunnixManga_TMO(QObject):
-    manga_source = lectortmo
+    manga_source = mangakatana
     manga_slider_size = json.loads(config_file)["explorer"]["slider_size"]
 
-    slider_data = pyqtSignal(list, str, arguments=["manga_data", "manga_type"])
+    slider_data = pyqtSignal(list, str, int, arguments=["manga_data", "manga_type", "slider_int"])
 
     def __init__(self):
         QObject.__init__(self)
@@ -25,22 +25,22 @@ class NunnixManga_TMO(QObject):
     def change_manga_source(self, manga_source):
         exec("self.manga_source = {}".format(manga_source))
 
-    @pyqtSlot(str)
-    def get_manga_slider_covers(self, demography):
-        slider_data = threading.Thread(target=self.get_manga_slider_covers_thread, args=[demography])
+    @pyqtSlot(str, int)
+    def get_manga_slider_covers(self, manga_type, slider_int):
+        slider_data = threading.Thread(target=self.get_manga_slider_covers_thread, args=[manga_type, slider_int])
         slider_data.start()
 
-    def get_manga_slider_covers_thread(self, demography):
+    def get_manga_slider_covers_thread(self, manga_type, slider_int):
 
-        if demography == "popular":
+        if manga_type == "popular":
             manga_data_slider = self.manga_source.get_manga_popular()
-        if demography == "seinen":
+        if manga_type == "seinen":
             manga_data_slider = self.manga_source.search_manga(category="seinen")
-        if demography == "shounen":
+        if manga_type == "shounen":
             manga_data_slider = self.manga_source.search_manga(category="shounen")
-        if demography == "josei":
+        if manga_type == "josei":
             manga_data_slider = self.manga_source.search_manga(category="josei")
-        if demography == "shoujo":
+        if manga_type == "shoujo":
             manga_data_slider = self.manga_source.search_manga(category="shoujo")
 
         manga_links_covers = ([cover["manga_cover"] for cover in manga_data_slider])
@@ -59,7 +59,7 @@ class NunnixManga_TMO(QObject):
 
         data_slider = [covers[0:self.manga_slider_size], manga_names[0:self.manga_slider_size],
                        manga_links[0:self.manga_slider_size]]
-        self.slider_data.emit(data_slider, demography)
+        self.slider_data.emit(data_slider, manga_type, slider_int)
 
     def get_cache_dir(self):
         home = str(Path.home())

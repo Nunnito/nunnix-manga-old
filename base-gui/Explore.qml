@@ -35,230 +35,64 @@ Flickable {
 
         topPadding: 20 * scale_factor
         bottomPadding: 40 * scale_factor
-        GridLayout {
-            columns: 3
-            width: parent.width
-            Material.accent: "#2A2A2A"
 
-            Text {
-                id: title_slider_text
-                text: qsTr("Top Manga")
-                color: "white"
-                font.pixelSize: slider_title_size_font
-                Layout.fillWidth: true
+        Repeater {
+            id: manga_slider_nav_repeater
+            model: getTotalModel()
+
+            MangaSliderNav {id: index}
+
+            onItemAdded: {
+                NunnixManga.get_manga_slider_covers(model[index], index)
             }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_left.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: popular_manga_slider.flick(main_window.width, 0)
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_right.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: popular_manga_slider.flick(-main_window.width, 0)
-            }
-            MangaSlider{id: popular_manga_slider}
-        }
-        GridLayout {
-            columns: 3
-            width: parent.width
-            Material.accent: "#2A2A2A"
-
-            Text {
-                text: qsTr("Seinen")
-                color: "white"
-                font.pixelSize: slider_title_size_font
-                Layout.fillWidth: true
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_left.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: seinen_manga_slider.flick(main_window.width, 0)
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_right.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: seinen_manga_slider.flick(-main_window.width, 0)
-            }
-            MangaSlider{id: seinen_manga_slider}
-        }
-        GridLayout {
-            columns: 3
-            width: parent.width
-            Material.accent: "#2A2A2A"
-
-            Text {
-                text: qsTr("Shounen")
-                color: "white"
-                font.pixelSize: slider_title_size_font
-                Layout.fillWidth: true
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_left.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: shounen_manga_slider.flick(main_window.width, 0)
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_right.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: shounen_manga_slider.flick(-main_window.width, 0)
-            }
-            MangaSlider{id: shounen_manga_slider}
-        }
-        GridLayout {
-            columns: 3
-            width: parent.width
-            Material.accent: "#2A2A2A"
-
-            Text {
-                text: qsTr("Josei")
-                color: "white"
-                font.pixelSize: slider_title_size_font
-                Layout.fillWidth: true
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_left.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: josei_manga_slider.flick(main_window.width, 0)
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_right.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: josei_manga_slider.flick(-main_window.width, 0)
-            }
-            MangaSlider{id: josei_manga_slider}
-        }
-        GridLayout {
-            width: parent.width
-            columns: 3
-            Material.accent: "#2A2A2A"
-
-            Text {
-                text: qsTr("Shoujo")
-                color: "white"
-                font.pixelSize: slider_title_size_font
-                Layout.fillWidth: true
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_left.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: shoujo_manga_slider.flick(main_window.width, 0)
-            }
-            RoundButton {
-                highlighted: true
-                icon.source: "../resources/chevron_right.svg"
-
-                width: nav_button_size
-                height: nav_button_size
-                icon.width: nav_button_size
-                icon.height: nav_button_size
-
-                onClicked: shoujo_manga_slider.flick(-main_window.width, 0)
-            }
-            MangaSlider{id: shoujo_manga_slider}
         }
     }
-
-	Component.onCompleted: {
-        if (show_popular) {
-		    NunnixManga.get_manga_slider_covers("popular")
-        }
-        if (show_seinen) {
-		    NunnixManga.get_manga_slider_covers("seinen")
-        }
-        if (show_shounen) {
-		    NunnixManga.get_manga_slider_covers("shounen")
-        }
-        if (show_josei) {
-            NunnixManga.get_manga_slider_covers("josei")
-        }
-        if (show_shoujo) {
-            NunnixManga.get_manga_slider_covers("shoujo")
-        }
-	}
 
 	Connections {
 		target: NunnixManga
 
-		function onSlider_data(manga_data, manga_type) {
+		function onSlider_data(manga_data, manga_type, slider_int) {
+            var manga_slider_nav = manga_slider_nav_repeater.itemAt(slider_int)
+
 			if (manga_type == "popular") {
-				popular_manga_slider.setData(manga_data)
+				manga_slider_nav.children[3].setData(manga_data)
+                manga_slider_nav.children[0].text = qsTr("Top Manga")
 			}
 			if (manga_type == "seinen") {
-			seinen_manga_slider.setData(manga_data)
+				manga_slider_nav.children[3].setData(manga_data)
+                manga_slider_nav.children[0].text = qsTr("Seinen")
 			}
 			if (manga_type == "shounen") {
-				shounen_manga_slider.setData(manga_data)
+				manga_slider_nav.children[3].setData(manga_data)
+                manga_slider_nav.children[0].text = qsTr("Shounen")
 			}
             if (manga_type == "josei") {
-                josei_manga_slider.setData(manga_data)
+				manga_slider_nav.children[3].setData(manga_data)
+                manga_slider_nav.children[0].text = qsTr("Josei")
             }
             if (manga_type == "shoujo") {
-                shoujo_manga_slider.setData(manga_data)
+				manga_slider_nav.children[3].setData(manga_data)
+                manga_slider_nav.children[0].text = qsTr("Shoujo")
             }
 		}
 	}
 
-    
     MouseArea {
         z: -1
         anchors.fill: parent
         onPressed: interactive = false
         onReleased: interactive = true
     }
-    
+
+    function getTotalModel () {
+        var modelInt = []
+
+        if (show_popular) modelInt.push("popular")
+        if (show_seinen) modelInt.push("seinen")
+        if (show_shounen) modelInt .push("shounen")
+        if (show_josei) modelInt.push("josei")
+        if (show_shoujo) modelInt.push("shoujo")
+
+        return modelInt
+    }
 }
