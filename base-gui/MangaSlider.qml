@@ -10,13 +10,15 @@ Flickable {
 
 	interactive: false
 
+	property int manga_slider_size: JSON.parse(config_file).explorer.slider_size
+
     rebound: Transition {
         NumberAnimation {properties: "x"; duration: 1000; easing.type: Easing.OutBounce}
     }
 
 	Row {
 		id: manga_slider_row
-		spacing: 20 * scaling_factor
+		spacing: 20 * scale_factor
 
 		Repeater {
 			id: manga_slider_repeater

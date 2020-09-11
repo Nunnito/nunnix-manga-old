@@ -10,7 +10,7 @@ Rectangle {
 	z: 99
 
 	width: parent.width
-	height: 42 * scaling_factor
+	height: 42 * scale_factor
 
 	color: "#111111"
 
@@ -18,10 +18,10 @@ Rectangle {
 		anchors.right: parent.right
 		anchors.verticalCenter: parent.verticalCenter
 
-		spacing: 5 * scaling_factor
+		spacing: 5 * scale_factor
 		layoutDirection: Qt.RightToLeft
 
-		height: 48 * scaling_factor
+		height: 48 * scale_factor
 
 		Material.accent: "#141414"
 
@@ -100,7 +100,7 @@ Rectangle {
 		text: "Nunnix Manga"
 		color: "#DEDEDE"
 
-		font.pixelSize: 14 * scaling_factor
+		font.pixelSize: 14 * scale_factor
 		font.bold: true
 	}
 

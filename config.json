@@ -1,0 +1,14 @@
+{
+    "explorer": {
+        "slider_size": 15,
+        "show_popular": true,
+        "show_seinen": false,
+        "show_shounen": false,
+        "show_josei": false,
+        "show_shoujo": false
+    },
+
+    "system": {
+        "scale_factor": 1.0
+    }
+}

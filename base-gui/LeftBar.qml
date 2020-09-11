@@ -4,7 +4,7 @@ import QtQuick.Controls 2.14
 
 Rectangle {
 	opacity: 1
-	width: 72 * scaling_factor
+	width: 72 * scale_factor
 	height: parent.height
 	color: "#1e1e1e"
 	z: 98

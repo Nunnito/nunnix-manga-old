@@ -4,8 +4,15 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls.Material 2.15
 
 Flickable {
-    property int slider_title_size_font: 24 * scaling_factor
-    property int nav_button_size: 32 * scaling_factor
+    property int slider_title_size_font: 24 * scale_factor
+    property int nav_button_size: 32 * scale_factor
+
+    property bool show_popular: JSON.parse(config_file).explorer.show_popular
+    property bool show_seinen: JSON.parse(config_file).explorer.show_seinen
+    property bool show_shounen: JSON.parse(config_file).explorer.show_shounen
+    property bool show_josei: JSON.parse(config_file).explorer.show_josei
+    property bool show_shoujo: JSON.parse(config_file).explorer.show_shoujo
+
 	property bool canAnimateSlider: true
 
     id: flickable_slider
@@ -24,10 +31,10 @@ Flickable {
     Column {
         id: slider_col
         width: parent.width
-        spacing: 75 * scaling_factor
+        spacing: 75 * scale_factor
 
-        topPadding: 20 * scaling_factor
-        bottomPadding: 40 * scaling_factor
+        topPadding: 20 * scale_factor
+        bottomPadding: 40 * scale_factor
         GridLayout {
             columns: 3
             width: parent.width
@@ -170,8 +177,8 @@ Flickable {
             MangaSlider{id: josei_manga_slider}
         }
         GridLayout {
-            columns: 3
             width: parent.width
+            columns: 3
             Material.accent: "#2A2A2A"
 
             Text {
@@ -207,11 +214,21 @@ Flickable {
     }
 
 	Component.onCompleted: {
-		NunnixManga.get_manga_popular_covers("popular")
-		NunnixManga.get_manga_popular_covers("seinen")
-		NunnixManga.get_manga_popular_covers("shounen")
-        NunnixManga.get_manga_popular_covers("josei")
-        NunnixManga.get_manga_popular_covers("shoujo")
+        if (show_popular) {
+		    NunnixManga.get_manga_slider_covers("popular")
+        }
+        if (show_seinen) {
+		    NunnixManga.get_manga_slider_covers("seinen")
+        }
+        if (show_shounen) {
+		    NunnixManga.get_manga_slider_covers("shounen")
+        }
+        if (show_josei) {
+            NunnixManga.get_manga_slider_covers("josei")
+        }
+        if (show_shoujo) {
+            NunnixManga.get_manga_slider_covers("shoujo")
+        }
 	}
 
 	Connections {

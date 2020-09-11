@@ -10,10 +10,10 @@ Button {
 	property string manga_cover_dir
 	property string manga_link
 
-    property int button_width: 140 * scaling_factor
-    property int button_height: 210 * scaling_factor
-	property int animation_width: 176 * scaling_factor
-    property int animation_height: 264 * scaling_factor
+    property int button_width: 140 * scale_factor
+    property int button_height: 210 * scale_factor
+	property int animation_width: 176 * scale_factor
+    property int animation_height: 264 * scale_factor
 
 	Image {
 		id: manga_slider_cover
@@ -42,7 +42,7 @@ Button {
 		color: "white"
 		width: button_width
 
-		font.pixelSize: 14 * scaling_factor
+		font.pixelSize: 14 * scale_factor
 		elide: Text.ElideMiddle
 	}
 
