@@ -8,11 +8,12 @@ Flickable {
 	contentWidth: manga_slider_row.width - manga_slider_row.height
 	contentHeight: manga_slider_row.height
 
+	interactive: false
+
     rebound: Transition {
         NumberAnimation {properties: "x"; duration: 1000; easing.type: Easing.OutBounce}
     }
 
-	interactive: false
 	Row {
 		id: manga_slider_row
 		spacing: 20 * scaling_factor
@@ -25,6 +26,7 @@ Flickable {
 		}
 	}
 
+	// Set manga tiles to defaults
 	function resetSlider() {
 		NunnixManga.get_manga_popular_covers()
 
@@ -35,6 +37,7 @@ Flickable {
 		}
 	}
 
+	// Set manga tile data
 	function setData(data) {
 		var covers = data[0]
 		var names = data[1]

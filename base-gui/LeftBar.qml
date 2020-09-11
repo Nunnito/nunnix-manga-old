@@ -22,8 +22,6 @@ Rectangle {
 			icon.color: "#c5ccd4"
 			icon.width: width / 3
 			icon.height: height / 3
-			
-			onClicked: stack_layout.currentIndex === 0 ? stack_layout.currentIndex=1:stack_layout.currentIndex=0
 		}
 	}
 
@@ -32,5 +30,9 @@ Rectangle {
 		z: -1
 		hoverEnabled: true
 		anchors.fill: parent
+	}
+
+	function hide() {
+		parent.visible = false
 	}
 }

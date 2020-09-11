@@ -20,9 +20,7 @@ ApplicationWindow {
 	color: "#111111"
 
 	Material.accent: "#242424"
-	Material.theme: Material.System
-
-	property bool canAnimateSlider: true
+	Material.theme: Material.Dark
 
 	Page {
 		background: Rectangle {color: "#161616"}
@@ -35,18 +33,12 @@ ApplicationWindow {
 			spacing: 40 * scaling_factor
 
 			LeftBar {id: leftbar}  // Lateral bar
-			StackLayout {
-				id: stack_layout
+			StackView {
+				id: stack_view
 
 				height: parent.height
 				width: main_window.width - leftbar.width - layout.spacing
-
-				Explore {}
-				Rectangle {
-					width: 250
-					height: 250
-					color: "red"
-				}
+				initialItem: "Explore.qml"
 			}
 		}
 	}

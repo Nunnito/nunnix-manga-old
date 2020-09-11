@@ -6,6 +6,8 @@ import QtQuick.Controls.Material 2.15
 Flickable {
     property int slider_title_size_font: 24 * scaling_factor
     property int nav_button_size: 32 * scaling_factor
+	property bool canAnimateSlider: true
+
     id: flickable_slider
 
     width: main_window.width - leftbar.width - layout.spacing
@@ -47,7 +49,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: popular_manga_slider.flick(popular_manga_slider.contentWidth / 1.5, 0)
+                onClicked: popular_manga_slider.flick(main_window.width, 0)
             }
             RoundButton {
                 highlighted: true
@@ -58,7 +60,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: popular_manga_slider.flick(-popular_manga_slider.contentWidth / 1.5, 0)
+                onClicked: popular_manga_slider.flick(-main_window.width, 0)
             }
             MangaSlider{id: popular_manga_slider}
         }
@@ -82,7 +84,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: seinen_manga_slider.flick(seinen_manga_slider.contentWidth / 1.5, 0)
+                onClicked: seinen_manga_slider.flick(main_window.width, 0)
             }
             RoundButton {
                 highlighted: true
@@ -93,7 +95,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: seinen_manga_slider.flick(-seinen_manga_slider.contentWidth / 1.5, 0)
+                onClicked: seinen_manga_slider.flick(-main_window.width, 0)
             }
             MangaSlider{id: seinen_manga_slider}
         }
@@ -117,7 +119,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: shounen_manga_slider.flick(shounen_manga_slider.contentWidth / 1.5, 0)
+                onClicked: shounen_manga_slider.flick(main_window.width, 0)
             }
             RoundButton {
                 highlighted: true
@@ -128,7 +130,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: shounen_manga_slider.flick(-shounen_manga_slider.contentWidth / 1.5, 0)
+                onClicked: shounen_manga_slider.flick(-main_window.width, 0)
             }
             MangaSlider{id: shounen_manga_slider}
         }
@@ -152,7 +154,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: josei_manga_slider.flick(josei_manga_slider.contentWidth / 1.5, 0)
+                onClicked: josei_manga_slider.flick(main_window.width, 0)
             }
             RoundButton {
                 highlighted: true
@@ -163,7 +165,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: josei_manga_slider.flick(-josei_manga_slider.contentWidth / 1.5, 0)
+                onClicked: josei_manga_slider.flick(-main_window.width, 0)
             }
             MangaSlider{id: josei_manga_slider}
         }
@@ -187,7 +189,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: shoujo_manga_slider.flick(shoujo_manga_slider.contentWidth / 1.5, 0)
+                onClicked: shoujo_manga_slider.flick(main_window.width, 0)
             }
             RoundButton {
                 highlighted: true
@@ -198,7 +200,7 @@ Flickable {
                 icon.width: nav_button_size
                 icon.height: nav_button_size
 
-                onClicked: shoujo_manga_slider.flick(-shoujo_manga_slider.contentWidth / 1.5, 0)
+                onClicked: shoujo_manga_slider.flick(-main_window.width, 0)
             }
             MangaSlider{id: shoujo_manga_slider}
         }
