@@ -7,13 +7,13 @@ Button {
 	width: button_width
 	height: button_height
 
-	property string manga_cover_dir
-	property string manga_link
-
     property int button_width: 140 * scale_factor
     property int button_height: 210 * scale_factor
 	property int animation_width: 176 * scale_factor
     property int animation_height: 264 * scale_factor
+
+	property bool canAnimateTile: true
+	property string manga_link
 
 	Image {
 		id: manga_slider_cover
@@ -38,6 +38,7 @@ Button {
 	Text {
 		id: slider_text
 		anchors.top: parent.bottom
+		horizontalAlignment: Text.AlignHCenter
 
 		color: "white"
 		width: button_width
@@ -89,7 +90,7 @@ Button {
 		cursorShape: canAnimateSlider === true ? Qt.PointingHandCursor : Qt.ArrowCursor
 		hoverEnabled: true
 		onEntered: {
-			if (canAnimateSlider) {
+			if (canAnimateSlider && canAnimateTile) {
 				anim_manga_on.start()
 			}	
 		}

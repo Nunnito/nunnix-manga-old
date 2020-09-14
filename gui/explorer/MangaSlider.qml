@@ -1,5 +1,6 @@
 import QtQuick.Controls 2.15
 import QtQuick 2.15
+import "../reusable-components"
 
 Flickable {
 	width: main_window.width - leftbar.width - layout.spacing - flickable_slider.nav_button_size * 9
@@ -48,7 +49,6 @@ Flickable {
 		// Add the covers to the tiles
 		for (var i=0; i < covers.length; i++) {
 			manga_slider_repeater.itemAt(i).children[0].source = covers[i]
-			manga_slider_repeater.itemAt(i).manga_cover_dir = covers[i]
 		}
 
 		// Add names to tiles

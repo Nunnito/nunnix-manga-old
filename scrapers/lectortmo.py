@@ -49,13 +49,7 @@ def get_manga_data(url):
     """
 
     print("\nLoading page data...")
-
-    while True:
-        try:
-            src = requests.get(url, headers=headers, timeout=10)  # Get page source
-            break
-        except(ReadTimeout, ConnectionError):
-            pass
+    src = requests.get(url, headers=headers)  # Get page source
     page_source = BeautifulSoup(src.content, "lxml")
     print("Data loaded and processed!")
 
@@ -410,7 +404,7 @@ def search_manga(
 
 
     Returns:
-        list: Description
+        list: Manga data
 
 
     List of ID's by genres
@@ -481,7 +475,7 @@ def search_manga(
     return page_data
 
 
-def download_and_save_manga_covers(covers_links, manga_links, max_covers=15):
+def download_and_save_manga_covers(covers_links, manga_links, max_covers):
     """Auxiliary function that allows to execute multiple instances of the "download_image_cover" function.
 
     Args:
@@ -491,7 +485,7 @@ def download_and_save_manga_covers(covers_links, manga_links, max_covers=15):
     """
     pool = ThreadPoolExecutor()
     for number in range(max_covers):
-        manga_link = manga_links[number].replace("/", "").replace(":", "")
+        manga_link = "".join(re.findall(r"\w+", manga_links[number]))
         cover_link = covers_links[number]
 
         # Start threads
@@ -524,8 +518,7 @@ def download_image_cover(cover_link, manga_link):
         print("The file exists, omitting...")
     # Otherwise, download it.
     else:
-        downloaded_image = requests.get(
-            cover_link, timeout=10, headers=headers).content
+        downloaded_image = requests.get(cover_link, headers=headers).content
 
         # If the OS is Linux
         if sys.platform == "linux":

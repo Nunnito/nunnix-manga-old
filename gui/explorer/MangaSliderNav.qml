@@ -16,7 +16,7 @@ GridLayout {
     }
     RoundButton {
         highlighted: true
-        icon.source: "../resources/chevron_left.svg"
+        icon.source: "../../resources/chevron_left.svg"
 
         width: nav_button_size
         height: nav_button_size
@@ -27,7 +27,7 @@ GridLayout {
     }
     RoundButton {
         highlighted: true
-        icon.source: "../resources/chevron_right.svg"
+        icon.source: "../../resources/chevron_right.svg"
 
         width: nav_button_size
         height: nav_button_size

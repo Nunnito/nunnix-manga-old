@@ -14,6 +14,7 @@ Flickable {
     property bool show_shoujo: JSON.parse(config_file).explorer.show_shoujo
 
 	property bool canAnimateSlider: true
+    property bool isNotLoading: true
 
     id: flickable_slider
 
@@ -21,11 +22,19 @@ Flickable {
     height: parent.height
     contentHeight: slider_col.height
 
-    onFlickStarted:{
+    onMovementStarted: {
         canAnimateSlider = false
+        if (atYEnd, contentY + main_window.height > contentHeight / 2 && isNotLoading) {
+            infinite.next()
+            isNotLoading = false
+        }
     }
-    onFlickEnded:{
+    onMovementEnded: {
         canAnimateSlider = true
+        if (atYEnd, contentY + main_window.height > contentHeight / 2 && isNotLoading) {
+            infinite.next()
+            isNotLoading = false
+        }
     }
 
     Column {
@@ -46,6 +55,8 @@ Flickable {
                 NunnixManga.get_manga_slider_covers(model[index], index)
             }
         }
+
+        ExploreInfinite {id: infinite}
     }
 
 	Connections {
