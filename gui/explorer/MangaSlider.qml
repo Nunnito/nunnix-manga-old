@@ -1,6 +1,5 @@
 import QtQuick.Controls 2.15
 import QtQuick 2.15
-import "../reusable-components"
 
 Flickable {
 	width: main_window.width - leftbar.width - layout.spacing - flickable_slider.nav_button_size * 9
@@ -10,8 +9,6 @@ Flickable {
 	contentHeight: manga_slider_row.height
 
 	interactive: false
-
-	property int manga_slider_size: JSON.parse(config_file).explorer.slider_size
 
     rebound: Transition {
         NumberAnimation {properties: "x"; duration: 1000; easing.type: Easing.OutBounce}

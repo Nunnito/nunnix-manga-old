@@ -7,11 +7,6 @@ Button {
 	width: button_width
 	height: button_height
 
-    property int button_width: 140 * scale_factor
-    property int button_height: 210 * scale_factor
-	property int animation_width: 176 * scale_factor
-    property int animation_height: 264 * scale_factor
-
 	property bool canAnimateTile: true
 	property string manga_link
 
@@ -49,7 +44,7 @@ Button {
 
 	BusyIndicator {
 		anchors.centerIn: parent
-	    running: manga_slider_cover.status === 0 ? 1:0
+	    running: manga_slider_cover.status == 0 ? 1:0
 	}
 
 	// Animation for when the mouse is over a manga
@@ -87,7 +82,7 @@ Button {
 		}
 
 		anchors.fill: parent
-		cursorShape: canAnimateSlider === true ? Qt.PointingHandCursor : Qt.ArrowCursor
+		cursorShape: canAnimateSlider == true ? Qt.PointingHandCursor : Qt.ArrowCursor
 		hoverEnabled: true
 		onEntered: {
 			if (canAnimateSlider && canAnimateTile) {

@@ -50,7 +50,7 @@ Rectangle {
 			height: parent.height
 			width: height * 1.25
 
-			icon.source: visibility === 4 ? "../resources/window-restore.svg" : "../resources/window-maximize.svg"
+			icon.source: visibility == 4 ? "../resources/window-restore.svg" : "../resources/window-maximize.svg"
 			icon.width: width
 			icon.height: height
 			icon.color: "#c5ccd4"
@@ -111,7 +111,7 @@ Rectangle {
 	}
 
 	TapHandler {
-		onDoubleTapped: visibility === 2 ? showMaximized() : showNormal()
+		onDoubleTapped: visibility == 2 ? showMaximized() : showNormal()
 	}
 
 	

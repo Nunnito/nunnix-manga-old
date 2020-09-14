@@ -6,6 +6,15 @@ import QtQuick.Controls.Material 2.15
 Flickable {
     property int slider_title_size_font: 24 * scale_factor
     property int nav_button_size: 32 * scale_factor
+    property int previous_columns: 4
+    property int nextPage: 1
+    property int manga_slider_size: JSON.parse(config_file).explorer.slider_size
+    property int button_width: 140 * scale_factor
+    property int button_height: 210 * scale_factor
+	property int animation_width: 176 * scale_factor
+    property int animation_height: 264 * scale_factor
+
+    property var test: []
 
     property bool show_popular: JSON.parse(config_file).explorer.show_popular
     property bool show_seinen: JSON.parse(config_file).explorer.show_seinen
@@ -15,6 +24,7 @@ Flickable {
 
 	property bool canAnimateSlider: true
     property bool isNotLoading: true
+    
 
     id: flickable_slider
 
@@ -55,8 +65,19 @@ Flickable {
                 NunnixManga.get_manga_slider_covers(model[index], index)
             }
         }
-
-        ExploreInfinite {id: infinite}
+        Column {
+            width: parent.width
+            opacity: 0
+            spacing: 10
+            Text {
+                id: title_slider_text
+                text: qsTr("Explore")
+                color: "white"
+                font.pixelSize: slider_title_size_font
+                Layout.fillWidth: true
+            }
+            ExploreInfinite {id: infinite}
+        }
     }
 
 	Connections {
