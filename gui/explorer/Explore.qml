@@ -14,8 +14,6 @@ Flickable {
 	property int animation_width: 176 * scale_factor
     property int animation_height: 264 * scale_factor
 
-    property var test: []
-
     property bool show_popular: JSON.parse(config_file).explorer.show_popular
     property bool show_seinen: JSON.parse(config_file).explorer.show_seinen
     property bool show_shounen: JSON.parse(config_file).explorer.show_shounen
@@ -31,21 +29,6 @@ Flickable {
     width: main_window.width - leftbar.width - layout.spacing
     height: parent.height
     contentHeight: slider_col.height
-
-    onMovementStarted: {
-        canAnimateSlider = false
-        if (atYEnd, contentY + main_window.height > contentHeight / 2 && isNotLoading) {
-            infinite.next()
-            isNotLoading = false
-        }
-    }
-    onMovementEnded: {
-        canAnimateSlider = true
-        if (atYEnd, contentY + main_window.height > contentHeight / 2 && isNotLoading) {
-            infinite.next()
-            isNotLoading = false
-        }
-    }
 
     Column {
         id: slider_col
@@ -66,9 +49,10 @@ Flickable {
             }
         }
         Column {
+            Material.accent: "#2A2A2A"
             width: parent.width
             opacity: 0
-            spacing: 10
+            spacing: 40
             Text {
                 id: title_slider_text
                 text: qsTr("Explore")
@@ -77,6 +61,13 @@ Flickable {
                 Layout.fillWidth: true
             }
             ExploreInfinite {id: infinite}
+            Button {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: qsTr("Next")
+                highlighted: true
+
+                onClicked: infinite.next(), isNotLoading = false
+            }
         }
     }
 

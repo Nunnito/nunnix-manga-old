@@ -2,10 +2,10 @@
     "explorer": {
         "slider_size": 15,
         "show_popular": true,
-        "show_seinen": false,
-        "show_shounen": false,
-        "show_josei": false,
-        "show_shoujo": false
+        "show_seinen": true,
+        "show_shounen": true,
+        "show_josei": true,
+        "show_shoujo": true
     },
 
     "system": {

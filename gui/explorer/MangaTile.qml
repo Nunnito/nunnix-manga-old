@@ -92,4 +92,9 @@ Button {
 		onExited: anim_manga_off.start()
 	}
 	
+	function resetTile() {
+			manga_slider_cover.source = ""
+			manga_slider_cover.opacity = 0
+			slider_text.text = ""
+	}
 }

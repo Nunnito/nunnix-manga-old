@@ -79,7 +79,6 @@ class NunnixManga_TMO(QObject):
         self.manga_source.download_and_save_manga_covers(manga_links_covers, manga_links, len(covers))
 
         data_infinite = [covers, manga_names, manga_links]
-        QQmlEngine().trimComponentCache()
         self.infinite_data.emit(data_infinite)
 
     def get_cache_dir(self):

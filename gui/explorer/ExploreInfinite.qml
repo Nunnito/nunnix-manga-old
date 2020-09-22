@@ -7,22 +7,17 @@ Grid {
         previous_columns = width / (button_width + spacing - (spacing / previous_columns))
         parent.leftPadding = ((width - columns * (button_width + spacing - (spacing / columns))) / 2) - spacing / 2
     }
-
-    Button {
-        width: 140
-        onClicked: {
-            for (var i=0; i < test.length; i++){
-                test[i].destroy()
-            }
-            test = []
-            nextPage = 0
-        }
-    }
     
     spacing: 20
     rowSpacing: 75
     columns: previous_columns
     width: parent.width
+
+    Repeater {
+        id: explore_infinite_repeater
+
+        MangaTile{canAnimateTile: false}
+    }
 
     Component.onCompleted: {
         NunnixManga.get_manga_infinite(nextPage)
@@ -33,24 +28,19 @@ Grid {
 
         function onInfinite_data(manga_data){
             isNotLoading = true
-            var component
-            var manga_tile
 
             var covers = manga_data[0]
             var names = manga_data[1]
             var links = manga_data[2]
 
-            component = Qt.createComponent("MangaTile.qml")
+            explore_infinite_repeater.model = names.length
             parent.opacity = 1
 
             for (var i=0; i < names.length; i++) {
-                manga_tile = component.createObject(flow_infinite)
-                manga_tile.canAnimateTile = false
 
-                manga_tile.children[0].source = covers[i]
-                manga_tile.children[1].text = names[i]
-                manga_tile.children.manga_link = links[i]
-                test.push(manga_tile)
+                explore_infinite_repeater.itemAt(i).children[0].source = covers[i]
+                explore_infinite_repeater.itemAt(i).children[1].text = names[i]
+                explore_infinite_repeater.itemAt(i).manga_link = links[i]
             }
         }
     }
@@ -58,5 +48,9 @@ Grid {
     function next() {
         nextPage += 1
         NunnixManga.get_manga_infinite(nextPage)
+
+        for (var i=0; i < explore_infinite_repeater.model; i++) {
+            explore_infinite_repeater.itemAt(i).resetTile()
+        }
     }
 }
