@@ -10,11 +10,13 @@ ApplicationWindow {
 	id: main_window
 
 	property double scale_factor: JSON.parse(config_file).system.scale_factor
+	property int normalSpacing: 20 * scale_factor
 	property bool darkTheme: true
 
-	property string backgroundColor: darkTheme? "#121212":"#ffffff"
-	property string surfaceColor: darkTheme? "#181818": "#ffffff"
-	property string titleBarColor: darkTheme? "#1F1F1F": "#ffffff"
+	property string backgroundColor: darkTheme? "#121212" :"#ffffff"
+	property string surfaceColor: darkTheme? "#181818" : "#ffffff"
+	property string titleBarColor: darkTheme? "#1F1F1F" : "#ffffff"
+	property string textColor: darkTheme? "#FFFFFF" : "#000000"
 
 	title: "Nunnix Manga"
 	flags: Qt.FramelessWindowHint
@@ -37,7 +39,7 @@ ApplicationWindow {
 		Row {
 			id: layout
 			anchors.fill: parent
-			spacing: 20 * scale_factor
+			spacing: normalSpacing
 
 			LeftBar {id: leftbar}  // Lateral bar
 			StackView {

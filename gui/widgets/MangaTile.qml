@@ -8,12 +8,12 @@ Button {
 	height: buttonHeight
 
 	property string mangaLink
+	property int textFontSize: 14 * scale_factor
 	 background: Rectangle {
 		 color: surfaceColor
 		 width: parent.width
 		 height: parent.height
 	 }
-	 
 
 	Image {
 		id: thumbnail
@@ -41,15 +41,15 @@ Button {
 	}
 
 	// Text under the tile
-	Text {
+	Label {
 		id: thumbnailText
 		anchors.top: parent.bottom
 		horizontalAlignment: Text.AlignHCenter
 
-		color: "white"
+		color: textColor
 		width: buttonWidth
 
-		font.pixelSize: 14 * scale_factor
+		font.pixelSize: textFontSize
 		elide: Text.ElideMiddle
 	}
 
@@ -64,14 +64,19 @@ Button {
 			visible: parent.containsMouse
 			delay: 1000
 			timeout: 5000
-			text: thumbnailText.text
+
+			Label {
+				text: thumbnailText.text
+				color: textColor
+				font.pixelSize: textFontSize
+			}
 			background: Rectangle {
 				color: surfaceColor
 			}
 		}
+		onPressed: mouse.accepted = false
 
 		anchors.fill: parent
-		hoverEnabled: true
 		cursorShape: Qt.PointingHandCursor
 	}
 	

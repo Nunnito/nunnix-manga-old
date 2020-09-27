@@ -18,17 +18,11 @@ Rectangle {
 			width: parent.parent.width
 			height: width
 
-			icon.source: "../../resources/menu-white.svg"
+			icon.source: "../../resources/menu.svg"
 			icon.width: width / 3
 			icon.height: height / 3
+			icon.color: textColor
 		}
-	}
-
-	
-	MouseArea {
-		z: -1
-		hoverEnabled: true
-		anchors.fill: parent
 	}
 
 	function hide() {

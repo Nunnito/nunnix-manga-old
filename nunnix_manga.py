@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
+from requests.exceptions import ConnectionError
 from PyQt5.QtGui import QGuiApplication
 from pathlib import Path
 from scrapers import *
@@ -14,7 +15,7 @@ config_file = open("config.json", "r").read()
 
 class NunnixManga_TMO(QObject):
     manga_source = lectortmo
-    search_manga_data = pyqtSignal(list, arguments=["dataSearch"])
+    search_manga_data = pyqtSignal(list, str, arguments=["dataSearch", "error"])
 
     def __init__(self):
         QObject.__init__(self)
@@ -31,8 +32,16 @@ class NunnixManga_TMO(QObject):
 
     def search_manga_thread(self, parameter_list, page):
         data = self.manga_source.search_manga(*parameter_list, page=str(page))
-        print(type(data))
-        self.search_manga_data.emit(data)
+
+        if type(data) == ConnectionError:
+            self.search_manga_data.emit([], "ConnectionError")
+        elif type(data) == str:
+            if data == "HTTP error 404":
+                self.search_manga_data.emit([], "end")
+            else:
+                self.search_manga_data.emit([], data)
+        else:
+            self.search_manga_data.emit(data, "")
 
     def get_cache_dir(self):
         home = str(Path.home())

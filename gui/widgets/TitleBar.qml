@@ -5,6 +5,7 @@ import QtQuick.Window 2.15
 
 // Custom Menu bar
 Rectangle {
+	property int labelTextSize: 14 * scale_factor
 	id: menubar
 	z: 99
 
@@ -31,6 +32,7 @@ Rectangle {
 			icon.source: "../../resources/window-close.svg"
 			icon.width: width
 			icon.height: height
+			icon.color: textColor
 			flat: true
 
 			onClicked: close()
@@ -48,6 +50,7 @@ Rectangle {
 			icon.source: visibility == 4 ? "../../resources/window-restore.svg" : "../../resources/window-maximize.svg"
 			icon.width: width
 			icon.height: height
+			icon.color: textColor
 			flat: true
 
 			onClicked: {
@@ -74,6 +77,7 @@ Rectangle {
 			icon.source: "../../resources/window-minimize.svg"
 			icon.width: width
 			icon.height: height
+			icon.color: textColor
 			flat: true
 
 			onClicked: showMinimized()
@@ -89,9 +93,9 @@ Rectangle {
 		anchors.centerIn: parent
 		
 		text: "Nunnix Manga"
-		color: "white"
+		color: textColor
 
-		font.pixelSize: 14 * scale_factor
+		font.pixelSize: labelTextSize
 		font.bold: true
 	}
 
@@ -104,12 +108,4 @@ Rectangle {
 	TapHandler {
 		onDoubleTapped: visibility == 2 ? showMaximized() : showNormal()
 	}
-
-	
-	MouseArea {
-		anchors.fill: parent
-		hoverEnabled: true
-		acceptedButtons: Qt.NoButton 
-	}
-	
 }
