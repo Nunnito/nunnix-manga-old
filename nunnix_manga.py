@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, ReadTimeout
 from PyQt5.QtGui import QGuiApplication
 from pathlib import Path
 from scrapers import *
@@ -35,6 +35,8 @@ class NunnixManga_TMO(QObject):
 
         if type(data) == ConnectionError:
             self.search_manga_data.emit([], "ConnectionError")
+        elif type(data) == ReadTimeout:
+            self.search_manga_data.emit([], "ReadTimeout")
         elif type(data) == str:
             if data == "HTTP error 404":
                 self.search_manga_data.emit([], "end")

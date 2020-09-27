@@ -1,4 +1,4 @@
-from requests.exceptions import ConnectionError
+from requests.exceptions import ConnectionError, ReadTimeout
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -15,7 +15,7 @@ def get_source(url, image_mode=False):
             url = url.replace("paginated", "cascade")
 
         print("\nLoading page data...")
-        src = requests.get(url, headers=HEADERS)
+        src = requests.get(url, headers=HEADERS, timeout=30)
 
         if src.status_code == 200:
             parsed_source = BeautifulSoup(src.content, "lxml")
@@ -27,7 +27,7 @@ def get_source(url, image_mode=False):
 
         return parsed_source
 
-    except ConnectionError as error:
+    except (ConnectionError, ReadTimeout) as error:
         print(error)
         return error
 
