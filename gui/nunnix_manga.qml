@@ -3,13 +3,18 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
-import "explorer"
+import "widgets"
 
 ApplicationWindow {
 	visible: true
 	id: main_window
 
 	property double scale_factor: JSON.parse(config_file).system.scale_factor
+	property bool darkTheme: true
+
+	property string backgroundColor: darkTheme? "#121212":"#ffffff"
+	property string surfaceColor: darkTheme? "#181818": "#ffffff"
+	property string titleBarColor: darkTheme? "#1F1F1F": "#ffffff"
 
 	title: "Nunnix Manga"
 	flags: Qt.FramelessWindowHint
@@ -20,14 +25,12 @@ ApplicationWindow {
 	minimumWidth: Screen.width / 1.5
 	minimumHeight: Screen.height / 1.5
 
-	color: "#111111"
 
-	Material.accent: "#242424"
 	Material.theme: Material.Dark
-
+	Material.accent: Material.DeepPurple
 
 	Page {
-		background: Rectangle {color: "#161616"}
+		background: Rectangle {color: backgroundColor}
 		anchors.fill: parent
 
 		header : TitleBar {}  // Title bar
@@ -42,7 +45,7 @@ ApplicationWindow {
 
 				height: parent.height
 				width: main_window.width - leftbar.width - layout.spacing
-				initialItem: "explorer/Explore.qml"
+				initialItem: "search/Searcher.qml"
 			}
 		}
 	}

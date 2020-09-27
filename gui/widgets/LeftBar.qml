@@ -6,7 +6,7 @@ Rectangle {
 	opacity: 1
 	width: 72 * scale_factor
 	height: parent.height
-	color: "#1e1e1e"
+	color: surfaceColor
 	z: 98
 
 	Column {
@@ -18,11 +18,9 @@ Rectangle {
 			width: parent.parent.width
 			height: width
 
-			icon.source: "../resources/menu-white.svg"
-			icon.color: "#c5ccd4"
+			icon.source: "../../resources/menu-white.svg"
 			icon.width: width / 3
 			icon.height: height / 3
-			onClicked: stack_view.push("LeftBar.qml")
 		}
 	}
 

@@ -1,7 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
-import QtQuick.Controls.Universal 2.12
 import QtQuick.Window 2.15
 
 // Custom Menu bar
@@ -12,7 +11,7 @@ Rectangle {
 	width: parent.width
 	height: 42 * scale_factor
 
-	color: "#111111"
+	color: titleBarColor
 
 	Row {
 		anchors.right: parent.right
@@ -23,20 +22,16 @@ Rectangle {
 
 		height: 48 * scale_factor
 
-		Material.accent: "#141414"
-
 		// Exit button
 		Button {
 			anchors.bottom: parent.bottom
 			height: parent.height
 			width: height * 1.25
 
-			icon.source: "../resources/window-close.svg"
+			icon.source: "../../resources/window-close.svg"
 			icon.width: width
 			icon.height: height
-			icon.color: "#c5ccd4"
-
-			highlighted: true
+			flat: true
 
 			onClicked: close()
 
@@ -50,12 +45,10 @@ Rectangle {
 			height: parent.height
 			width: height * 1.25
 
-			icon.source: visibility == 4 ? "../resources/window-restore.svg" : "../resources/window-maximize.svg"
+			icon.source: visibility == 4 ? "../../resources/window-restore.svg" : "../../resources/window-maximize.svg"
 			icon.width: width
 			icon.height: height
-			icon.color: "#c5ccd4"
-
-			highlighted: true
+			flat: true
 
 			onClicked: {
 				if (visibility == 2) {
@@ -78,12 +71,10 @@ Rectangle {
 			height: parent.height
 			width: height * 1.25
 
-			icon.source: "../resources/window-minimize.svg"
+			icon.source: "../../resources/window-minimize.svg"
 			icon.width: width
 			icon.height: height
-			icon.color: "#c5ccd4"
-
-			highlighted: true
+			flat: true
 
 			onClicked: showMinimized()
 
@@ -98,7 +89,7 @@ Rectangle {
 		anchors.centerIn: parent
 		
 		text: "Nunnix Manga"
-		color: "#DEDEDE"
+		color: "white"
 
 		font.pixelSize: 14 * scale_factor
 		font.bold: true
