@@ -11,7 +11,7 @@ HEADERS = {
 def get_source(url, image_mode=False):
     try:
         if image_mode:
-            url = requests.head(url, headers=HEADERS).headers["Location"]
+            url = requests.head(url, headers=HEADERS, timeout=30).headers["Location"]
             url = url.replace("paginated", "cascade")
 
         print("\nLoading page data...")
