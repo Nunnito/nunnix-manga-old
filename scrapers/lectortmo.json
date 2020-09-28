@@ -1,0 +1,55 @@
+{
+    "order_item:": {
+        "name": "Ordenar por: ",
+        "type": "combobox",
+        "search_parameter": "sort_by",
+        "content": {
+            "Me gusta": "likes_count",
+            "Alfabético": "alphabetically",
+            "Puntuación": "score",
+            "Creación": "creation",
+            "Fecha de estreno": "release_date",
+            "Núm. Capítulos": "num_chapters"
+        }
+    },
+
+    "order_dir": {
+        "name": null,
+        "type": "combobox",
+        "search_parameter": "order_dir",
+        "content": {
+            "DESC": "desc",
+            "ASC": "asc"
+        }
+    },
+
+    "type": {
+        "name": "Tipo",
+        "type": "combobox",
+        "search_parameter": "_type",
+        "content": {
+            "Ver todo": null,
+            "Manga": "manga",
+            "Manhua": "manhua",
+            "Manhwa": "manhwua",
+            "Novela": "novel",
+            "One shot": "one_shot",
+            "Doujinshi": "doujinshi",
+            "Oul": "oel"
+        }
+    },
+
+    "demography": {
+        "name": "Demografía",
+        "type": "combobox",
+        "search_parameter": "demography",
+        "content": {
+            "Ver todo": null,
+            "Seinen": "seinen",
+            "Shoujo": "shoujo",
+            "Shounen": "shounen",
+            "Josei": "josei",
+            "Kodomo": "kodomo"
+        }
+    }
+}

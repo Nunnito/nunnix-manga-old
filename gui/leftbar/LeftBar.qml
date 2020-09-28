@@ -4,9 +4,10 @@ import QtQuick.Controls 2.14
 
 Rectangle {
 	property int iconSize: 24
+	property int leftBarWidth: 72
 
 	opacity: 1
-	width: 72 * scaleFactor
+	width: leftBarWidth
 	height: parent.height
 	color: surfaceColor
 	z: 98

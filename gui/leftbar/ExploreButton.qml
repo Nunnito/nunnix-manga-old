@@ -1,7 +1,13 @@
 import QtQuick.Controls 2.15
 
 LeftBarButton {
-    icon.source: "../../resources/explore-outlined.svg"
+    target: "searcher"
+    iconFilled: "../../resources/explore-filled.svg"
+    iconOutlined: "../../resources/explore-outlined.svg"
 
-    onClicked: stackView.push("../search/Searcher.qml")
+    onClicked: {
+        if (flat) {
+            stackView.push("../search/Searcher.qml")
+        }
+    }
 }

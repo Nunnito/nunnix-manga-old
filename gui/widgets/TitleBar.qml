@@ -9,7 +9,7 @@ Rectangle {
 	z: 99
 
 	width: parent.width
-	height: 44 * scaleFactor
+	height: 44
 
 	color: titleBarColor
 
@@ -17,10 +17,10 @@ Rectangle {
 		anchors.right: parent.right
 		anchors.verticalCenter: parent.verticalCenter
 
-		spacing: 5 * scaleFactor
+		spacing: 5
 		layoutDirection: Qt.RightToLeft
 
-		height: 48 * scaleFactor
+		height: 48
 
 		// Exit button
 		Button {

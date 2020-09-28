@@ -10,8 +10,7 @@ ApplicationWindow {
 	visible: true
 	id: mainWindow
 
-	property double scaleFactor: JSON.parse(config_file).system.scale_factor
-	property int normalSpacing: 20 * scaleFactor
+	property int normalSpacing: 20
 	property bool darkTheme: true
 
 	property string backgroundColor: darkTheme? "#121212" :"#ffffff"
@@ -23,7 +22,7 @@ ApplicationWindow {
 	property string accentColor: "#9FA8DA"
 	property string textAreaColor: "#2D2D2D"
 	property string placeHolderColor: "#AAAAAA"
-	property int normalTextFontSize: 14 * scaleFactor
+	property int normalTextFontSize: 14
 
 	title: "Nunnix Manga"
 	flags: Qt.FramelessWindowHint
@@ -38,6 +37,8 @@ ApplicationWindow {
 	Material.theme: darkTheme? Material.Dark : Material.Light
 	Material.accent: accentColor
 	Material.foreground: "white"
+	Material.background: surfaceColor2
+	Material.primary: accentColor
 
 	menuBar: TitleBar {}
 
@@ -49,12 +50,12 @@ ApplicationWindow {
 			id: layout
 			anchors.fill: parent
 
-			LeftBar {id: leftbar}  // Lateral bar
+			LeftBar {id: leftBar}  // Lateral bar
 			StackView {
 				id: stackView
 
 				height: parent.height
-				width: mainWindow.width - leftbar.width - layout.spacing
+				width: mainWindow.width - leftBar.width - layout.spacing
 				initialItem: "library/Library.qml"
 			}
 		}

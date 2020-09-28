@@ -10,8 +10,6 @@ Button {
 	property string mangaLink
 	 background: Rectangle {
 		 color: surfaceColor
-		 width: parent.width
-		 height: parent.height
 	 }
 
 	Image {

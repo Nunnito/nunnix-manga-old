@@ -323,3 +323,11 @@ def search_manga(
         )
 
     return search_data
+
+
+def get_search_controls():
+    controls = open(__file__.replace(".py", ".json"), "r")
+    read_controls = controls.read()
+    controls.close()
+
+    return read_controls

@@ -2,20 +2,22 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
 from PyQt5.QtGui import QGuiApplication
+from threading import Thread
 from pathlib import Path
 from scrapers import *
-from threading import Thread
 import json
 import sys
 import os
 import re
 
 config_file = open("config.json", "r").read()
+scale_factor = json.loads(config_file)["system"]["scale_factor"]
 
 
 class NunnixManga_TMO(QObject):
     manga_source = lectortmo
     search_manga_data = pyqtSignal(list, str, arguments=["dataSearch", "error"])
+    search_manga_controls = pyqtSignal(str, arguments=["jsonControls"])
 
     def __init__(self):
         QObject.__init__(self)
@@ -45,6 +47,11 @@ class NunnixManga_TMO(QObject):
         else:
             self.search_manga_data.emit(data, "")
 
+        controls = self.manga_source.get_search_controls()
+        self.search_manga_controls.emit(controls)
+        # print(self.manga_source.search_manga.__code__.co_varnames[:self.manga_source.search_manga.__code__.co_argcount])
+        # print(self.manga_source.search_manga.__defaults__)
+
     def get_cache_dir(self):
         home = str(Path.home())
         if sys.platform == "linux":
@@ -56,8 +63,8 @@ class NunnixManga_TMO(QObject):
 
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
 os.environ["QT_QUICK_CONTROLS_MATERIAL_VARIANT"] = "Dense"
+os.environ["QT_SCALE_FACTOR"] = str(scale_factor)
 application = QGuiApplication([])
-
 
 nunnix_manga_tmo = NunnixManga_TMO()
 engine = QQmlApplicationEngine()
