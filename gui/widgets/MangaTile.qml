@@ -8,7 +8,6 @@ Button {
 	height: buttonHeight
 
 	property string mangaLink
-	property int textFontSize: 14 * scale_factor
 	 background: Rectangle {
 		 color: surfaceColor
 		 width: parent.width
@@ -49,7 +48,7 @@ Button {
 		color: textColor
 		width: buttonWidth
 
-		font.pixelSize: textFontSize
+		font.pixelSize: normalTextFontSize
 		elide: Text.ElideMiddle
 	}
 
@@ -68,12 +67,13 @@ Button {
 			Label {
 				text: thumbnailText.text
 				color: textColor
-				font.pixelSize: textFontSize
+				font.pixelSize: normalTextFontSize
 			}
 			background: Rectangle {
 				color: surfaceColor
 			}
 		}
+		hoverEnabled: true
 		onPressed: mouse.accepted = false
 
 		anchors.fill: parent

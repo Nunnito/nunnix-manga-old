@@ -9,7 +9,7 @@ Column {
         height: width
         icon.source: "../../resources/autorenew.svg"
         icon.width: width
-        icon.color: textColor
+        icon.color: iconColor
         icon.height: width
         flat: true
         anchors.horizontalCenter: parent.horizontalCenter

@@ -4,19 +4,26 @@ import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import "widgets"
+import "leftbar"
 
 ApplicationWindow {
 	visible: true
-	id: main_window
+	id: mainWindow
 
-	property double scale_factor: JSON.parse(config_file).system.scale_factor
-	property int normalSpacing: 20 * scale_factor
+	property double scaleFactor: JSON.parse(config_file).system.scale_factor
+	property int normalSpacing: 20 * scaleFactor
 	property bool darkTheme: true
 
 	property string backgroundColor: darkTheme? "#121212" :"#ffffff"
 	property string surfaceColor: darkTheme? "#181818" : "#ffffff"
+	property string surfaceColor2: darkTheme? "#222222" : "#ffffff"
 	property string titleBarColor: darkTheme? "#1F1F1F" : "#ffffff"
 	property string textColor: darkTheme? "#FFFFFF" : "#000000"
+	property string iconColor: darkTheme? "#AAAAAA" : "#000000"
+	property string accentColor: "#9FA8DA"
+	property string textAreaColor: "#2D2D2D"
+	property string placeHolderColor: "#AAAAAA"
+	property int normalTextFontSize: 14 * scaleFactor
 
 	title: "Nunnix Manga"
 	flags: Qt.FramelessWindowHint
@@ -28,26 +35,27 @@ ApplicationWindow {
 	minimumHeight: Screen.height / 1.5
 
 
-	Material.theme: Material.Dark
-	Material.accent: Material.DeepPurple
+	Material.theme: darkTheme? Material.Dark : Material.Light
+	Material.accent: accentColor
+	Material.foreground: "white"
+
+	menuBar: TitleBar {}
 
 	Page {
 		background: Rectangle {color: backgroundColor}
 		anchors.fill: parent
 
-		header : TitleBar {}  // Title bar
 		Row {
 			id: layout
 			anchors.fill: parent
-			spacing: normalSpacing
 
 			LeftBar {id: leftbar}  // Lateral bar
 			StackView {
-				id: stack_view
+				id: stackView
 
 				height: parent.height
-				width: main_window.width - leftbar.width - layout.spacing
-				initialItem: "search/Searcher.qml"
+				width: mainWindow.width - leftbar.width - layout.spacing
+				initialItem: "library/Library.qml"
 			}
 		}
 	}

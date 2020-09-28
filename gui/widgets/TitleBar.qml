@@ -5,12 +5,11 @@ import QtQuick.Window 2.15
 
 // Custom Menu bar
 Rectangle {
-	property int labelTextSize: 14 * scale_factor
 	id: menubar
 	z: 99
 
 	width: parent.width
-	height: 42 * scale_factor
+	height: 44 * scaleFactor
 
 	color: titleBarColor
 
@@ -18,10 +17,10 @@ Rectangle {
 		anchors.right: parent.right
 		anchors.verticalCenter: parent.verticalCenter
 
-		spacing: 5 * scale_factor
+		spacing: 5 * scaleFactor
 		layoutDirection: Qt.RightToLeft
 
-		height: 48 * scale_factor
+		height: 48 * scaleFactor
 
 		// Exit button
 		Button {
@@ -32,7 +31,7 @@ Rectangle {
 			icon.source: "../../resources/window-close.svg"
 			icon.width: width
 			icon.height: height
-			icon.color: textColor
+			icon.color: iconColor
 			flat: true
 
 			onClicked: close()
@@ -50,7 +49,7 @@ Rectangle {
 			icon.source: visibility == 4 ? "../../resources/window-restore.svg" : "../../resources/window-maximize.svg"
 			icon.width: width
 			icon.height: height
-			icon.color: textColor
+			icon.color: iconColor
 			flat: true
 
 			onClicked: {
@@ -77,7 +76,7 @@ Rectangle {
 			icon.source: "../../resources/window-minimize.svg"
 			icon.width: width
 			icon.height: height
-			icon.color: textColor
+			icon.color: iconColor
 			flat: true
 
 			onClicked: showMinimized()
@@ -95,17 +94,23 @@ Rectangle {
 		text: "Nunnix Manga"
 		color: textColor
 
-		font.pixelSize: labelTextSize
+		font.pixelSize: normalTextFontSize
 		font.bold: true
 	}
 
 	DragHandler {
 		target: null
 		grabPermissions: PointerHandler.TakeOverForbidden
-		onActiveChanged: if (active) { main_window.startSystemMove()}
+		onActiveChanged: if (active) { mainWindow.startSystemMove()}
 	}
 
 	TapHandler {
 		onDoubleTapped: visibility == 2 ? showMaximized() : showNormal()
+	}
+
+	MouseArea {
+		anchors.fill: parent
+		hoverEnabled: true
+		acceptedButtons: Qt.NoButton 
 	}
 }

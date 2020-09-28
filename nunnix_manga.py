@@ -55,7 +55,7 @@ class NunnixManga_TMO(QObject):
 
 
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
-os.environ["QT_QUICK_CONTROLS_MATERIAL_VARIANT"] = "Normal"
+os.environ["QT_QUICK_CONTROLS_MATERIAL_VARIANT"] = "Dense"
 application = QGuiApplication([])
 
 

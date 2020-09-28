@@ -3,8 +3,10 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.14
 
 Rectangle {
+	property int iconSize: 24
+
 	opacity: 1
-	width: 72 * scale_factor
+	width: 72 * scaleFactor
 	height: parent.height
 	color: surfaceColor
 	z: 98
@@ -12,17 +14,10 @@ Rectangle {
 	Column {
 		anchors.horizontalCenter: parent.horizontalCenter
 
-		Button {
-			flat: true
-
-			width: parent.parent.width
-			height: width
-
-			icon.source: "../../resources/menu.svg"
-			icon.width: width / 3
-			icon.height: height / 3
-			icon.color: textColor
-		}
+		MenuButton {}
+		LibraryButton {}
+		ExploreButton {}
+		DownloadsButton {}
 	}
 
 	function hide() {
