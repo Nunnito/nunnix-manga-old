@@ -111,6 +111,6 @@ Rectangle {
 	MouseArea {
 		anchors.fill: parent
 		hoverEnabled: true
-		acceptedButtons: Qt.NoButton 
+		acceptedButtons: Qt.NoButton
 	}
 }

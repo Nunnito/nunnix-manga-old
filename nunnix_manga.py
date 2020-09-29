@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QVariant
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
 from PyQt5.QtGui import QGuiApplication
@@ -15,6 +15,7 @@ scale_factor = json.loads(config_file)["system"]["scale_factor"]
 
 
 class NunnixManga_TMO(QObject):
+    temp = True
     manga_source = lectortmo
     search_manga_data = pyqtSignal(list, str, arguments=["dataSearch", "error"])
     search_manga_controls = pyqtSignal(str, arguments=["jsonControls"])
@@ -27,13 +28,13 @@ class NunnixManga_TMO(QObject):
     def change_manga_source(self, manga_source):
         exec("self.manga_source = {}".format(manga_source))
 
-    @pyqtSlot(list, int)
+    @pyqtSlot(str, int)
     def search_manga(self, parameter_list, page):
         data = Thread(target=self.search_manga_thread, args=[parameter_list, page])
         data.start()
 
     def search_manga_thread(self, parameter_list, page):
-        data = self.manga_source.search_manga(*parameter_list, page=str(page))
+        data = self.manga_source.search_manga(**json.loads(parameter_list), page=str(page))
 
         if type(data) == ConnectionError:
             self.search_manga_data.emit([], "ConnectionError")
@@ -48,9 +49,9 @@ class NunnixManga_TMO(QObject):
             self.search_manga_data.emit(data, "")
 
         controls = self.manga_source.get_search_controls()
-        self.search_manga_controls.emit(controls)
-        # print(self.manga_source.search_manga.__code__.co_varnames[:self.manga_source.search_manga.__code__.co_argcount])
-        # print(self.manga_source.search_manga.__defaults__)
+        if self.temp:
+            self.search_manga_controls.emit(controls)
+            self.temp = False
 
     def get_cache_dir(self):
         home = str(Path.home())

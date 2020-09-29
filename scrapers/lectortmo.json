@@ -1,6 +1,6 @@
 {
     "title": {
-        "name": null,
+        "name": "Buscar: ",
         "type": "textinput",
         "search_parameter": "title"
     },
@@ -31,7 +31,7 @@
     },
 
     "order_dir": {
-        "name": null,
+        "name": "",
         "type": "combobox",
         "search_parameter": "order_dir",
         "content": {
@@ -45,7 +45,7 @@
         "type": "combobox",
         "search_parameter": "_type",
         "content": {
-            "Ver todo": null,
+            "Ver todo": "",
             "Manga": "manga",
             "Manhua": "manhua",
             "Manhwa": "manhwua",
@@ -61,7 +61,7 @@
         "type": "combobox",
         "search_parameter": "demography",
         "content": {
-            "Ver todo": null,
+            "Ver todo": "",
             "Seinen": "seinen",
             "Shoujo": "shoujo",
             "Shounen": "shounen",
@@ -75,7 +75,7 @@
         "type": "combobox",
         "search_parameter": "webcomic",
         "content": {
-            "Ver todo": null,
+            "Ver todo": "",
             "Sí": true,
             "No": false
         }
@@ -86,7 +86,7 @@
         "type": "combobox",
         "search_parameter": "yonkoma",
         "content": {
-            "Ver todo": null,
+            "Ver todo": "",
             "Sí": true,
             "No": false
         }
@@ -97,7 +97,7 @@
         "type": "combobox",
         "search_parameter": "amateur",
         "content": {
-            "Ver todo": null,
+            "Ver todo": "",
             "Sí": true,
             "No": false
         }
@@ -108,7 +108,7 @@
         "type": "combobox",
         "search_parameter": "erotic",
         "content": {
-            "Ver todo": null,
+            "Ver todo": "",
             "Sí": true,
             "No": false
         }
@@ -172,7 +172,7 @@
     },
 
     "exclude_genres": {
-        "name": null,
+        "name": "",
         "combo_name": "Géneros excluidos",
         "type": "checkcombobox",
         "search_parameter": "exclude_genres",

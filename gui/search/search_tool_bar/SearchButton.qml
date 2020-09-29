@@ -16,5 +16,8 @@ RoundButton {
         if (!searchInput.text) {
             searchInput.focus = true
         }
+        else {
+            advancedSearch.genSearchData(true)
+        }
     }
 }

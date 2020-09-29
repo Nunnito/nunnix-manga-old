@@ -3,6 +3,9 @@ import QtQuick.Controls.Material 2.15
 import QtQuick 2.15
 
 Column {
+    property string searchParameter
+    property var jsonData
+    property var currentValue: jsonData == null ? [] : jsonData[comboBox.currentText]
     Material.background: surfaceColor
     topPadding: text.text ? normalSpacing : 0
 
@@ -15,10 +18,9 @@ Column {
     }
 
     ComboBox {
-        property string searchParameter
         id: comboBox
-
         width: 200
+        model: jsonData == null ? [] : Object.keys(jsonData)
 
         popup: Popup {
             width: comboBox.width
@@ -33,6 +35,12 @@ Column {
 
                 ScrollIndicator.vertical: ScrollIndicator {}
             }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.NoButton
         }
     }
 }

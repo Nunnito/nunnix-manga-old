@@ -5,7 +5,7 @@ import QtQuick.Controls.Material 2.15
 
 Rectangle {
     property int toolbarHeight: 48
-    property int searchInputRadius: 10
+    property int searchInputRadius: 5
     property int iconSize: 24
     z: 1
     id: toolBar
@@ -54,6 +54,8 @@ Rectangle {
                     font.pixelSize: normalTextFontSize
                     verticalAlignment: Text.AlignVCenter
                 }
+
+                onAccepted: advancedSearch.genSearchData(true)
             }
         }
     }

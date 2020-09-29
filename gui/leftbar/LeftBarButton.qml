@@ -15,7 +15,7 @@ Button {
     icon.source: flat ? iconOutlined : iconFilled
     icon.width: iconSize
     icon.height: iconSize
-    icon.color: flat ? iconColor : accentColor
+    icon.color: flat ? iconColor : primaryColor
 
     onClicked: {
         if (stackView.currentItem.name != target) {

@@ -12,8 +12,6 @@ Flickable {
     contentHeight: gridSearch.children.length == 0? parent.height:searchColumn.height
     contentWidth: width - normalSpacing
 
-    id: searcherFlickable
-
     Column {
         id: searchColumn
         width: parent.width
@@ -43,8 +41,7 @@ Flickable {
     ReloadButton {id: reloadButton; anchors.centerIn: parent}
 
     Component.onCompleted: {
-        NunnixManga.search_manga([], currentPage)
-        currentPage += 1
+        advancedSearch.genSearchData(true)
     }
 
     Connections {
@@ -93,8 +90,7 @@ Flickable {
     }
 
     function reconnect(isSmall) {
-        NunnixManga.search_manga([], currentPage)
-        currentPage += 1
+        advancedSearch.genSearchData(false)
 
         if (isSmall) {
             smallReloadButton.visible = false
@@ -111,8 +107,7 @@ Flickable {
         var isNearEnd = contentHeight - gridSearch.height / (currentPage - 1) <= contentY
 
         if (isNearEnd && isNotLoading) {
-            NunnixManga.search_manga([], currentPage)
-            currentPage += 1
+            advancedSearch.genSearchData(false)
             isNotLoading = false
         }
         if (visibleContentHeight >= 0.9) {

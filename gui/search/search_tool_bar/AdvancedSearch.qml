@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 
 Popup {
     width: 250 + normalSpacing
@@ -12,12 +13,12 @@ Popup {
         height: parent.height
         contentHeight: controlsColumn.height + titleBar.height
 
-        ScrollIndicator.vertical: ScrollIndicator {}
+        ScrollIndicator.vertical: ScrollIndicator {active: true}
         clip: true
 
         Label {
             text: qsTr("Advanced Search")
-            color: accentColor
+            color: primaryColor
             font.pixelSize: normalTextFontSize
             font.bold: true
             
@@ -29,6 +30,28 @@ Popup {
             topPadding: normalSpacing * 2
             padding: normalSpacing
 
+        }
+
+        Button {
+            text: qsTr("Search")
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            highlighted: true
+
+            contentItem: Text {
+                text: parent.text  
+                color: backgroundColor
+                font.bold: true
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                acceptedButtons: Qt.NoButton
+            }
+
+            onClicked: genSearchData(true)
         }
     }
 
@@ -48,18 +71,17 @@ Popup {
             for (var control in controls) {
                 if (controls[control].type == "textinput") {
                     var textInput = searchTextInput.createObject(controlsColumn)
+
+                    textInput.children[0].text = controls[control].name
+                    textInput.searchParameter = controls[control].search_parameter
                 }
                 if (controls[control].type == "combobox") {
                     var comboBox = searchComboBox.createObject(controlsColumn)
                     var comboModel = []
 
                     comboBox.children[0].text = controls[control].name
-                    comboBox.children[1].searchParameter = controls[control].search_parameter
-                    
-                    for (var content in controls[control].content) {
-                        comboModel.push(content)
-                    }
-                    comboBox.children[1].model = comboModel
+                    comboBox.searchParameter = controls[control].search_parameter
+                    comboBox.jsonData = controls[control].content
                 }
                 if (controls[control].type == "checkcombobox") {
                     var checkComboBox = searchCheckComboBox.createObject(controlsColumn)
@@ -67,12 +89,8 @@ Popup {
 
                     checkComboBox.children[0].text = controls[control].name
                     checkComboBox.children[1].displayText = controls[control].combo_name
-                    checkComboBox.children[1].searchParameter = controls[control].search_parameter
-
-                    for (var content in controls[control].content) {
-                        comboModel.push(content)
-                    }
-                    checkComboBox.children[1].model = comboModel
+                    checkComboBox.searchParameter = controls[control].search_parameter
+                    checkComboBox.jsonData = controls[control].content
                 }
             }
         }
@@ -98,5 +116,28 @@ Popup {
 
     background: Rectangle {
         color: backgroundColor
+    }
+
+    function genSearchData(initPage) {
+        if (initPage) {
+            currentPage = 1
+            var gridSearch = searcherFlickable.children[0].children[0].children[0]
+            
+            for (var i=0; i < gridSearch.children.length; i++){
+                gridSearch.children[i].destroy()
+            }
+            searcherFlickable.children[0].children[1].running = true
+        }
+
+        searchData = {}
+        for (var i=0; i < controlsColumn.children.length; i++) {
+            var key = controlsColumn.children[i].searchParameter
+            var value = controlsColumn.children[i].currentValue
+
+            searchData[key] = value
+        }
+        print(JSON.stringify(searchData))
+        NunnixManga.search_manga(JSON.stringify(searchData), currentPage)
+        currentPage += 1
     }
 }

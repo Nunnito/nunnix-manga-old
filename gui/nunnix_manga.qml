@@ -19,7 +19,8 @@ ApplicationWindow {
 	property string titleBarColor: darkTheme? "#1F1F1F" : "#ffffff"
 	property string textColor: darkTheme? "#FFFFFF" : "#000000"
 	property string iconColor: darkTheme? "#AAAAAA" : "#000000"
-	property string accentColor: "#9FA8DA"
+	property string primaryColor: Material.color(Material.DeepPurple, Material.Shade200)
+	property string secondaryColor: Material.color(Material.DeepPurple)
 	property string textAreaColor: "#2D2D2D"
 	property string placeHolderColor: "#AAAAAA"
 	property int normalTextFontSize: 14
@@ -35,10 +36,10 @@ ApplicationWindow {
 
 
 	Material.theme: darkTheme? Material.Dark : Material.Light
-	Material.accent: accentColor
+	Material.accent: primaryColor
 	Material.foreground: "white"
 	Material.background: surfaceColor2
-	Material.primary: accentColor
+	Material.primary: primaryColor
 
 	menuBar: TitleBar {id: titleBar}
 

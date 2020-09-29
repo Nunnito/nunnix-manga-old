@@ -3,6 +3,9 @@ import QtQuick.Controls.Material 2.15
 import QtQuick 2.15
 
 Column {
+    property string searchParameter
+    property var jsonData
+    property var currentValue: []
     Material.background: surfaceColor
     topPadding: text.text ? normalSpacing : 0
 
@@ -15,22 +18,36 @@ Column {
     }
 
     ComboBox {
-        property string searchParameter
+        property var checkedList: []
         id: comboBox
         width: 200
+        model: jsonData == null ? [] : Object.keys(jsonData)
 
         delegate: ItemDelegate {
             width: comboBox.width
             height: 48
             contentItem: Row {
                 CheckBox {
+                    id: checkBox
                     height: parent.height
                     width: height
+                    text: modelData
+                    checked: comboBox.checkedList.includes(text)
 
-                    onCheckedChanged: {}
+                    onCheckedChanged: {
+                        if (checked && !comboBox.checkedList.includes(text)) {
+                            currentValue.push(jsonData[text])
+                            comboBox.checkedList.push(text)
+                            comboBox.currentIndex = index
+                        }
+                        if (!checked && comboBox.checkedList.includes(text)) {
+                            currentValue.splice(currentValue.indexOf(jsonData[text]))
+                            comboBox.checkedList.splice(comboBox.checkedList.indexOf(text))
+                        }
+                    }
                 }
                 Label {
-                    text: modelData
+                    text: checkBox.text
                     width: parent.width
                     height: parent.height
                     verticalAlignment: Qt.AlignVCenter
@@ -50,6 +67,12 @@ Column {
 
                 ScrollIndicator.vertical: ScrollIndicator { }
             }
+        }
+        
+        MouseArea {
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.NoButton
         }
     }
 }

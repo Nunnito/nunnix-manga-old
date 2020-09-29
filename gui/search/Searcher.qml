@@ -15,16 +15,18 @@ Column {
     property int reloadButtonTextSize: 24
     property int reloadSmallButtonTextSize: 18
 
-    property int currentPage: 1
+    property int currentPage
     property bool isNotLoading: false
     property bool isStartup: true
 
-    property int advancedSearchStartX: mainWindow.width - 270 - leftBar.width
+    property int advancedSearchWidth: 250 + normalSpacing
+    property int advancedSearchStartX: mainWindow.width - advancedSearchWidth - leftBar.width
     property int advancedSearchEndX: mainWindow.width - leftBar.width
 
     property string name: "searcher"
+    property var searchData: {}
 
-    SearchToolBar {}
-    SearchFlickable {}
+    SearchToolBar {id: searchToolBar}
+    SearchFlickable {id: searcherFlickable}
     AdvancedSearch {id: advancedSearch}
 }
