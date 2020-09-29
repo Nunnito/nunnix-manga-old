@@ -1,4 +1,21 @@
 {
+    "title": {
+        "name": null,
+        "type": "textinput",
+        "search_parameter": "title"
+    },
+
+    "filter_by": {
+        "name": "Buscar por: ",
+        "type": "combobox",
+        "search_parameter": "filter_by",
+        "content": {
+            "Título": "title",
+            "Autor": "author",
+            "Compañía": "company"
+        }
+    },
+
     "order_item:": {
         "name": "Ordenar por: ",
         "type": "combobox",
@@ -18,8 +35,8 @@
         "type": "combobox",
         "search_parameter": "order_dir",
         "content": {
-            "DESC": "desc",
-            "ASC": "asc"
+            "Descendente": "desc",
+            "Ascendente": "asc"
         }
     },
 
@@ -50,6 +67,164 @@
             "Shounen": "shounen",
             "Josei": "josei",
             "Kodomo": "kodomo"
+        }
+    },
+
+    "webcomic": {
+        "name": "Webcomic",
+        "type": "combobox",
+        "search_parameter": "webcomic",
+        "content": {
+            "Ver todo": null,
+            "Sí": true,
+            "No": false
+        }
+    },
+
+    "yonkoma": {
+        "name": "Yonkoma",
+        "type": "combobox",
+        "search_parameter": "yonkoma",
+        "content": {
+            "Ver todo": null,
+            "Sí": true,
+            "No": false
+        }
+    },
+
+    "amateur": {
+        "name": "Amateur",
+        "type": "combobox",
+        "search_parameter": "amateur",
+        "content": {
+            "Ver todo": null,
+            "Sí": true,
+            "No": false
+        }
+    },
+
+    "erotic": {
+        "name": "Erótico",
+        "type": "combobox",
+        "search_parameter": "erotic",
+        "content": {
+            "Ver todo": null,
+            "Sí": true,
+            "No": false
+        }
+    },
+
+    "genres": {
+        "name": "Géneros",
+        "combo_name": "Géneros incluidos",
+        "type": "checkcombobox",
+        "search_parameter": "genres",
+        "content": {
+            "Acción": 1,
+            "Aventura": 2,
+            "Comedia": 3,
+            "Drama": 4,
+            "Recuentos de la vida": 5,
+            "Ecchi": 6,
+            "Fantasia": 7,
+            "Magia": 8,
+            "Sobrenatural": 9,
+            "Horror": 10,
+            "Misterio": 11,
+            "Psicológico": 12,
+            "Romance": 13,
+            "Ciencia Ficción": 14,
+            "Thriller": 15,
+            "Deporte": 16,
+            "Girls Love": 17,
+            "Boys Love": 18,
+            "Harem": 19,
+            "Mecha": 20,
+            "Supervivencia": 21,
+            "Reencarnación": 22,
+            "Gore": 23,
+            "Apocalíptico": 24,
+            "Tragedia": 25,
+            "Vida Escolar": 26,
+            "Historia": 27,
+            "Militar": 28,
+            "Policiaco": 29,
+            "Crimen": 30,
+            "Superpoderes": 31,
+            "Vampiros": 32,
+            "Artes Marciales": 33,
+            "Samurái": 34,
+            "Género Bender": 35,
+            "Realidad Virtual": 36,
+            "Ciberpunk": 37,
+            "Musica": 38,
+            "Parodia": 39,
+            "Animación": 40,
+            "Demonios": 41,
+            "Familia": 42,
+            "Extranjero": 43,
+            "Niños": 44,
+            "Realidad": 45,
+            "Telenovela": 46,
+            "Guerra": 47,
+            "Oeste": 48
+        }
+    },
+
+    "exclude_genres": {
+        "name": null,
+        "combo_name": "Géneros excluidos",
+        "type": "checkcombobox",
+        "search_parameter": "exclude_genres",
+        "content": {
+            "Acción": 1,
+            "Aventura": 2,
+            "Comedia": 3,
+            "Drama": 4,
+            "Recuentos de la vida": 5,
+            "Ecchi": 6,
+            "Fantasia": 7,
+            "Magia": 8,
+            "Sobrenatural": 9,
+            "Horror": 10,
+            "Misterio": 11,
+            "Psicológico": 12,
+            "Romance": 13,
+            "Ciencia Ficción": 14,
+            "Thriller": 15,
+            "Deporte": 16,
+            "Girls Love": 17,
+            "Boys Love": 18,
+            "Harem": 19,
+            "Mecha": 20,
+            "Supervivencia": 21,
+            "Reencarnación": 22,
+            "Gore": 23,
+            "Apocalíptico": 24,
+            "Tragedia": 25,
+            "Vida Escolar": 26,
+            "Historia": 27,
+            "Militar": 28,
+            "Policiaco": 29,
+            "Crimen": 30,
+            "Superpoderes": 31,
+            "Vampiros": 32,
+            "Artes Marciales": 33,
+            "Samurái": 34,
+            "Género Bender": 35,
+            "Realidad Virtual": 36,
+            "Ciberpunk": 37,
+            "Musica": 38,
+            "Parodia": 39,
+            "Animación": 40,
+            "Demonios": 41,
+            "Familia": 42,
+            "Extranjero": 43,
+            "Niños": 44,
+            "Realidad": 45,
+            "Telenovela": 46,
+            "Guerra": 47,
+            "Oeste": 48
         }
     }
 }

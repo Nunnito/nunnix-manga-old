@@ -40,7 +40,7 @@ ApplicationWindow {
 	Material.background: surfaceColor2
 	Material.primary: accentColor
 
-	menuBar: TitleBar {}
+	menuBar: TitleBar {id: titleBar}
 
 	Page {
 		background: Rectangle {color: backgroundColor}

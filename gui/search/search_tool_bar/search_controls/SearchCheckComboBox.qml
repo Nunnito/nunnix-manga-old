@@ -17,9 +17,26 @@ Column {
     ComboBox {
         property string searchParameter
         id: comboBox
-
         width: 200
 
+        delegate: ItemDelegate {
+            width: comboBox.width
+            height: 48
+            contentItem: Row {
+                CheckBox {
+                    height: parent.height
+                    width: height
+
+                    onCheckedChanged: {}
+                }
+                Label {
+                    text: modelData
+                    width: parent.width
+                    height: parent.height
+                    verticalAlignment: Qt.AlignVCenter
+                }
+            }
+        }
         popup: Popup {
             width: comboBox.width
             implicitHeight: contentItem.implicitHeight >= mainWindow.minimumHeight ? mainWindow.minimumHeight - titleBar.height : contentItem.implicitHeight
@@ -31,7 +48,7 @@ Column {
                 model: comboBox.popup.visible ? comboBox.delegateModel : null
                 currentIndex: comboBox.highlightedIndex
 
-                ScrollIndicator.vertical: ScrollIndicator {}
+                ScrollIndicator.vertical: ScrollIndicator { }
             }
         }
     }

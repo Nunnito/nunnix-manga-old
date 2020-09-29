@@ -186,6 +186,7 @@ def get_chapters_images(url):
 
 def search_manga(
     title="",
+    filter_by="",
     sort_by="likes_count",
     order_dir="desc",
     _type="",
@@ -202,6 +203,10 @@ def search_manga(
 
     Args:
         title (str, optional): Name of the title to search.
+
+        filter_by (str, optional):
+                Search by different methods. Valid options:
+                "title", "author", "company".
 
         sort_by (str, optional):
                 Sort by different methods. Valid options: "likes_count", "score",
@@ -239,9 +244,9 @@ def search_manga(
                 If not specified, the erotic content will be combined with the others.
                 Valid options: "True", "False".
 
-        genre_id (list, optional): Genres id.
+        genres (list, optional): Genres id.
 
-        exclude_genres_id (list, optional): Excludes genres id.
+        exclude_genres (list, optional): Excludes genres id.
 
         page (str, optional): The page number.
 
@@ -280,20 +285,20 @@ def search_manga(
 
     if genres == [] and exclude_genres == []:
         # Append to base URL
-        url += f"order_item={sort_by}&title={title}&type={_type}"
-        url += f"&demography={demography}&erotic={erotic}&page={page}"
-        url += f"&order_dir={order_dir}&webcomic={webcomic}"
+        url += f"order_item={sort_by}&title={title}&filter_by={filter_by}"
+        url += f"&type={_type}&demography={demography}&erotic={erotic}"
+        url += f"&page={page}&order_dir={order_dir}&webcomic={webcomic}"
         url += f"&yonkoma={yonkoma}&amateur={amateur}"
     else:
-        genres = ["&genders[]=" + genre for genre in genres]
-        exclude_genres = ["&exclude_genders[]=" + genre for genre in genres]
+        genres = [f"&genders[]={genre}" for genre in genres]
+        exclude_genres = [f"&exclude_genders[]={genre}" for genre in genres]
         genres = "".join(genres)
         exclude_genres = "".join(exclude_genres)
 
         # Append to base URL
-        url += f"order_item={sort_by}&title={title}&type={_type}"
-        url += f"&demography={demography}&erotic={erotic}&page={page}"
-        url += f"&order_dir={order_dir}&webcomic={webcomic}"
+        url += f"order_item={sort_by}&title={title}&filter_by={filter_by}"
+        url += f"&type={_type}&demography={demography}&erotic={erotic}"
+        url += f"&page={page}&order_dir={order_dir}&webcomic={webcomic}"
         url += f"&yonkoma={yonkoma}&amateur={amateur}"
         url += f"{genres}{exclude_genres}"
 

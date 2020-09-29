@@ -19,7 +19,7 @@ Column {
     property bool isNotLoading: false
     property bool isStartup: true
 
-    property int advancedSearchStartX: mainWindow.width / 2 - leftBar.width
+    property int advancedSearchStartX: mainWindow.width - 270 - leftBar.width
     property int advancedSearchEndX: mainWindow.width - leftBar.width
 
     property string name: "searcher"
