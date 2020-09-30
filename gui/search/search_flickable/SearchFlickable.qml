@@ -2,23 +2,33 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Flickable {
+    property alias reloadButton: reloadButton
+    property alias container: container
+
+    property alias searchColumn: searchColumn
+    property alias smallBusyIndicator: smallBusyIndicator
+    property alias smallReloadButton: smallReloadButton
+    property alias busyIndicator: busyIndicator
+
     width: parent.width
     height: parent.height
-    maximumFlickVelocity: 1000
+
     topMargin: normalSpacing * 2
     bottomMargin: normalSpacing * 2
     leftMargin: normalSpacing
+
+    maximumFlickVelocity: 1000
     interactive: !reloadButton.visible
-    contentHeight: gridSearch.children.length == 0? parent.height:searchColumn.height
+    contentHeight: container.children.length == 0 ? parent.height : searchColumn.height
     contentWidth: width - normalSpacing
 
     Column {
         id: searchColumn
+
         width: parent.width
         spacing: normalSpacing * 2
 
-        SearchContainer {id: gridSearch}
-
+        SearchContainer {id: container}
         BusyIndicator {
             id: smallBusyIndicator
             visible: false
@@ -32,16 +42,12 @@ Flickable {
         }
     }
 
-    BusyIndicator {
-        id: busyIndicator
-        anchors.centerIn: parent
-        running: true
-    }
 
+    BusyIndicator {id: busyIndicator; anchors.centerIn: parent}
     ReloadButton {id: reloadButton; anchors.centerIn: parent}
 
     Component.onCompleted: {
-        advancedSearch.genSearchData(true)
+        genSearchData(true)
     }
 
     Connections {
@@ -49,6 +55,7 @@ Flickable {
         function onSearch_manga_data(dataSearch, error) {
             if (dataSearch[0] != null) {
                 spawnTiles(dataSearch.length, dataSearch)
+
                 isNotLoading = true
                 isStartup = false
                 busyIndicator.running = false
@@ -66,12 +73,13 @@ Flickable {
     }
 
     function spawnTiles(size, dataSearch) {
-        var component = Qt.createComponent("../widgets/MangaTile.qml")
+        var component = Qt.createComponent("../../widgets/MangaTile.qml")
 
         for (var i=0; i < size; i++) {
-            var tile = component.createObject(gridSearch)
-            tile.children[1].text = dataSearch[i].title
-            tile.children[0].source = dataSearch[i].thumbnail
+            var tile = component.createObject(container)
+
+            tile.label.text = dataSearch[i].title
+            tile.thumbnail.source = dataSearch[i].thumbnail
             tile.mangaLink = dataSearch[i].link
         }
     }
@@ -79,18 +87,19 @@ Flickable {
     function showReloadButton(isSmall, error) {
         if (isSmall) {
             smallReloadButton.visible = true
-            smallReloadButton.children[1].text = error
+            smallReloadButton.label.text = error
             smallBusyIndicator.visible = false
         }
         else {
             reloadButton.visible = true
-            reloadButton.children[1].text = error
+            reloadButton.label.text = error
             busyIndicator.running = false
         }
     }
 
     function reconnect(isSmall) {
-        advancedSearch.genSearchData(false)
+        isNotLoading = true
+        genSearchData(false)
 
         if (isSmall) {
             smallReloadButton.visible = false
@@ -104,11 +113,10 @@ Flickable {
 
     onContentYChanged: {
         var visibleContentHeight = (contentY + height - topMargin) / contentHeight
-        var isNearEnd = contentHeight - gridSearch.height / (currentPage - 1) <= contentY
+        var isNearEnd = contentHeight - container.height / (currentPage - 1) <= contentY
 
-        if (isNearEnd && isNotLoading) {
-            advancedSearch.genSearchData(false)
-            isNotLoading = false
+        if (isNearEnd) {
+            genSearchData(false)
         }
         if (visibleContentHeight >= 0.9) {
             smallBusyIndicator.running = true

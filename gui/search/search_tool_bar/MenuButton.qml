@@ -2,10 +2,15 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 RoundButton {
-    id: optionButton
+    property alias menuButton: menuButton
+    property alias menu: menu
+    property alias menuReload: menuReload
+    property alias menuAdvanced: menuAdvanced
+
+    id: menuButton
     flat: true
 
-    height: toolBar.height
+    height: searchToolBar.height
     width: height
 
     icon.source: "../../../resources/more_vert.svg"
@@ -13,10 +18,11 @@ RoundButton {
     icon.width: iconSize
     icon.height: iconSize
 
-    onClicked: optionMenu.open()
+    onClicked: menu.open()
 
     Menu {
-        id: optionMenu
+        id: menu
+
         MenuItem {
             id: menuReload
             text: qsTr("Reload")
@@ -27,6 +33,7 @@ RoundButton {
 
             onTriggered: advancedSearch.open()
         }
+
         background: Rectangle {
             implicitWidth: menuAdvanced.width
             color: surfaceColor2

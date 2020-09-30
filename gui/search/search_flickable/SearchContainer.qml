@@ -2,9 +2,11 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Grid {
-    id: gridSearch
+    property alias container: container
+    id: container
+
     spacing: normalSpacing
-    rowSpacing: gridSearchRowSpacing
+    rowSpacing: containerRowSpacing
     columns: previousColumns
     width: parent.width
 

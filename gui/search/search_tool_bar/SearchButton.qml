@@ -2,9 +2,12 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 RoundButton {
+    property alias searchButton: searchButton
+
+    id: searchButton
     flat: true
 
-    height: toolBar.height
+    height: searchToolBar.height
     width: height
 
     icon.source: "../../../resources/search.svg"
@@ -13,11 +16,11 @@ RoundButton {
     icon.height: iconSize
 
     onClicked: {
-        if (!searchInput.text) {
-            searchInput.focus = true
+        if (!searchLineEdit.searchInput.text) {
+            searchLineEdit.searchInput.focus = true
         }
         else {
-            advancedSearch.genSearchData(true)
+            genSearchData(true)
         }
     }
 }

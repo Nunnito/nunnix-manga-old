@@ -3,13 +3,14 @@ import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
-import "widgets"
 import "leftbar"
+import "titlebar"
 
 ApplicationWindow {
 	visible: true
 	id: mainWindow
 
+	property int normalTextFontSize: 14
 	property int normalSpacing: 20
 	property bool darkTheme: true
 
@@ -23,7 +24,6 @@ ApplicationWindow {
 	property string secondaryColor: Material.color(Material.DeepPurple)
 	property string textAreaColor: "#2D2D2D"
 	property string placeHolderColor: "#AAAAAA"
-	property int normalTextFontSize: 14
 
 	title: "Nunnix Manga"
 	flags: Qt.FramelessWindowHint

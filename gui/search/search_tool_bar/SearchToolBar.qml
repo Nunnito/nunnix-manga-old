@@ -4,64 +4,40 @@ import QtQuick.Controls.Material 2.15
 
 
 Rectangle {
+    property alias searchToolBar: searchToolBar
+    property alias searchLineEdit: searchLineEdit
+    property alias searchButton: searchButton
+    property alias menuButton: menuButton
+
+    property alias column: column
+    property alias searchArea: searchArea
+
     property int toolbarHeight: 48
     property int searchInputRadius: 5
     property int iconSize: 24
+
+    id: searchToolBar
     z: 1
-    id: toolBar
+
     width: parent.width
     height: toolbarHeight
     color: surfaceColor
 
     Row {
+        id: column
+
         width: parent.width
         layoutDirection: Qt.RightToLeft
-        MenuButton {}
-        SearchButton {}
 
-        Rectangle {
-            width: parent.width - normalSpacing - toolBar.height * 2
-            height: toolBar.height - normalSpacing
-            color: textAreaColor
-            radius: searchInputRadius
-            anchors.verticalCenter: parent.verticalCenter
-
-            TextInput {
-                id: searchInput
-                width: parent.width
-                height: parent.height
-
-                leftPadding: normalSpacing
-                rightPadding: normalSpacing
-
-                color: textColor
-                font.pixelSize: normalTextFontSize
-                verticalAlignment: Text.AlignVCenter
-                clip: true
-
-                Label {
-                    id: placeHolderText
-                    text: qsTr("Search here...")
-
-                    width: parent.width
-                    height: parent.height
-
-                    leftPadding: normalSpacing
-                    rightPadding: normalSpacing
-
-                    visible: !parent.text
-                    color: placeHolderColor
-                    font.pixelSize: normalTextFontSize
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                onAccepted: advancedSearch.genSearchData(true)
-            }
-        }
+        MenuButton {id: menuButton}
+        SearchButton {id: searchButton}
+        SearchLineEdit {id: searchLineEdit}
     }
 
 
 	MouseArea {
+        id: searchArea
+
 		anchors.fill: parent
 		hoverEnabled: true
 		acceptedButtons: Qt.NoButton 

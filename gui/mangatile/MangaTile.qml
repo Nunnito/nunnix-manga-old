@@ -2,6 +2,15 @@ import QtQuick.Controls 2.15
 import QtQuick 2.15
 
 Button {
+	property alias thumbnailButton: thumbnailButton
+	property alias thumbnail: thumbnail
+	property alias showAnimation: showAnimation
+	property alias label: label
+	property alias busyIndicator: busyIndicator
+	property alias mouseArea: mouseArea
+	property alias tooltip: tooltip
+	property alias tooltipLabel: tooltipLabel
+
 	id: thumbnailButton
 
 	width: buttonWidth
@@ -23,23 +32,25 @@ Button {
 		fillMode: Image.PreserveAspectCrop
 
 		NumberAnimation {
-			id: thumbnailAnimation
-			target: thumbnail
+			id: showAnimation
 			property: "opacity"
+			target: thumbnail
+
 			to: 1
 			duration: 500
 		}
 
 		onStatusChanged: {
 			if (status == 1) {
-				thumbnailAnimation.running = true
+				showAnimation.running = true
 			}
 		}
 	}
 
 	// Text under the tile
 	Label {
-		id: thumbnailText
+		id: label
+
 		anchors.top: parent.bottom
 		horizontalAlignment: Text.AlignHCenter
 
@@ -51,19 +62,26 @@ Button {
 	}
 
 	BusyIndicator {
+		id: busyIndicator
+
 		anchors.centerIn: parent
 	    running: thumbnail.status == 1 ? 0:1
 	}
 
 	MouseArea {
+		id: mouseArea
+
 		ToolTip {
-			id: thumbnailTooltip
+			id: tooltip
 			visible: parent.containsMouse
+
 			delay: 1000
 			timeout: 5000
 
 			Label {
-				text: thumbnailText.text
+				id: tooltipLabel
+
+				text: label.text
 				color: textColor
 				font.pixelSize: normalTextFontSize
 			}
@@ -81,6 +99,6 @@ Button {
 	function resetTile() {
 			thumbnail.source = ""
 			thumbnail.opacity = 0
-			thumbnailText.text = ""
+			label.text = ""
 	}
 }

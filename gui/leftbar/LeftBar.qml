@@ -6,22 +6,16 @@ Rectangle {
 	property int iconSize: 24
 	property int leftBarWidth: 72
 
-	opacity: 1
 	width: leftBarWidth
 	height: parent.height
 	color: surfaceColor
-	z: 98
 
 	Column {
 		anchors.horizontalCenter: parent.horizontalCenter
 
-		MenuButton {}
-		LibraryButton {}
-		ExploreButton {}
-		DownloadsButton {}
-	}
-
-	function hide() {
-		parent.visible = false
+		MenuButton {id: menuButton}
+		LibraryButton {id: libraryButton}
+		ExploreButton {id: exploreButton}
+		DownloadsButton {id: downloadsButton}
 	}
 }

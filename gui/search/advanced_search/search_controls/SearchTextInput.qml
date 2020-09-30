@@ -3,42 +3,61 @@ import QtQuick.Controls.Material 2.15
 import QtQuick 2.15
 
 Column {
+    property alias searchTextInput: searchTextInput
+    property alias label: label
+    property alias background: background
+    property alias textInput: textInput
+    property alias placeHolder: placeHolder
+    property alias mouseArea: mouseArea
+    property alias rectPlaceHolder: rectPlaceHolder
+    property alias rectTextFocus: rectTextFocus
+    property alias focusAnimation: focusAnimation
+    property alias placeHolderAnimation: placeHolderAnimation
+
     property string searchParameter
     property var currentValue: textInput.text ? textInput.text : ""
-    Material.background: surfaceColor
-    topPadding: text.text ? normalSpacing : 0
 
-    Text {
-        id: text
+    id: searchTextInput
+    Material.background: surfaceColor
+    topPadding: label.text ? normalSpacing : 0
+
+    Label {
+        id: label
+        color: textColor
 
         font.pixelSize: normalTextFontSize
         font.bold: true
-        color: textColor
     }
 
     Rectangle {
-        width: 200
+        id: background
+
+        width: controlWidth
         height: textInput.height
+
+        radius: rectSearchTextRadius
         color: surfaceColor2
-        radius: 2
+
         anchors.horizontalCenter: parent.horizontalCenter
 
         TextInput {
             id: textInput
-            width: 200
-            height: 32
+
+            width: controlWidth
+            height: searchTextInputHeight
 
             leftPadding: normalSpacing / 2
             rightPadding: normalSpacing / 2
 
-            text: searchToolBar.children[0].children[2].children[0].text
+            clip: true
             color: textColor
+            text: searchToolBar.searchLineEdit.searchInput.text
+
             font.pixelSize: normalTextFontSize
             verticalAlignment: TextInput.AlignVCenter
-            clip: true
 
             Label {
-                id: placeHolderText
+                id: placeHolder
                 text: qsTr("Search here...")
 
                 width: parent.width
@@ -49,10 +68,14 @@ Column {
 
                 visible: !parent.text
                 color: placeHolderColor
+
                 font.pixelSize: normalTextFontSize
                 verticalAlignment: TextInput.AlignVCenter
             }
+
             MouseArea {
+                id: mouseArea
+
                 anchors.fill: parent
                 cursorShape: Qt.IBeamCursor
                 acceptedButtons: Qt.NoButton
@@ -64,30 +87,39 @@ Column {
     
     Rectangle {
         id: rectPlaceHolder
-        width: textInput.width
-        height: 2
+
         color: placeHolderColor
+        width: textInput.width
+        height: startBottomRectSearchTextHeight
+
         Rectangle {
             id: rectTextFocus
-            height: 3
+
+            height: endBottomRectSearchTextHeight
             color: primaryColor
             anchors.horizontalCenter: parent.horizontalCenter
         }
     }
 
     NumberAnimation {
-        duration: 100
-        target: rectTextFocus
-        running: textInput.focus
+        id: focusAnimation
         property: "width"
+
+        target: rectTextFocus
+        duration: 100
+        running: textInput.focus
+
         from: 0
         to: textInput.width
     }
     NumberAnimation {
-        duration: 100
-        target: rectTextFocus
-        running: !textInput.focus
+        id: placeHolderAnimation
         property: "width"
+
+        target: rectTextFocus
+        duration: 100
+        running: !textInput.focus
+
         from: textInput.width
         to: 0
     }
