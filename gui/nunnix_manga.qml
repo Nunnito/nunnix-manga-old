@@ -10,10 +10,12 @@ ApplicationWindow {
 	visible: true
 	id: mainWindow
 
+	// Global properties.
 	property int normalTextFontSize: 14
 	property int normalSpacing: 20
 	property bool darkTheme: true
 
+	// Colors used for the entire application.
 	property string backgroundColor: darkTheme? "#121212" :"#ffffff"
 	property string surfaceColor: darkTheme? "#181818" : "#ffffff"
 	property string surfaceColor2: darkTheme? "#222222" : "#ffffff"
@@ -25,33 +27,40 @@ ApplicationWindow {
 	property string textAreaColor: "#2D2D2D"
 	property string placeHolderColor: "#AAAAAA"
 
+	// Aplication Window properties.
 	title: "Nunnix Manga"
 	flags: Qt.FramelessWindowHint
-
 	width: Screen.width / 1.5
 	height: Screen.height / 1.5
-
 	minimumWidth: Screen.width / 1.5
 	minimumHeight: Screen.height / 1.5
 
 
+	// Material style color config.
 	Material.theme: darkTheme? Material.Dark : Material.Light
 	Material.accent: primaryColor
 	Material.foreground: "white"
 	Material.background: surfaceColor2
 	Material.primary: primaryColor
 
+	// Create the title bar
 	menuBar: TitleBar {id: titleBar}
 
+
+	// Page container. Main container.
 	Page {
-		background: Rectangle {color: backgroundColor}
+		background: Rectangle {color: backgroundColor}  // Background color
 		anchors.fill: parent
 
+		// Row container
 		Row {
 			id: layout
 			anchors.fill: parent
 
-			LeftBar {id: leftBar}  // Lateral bar
+			// Lateral bar
+			LeftBar {id: leftBar}
+
+			// Each part of the application is loaded here.
 			StackView {
 				id: stackView
 

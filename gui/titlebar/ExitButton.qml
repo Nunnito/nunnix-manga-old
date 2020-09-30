@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// Title bar close button.
 Button {
     property alias exitButton: exitButton
     id: exitButton

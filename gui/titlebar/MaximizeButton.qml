@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// Title bar maximize/restore button.
 Button {
     property alias maximizeButton: maximizeButton
     id: maximizeButton

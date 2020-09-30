@@ -39,7 +39,6 @@ Rectangle {
         id: searchArea
 
 		anchors.fill: parent
-		hoverEnabled: true
 		acceptedButtons: Qt.NoButton 
 	}
 }
