@@ -49,14 +49,15 @@ Column {
                         comboBox.currentIndex = index
                     }
                     if (!checked && comboBox.checkedList.includes(text)) {
-                        currentValue.splice(currentValue.indexOf(jsonData[text]))
-                        comboBox.checkedList.splice(comboBox.checkedList.indexOf(text))
+                        currentValue.splice(currentValue.indexOf(jsonData[text]), 1)
+                        comboBox.checkedList.splice(comboBox.checkedList.indexOf(text), 1)
                     }
                 }
             }
         }
 
         popup: Popup {
+            id: popup
             width: comboBox.width
             padding: 0
 
@@ -71,6 +72,12 @@ Column {
 
                 ScrollIndicator.vertical: ScrollIndicator { }
             }
+            MouseArea {
+                anchors.fill: parent
+                acceptedButtons: Qt.NoButton
+                hoverEnabled: true
+                onExited: popup.close()
+            }
         }
         
         MouseArea {
@@ -80,5 +87,10 @@ Column {
             cursorShape: Qt.PointingHandCursor
             acceptedButtons: Qt.NoButton
         }
+    }
+
+    function setDefault() {
+        comboBox.checkedList.length = 0
+        currentValue.length = 0
     }
 }

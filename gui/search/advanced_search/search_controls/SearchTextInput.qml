@@ -123,4 +123,6 @@ Column {
         from: textInput.width
         to: 0
     }
+
+    function setDefault() {}
 }

@@ -62,8 +62,15 @@ Column {
             searcherFlickable.infoIcon.visible = false
             searcherFlickable.busyIndicator.running = true
             searcherFlickable.smallReloadButton.visible = false
-            searcherFlickable.smallBusyIndicator.running = true
+            searcherFlickable.smallBusyIndicator.running = false
             searcherFlickable.infoIcon.visible = false
+        }
+    }
+
+    function resetFilters() {
+        for (var i=0; i < advancedSearch.columnControls.children.length; i++) {
+            var defaultValue = advancedSearch.columnControls.children[i].defaultValue
+            advancedSearch.columnControls.children[i].setDefault()
         }
     }
 }

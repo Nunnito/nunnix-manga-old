@@ -20,6 +20,7 @@ RoundButton {
             searchLineEdit.searchInput.focus = true
         }
         else {
+            resetFilters()
             genSearchData(true)
         }
     }

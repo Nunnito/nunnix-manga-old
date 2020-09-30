@@ -49,6 +49,9 @@ Rectangle {
             verticalAlignment: Text.AlignVCenter
         }
 
-        onAccepted: genSearchData(true)
+        onAccepted: {
+            resetFilters()
+            genSearchData(true)
+        }
     }
 }

@@ -1,33 +1,61 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-Button {
-    property alias button: button
-    property alias area: area
+Row {
+    property alias searchButton: searchButton
+    property alias searchArea: searchArea
+    property alias resetButton: resetButton
+    property alias resetArea: resetArea
 
-    id: button
-
-    text: qsTr("Search")
-    highlighted: true
-
-    anchors.horizontalCenter: parent.horizontalCenter
+    width: parent.width
+    spacing: normalSpacing / 2
+    topPadding: normalSpacing * 2
+    padding: normalSpacing
     anchors.bottom: parent.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
 
-    contentItem: Text {
-        text: parent.text  
-        color: backgroundColor
-        font.bold: true
+    Button {
+        id: searchButton
 
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
+        text: qsTr("Search")
+        width: advancedSearch.width / 2 - normalSpacing * 2
+        highlighted: true
+
+        contentItem: Text {
+            text: parent.text  
+            color: backgroundColor
+            font.bold: true
+            font.capitalization: Font.AllUppercase
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+        MouseArea {
+            id: searchArea
+
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.NoButton
+        }
+
+        onClicked: genSearchData(true)
     }
-    MouseArea {
-        id: area
 
-        anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
-        acceptedButtons: Qt.NoButton
+    Button {
+        id: resetButton
+        text: qsTr("Reset")
+        width: advancedSearch.width / 2 - normalSpacing * 2
+        flat: true
+        highlighted: true
+
+        MouseArea {
+            id: resetArea
+
+            anchors.fill: parent
+            cursorShape: Qt.PointingHandCursor
+            acceptedButtons: Qt.NoButton
+        }
+
+        onClicked: resetFilters()
     }
-
-    onClicked: genSearchData(true)
 }

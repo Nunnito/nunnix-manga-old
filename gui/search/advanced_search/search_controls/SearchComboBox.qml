@@ -55,4 +55,8 @@ Column {
             acceptedButtons: Qt.NoButton
         }
     }
+
+    function setDefault() {
+        comboBox.currentIndex = 0
+    }
 }
