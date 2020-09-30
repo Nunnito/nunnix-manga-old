@@ -73,7 +73,7 @@ Flickable {
     }
 
     function spawnTiles(size, dataSearch) {
-        var component = Qt.createComponent("../../widgets/MangaTile.qml")
+        var component = Qt.createComponent("../../mangatile/MangaTile.qml")
 
         for (var i=0; i < size; i++) {
             var tile = component.createObject(container)
