@@ -1,5 +1,6 @@
 import QtQuick.Controls 2.15
 
+// Left bar library button.
 LeftBarButton {
     property alias libraryButton: libraryButton
     id: libraryButton
@@ -8,6 +9,7 @@ LeftBarButton {
     iconFilled: "../../resources/collections_bookmark-filled.svg"
     iconOutlined: "../../resources/collections_bookmark-outlined.svg"
 
+    // On clicked, switch to the library.
     onClicked: {
         if (flat) {
             stackView.push("../library/Library.qml")

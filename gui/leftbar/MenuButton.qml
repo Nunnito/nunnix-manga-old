@@ -1,5 +1,6 @@
 import QtQuick.Controls 2.15
 
+// Left bar menu button.
 LeftBarButton {
     property alias menuButton: menuButton
     id: menuButton

@@ -1,9 +1,11 @@
 import QtQuick.Controls 2.15
 import QtQuick 2.15
 
+// Left bar custom button
 Button {
     property alias leftBarButton: leftBarButton
 
+    // Properties
     property string target
     property string iconFilled
     property string iconOutlined
