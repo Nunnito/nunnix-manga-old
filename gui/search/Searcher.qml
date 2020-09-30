@@ -10,7 +10,6 @@ import "search_flickable"
 Column {
     property int buttonWidth: 140
     property int buttonHeight: 210
-    property int containerRowSpacing: 75
     property int previousColumns: 4
     property int reloadButtonWidth: 100
     property int reloadSmallButtonWidth: 75

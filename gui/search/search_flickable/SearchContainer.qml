@@ -6,7 +6,7 @@ Grid {
     id: container
 
     spacing: normalSpacing
-    rowSpacing: containerRowSpacing
+    rowSpacing: normalSpacing * 2
     columns: previousColumns
     width: parent.width
 

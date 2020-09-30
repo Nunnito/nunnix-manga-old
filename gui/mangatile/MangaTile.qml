@@ -5,6 +5,7 @@ Button {
 	property alias thumbnailButton: thumbnailButton
 	property alias thumbnail: thumbnail
 	property alias showAnimation: showAnimation
+	property alias labelBackground: labelBackground
 	property alias label: label
 	property alias busyIndicator: busyIndicator
 	property alias mouseArea: mouseArea
@@ -48,17 +49,32 @@ Button {
 	}
 
 	// Text under the tile
-	Label {
-		id: label
+	Rectangle {
+		id: labelBackground
 
-		anchors.top: parent.bottom
-		horizontalAlignment: Text.AlignHCenter
+		width: parent.width
+		height: parent.height
 
-		color: textColor
-		width: buttonWidth
+		Label {
+			id: label
 
-		font.pixelSize: normalTextFontSize
-		elide: Text.ElideMiddle
+			bottomPadding: normalSpacing / 4
+			anchors.bottom: parent.bottom
+			horizontalAlignment: Text.AlignHCenter
+
+			color: textColor
+			width: buttonWidth
+
+			font.pixelSize: normalTextFontSize
+			elide: Text.ElideMiddle
+
+		}
+
+		gradient: Gradient {
+			GradientStop {position: 0.8; color: "#00000000"}
+			GradientStop {position: 0.9; color: "#CC000000"}
+			GradientStop { position: 1.0; color: backgroundColor}
+		}
 	}
 
 	BusyIndicator {
