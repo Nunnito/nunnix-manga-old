@@ -41,10 +41,7 @@ class NunnixManga_TMO(QObject):
         elif type(data) == ReadTimeout:
             self.search_manga_data.emit([], "ReadTimeout")
         elif type(data) == str:
-            if data == "HTTP error 404":
-                self.search_manga_data.emit([], data)
-            else:
-                self.search_manga_data.emit([], data)
+            self.search_manga_data.emit([], data)
         else:
             self.search_manga_data.emit(data, "")
 

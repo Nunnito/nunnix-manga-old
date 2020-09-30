@@ -24,7 +24,7 @@ Rectangle {
 		anchors.horizontalCenter: parent.horizontalCenter
 
 		MenuButton {id: menuButton}            // Menu button.
-		LibraryButton {id: libraryButton       // Library button.
+		LibraryButton {id: libraryButton}       // Library button.
 		ExploreButton {id: exploreButton}      // Explore button.
 		DownloadsButton {id: downloadsButton}  // Downloads button.
 	}
