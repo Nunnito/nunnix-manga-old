@@ -17,8 +17,10 @@ Column {
     property int reloadSmallButtonTextSize: 18
 
     property int currentPage
-    property bool isStartup
-    property bool isNotLoading: true
+    property bool isNewSearch
+    property bool isLoading: false
+    property bool isEnd: false
+    property bool canFlickableSearch: true
 
     property int advancedSearchWidth: 250 + normalSpacing
     property int advancedSearchStartX: mainWindow.width - advancedSearchWidth - leftBar.width
@@ -32,10 +34,12 @@ Column {
     SearchFlickable {id: searcherFlickable}
 
     function genSearchData(initPage) {
-        if (isNotLoading) {
-            isNotLoading = false
+        if (!isLoading) {
+            isLoading = true
+
             if (initPage) {
-                isStartup = true
+                isNewSearch = true
+                isEnd = false
                 currentPage = 1
                 
                 for (var i=0; i < searcherFlickable.container.children.length; i++){
@@ -53,6 +57,13 @@ Column {
             }
             NunnixManga.search_manga(JSON.stringify(searchData), currentPage)
             currentPage += 1
+
+            searcherFlickable.reloadButton.visible = false
+            searcherFlickable.infoIcon.visible = false
+            searcherFlickable.busyIndicator.running = true
+            searcherFlickable.smallReloadButton.visible = false
+            searcherFlickable.smallBusyIndicator.running = true
+            searcherFlickable.infoIcon.visible = false
         }
     }
 }

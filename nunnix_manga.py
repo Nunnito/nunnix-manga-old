@@ -34,7 +34,7 @@ class NunnixManga_TMO(QObject):
         data.start()
 
     def search_manga_thread(self, parameter_list, page):
-        data = self.manga_source.search_manga(**json.loads(parameter_list), page=str(page))
+        data = self.manga_source.search_manga(**json.loads(parameter_list), page=page)
 
         if type(data) == ConnectionError:
             self.search_manga_data.emit([], "ConnectionError")
@@ -42,7 +42,7 @@ class NunnixManga_TMO(QObject):
             self.search_manga_data.emit([], "ReadTimeout")
         elif type(data) == str:
             if data == "HTTP error 404":
-                self.search_manga_data.emit([], "end")
+                self.search_manga_data.emit([], data)
             else:
                 self.search_manga_data.emit([], data)
         else:

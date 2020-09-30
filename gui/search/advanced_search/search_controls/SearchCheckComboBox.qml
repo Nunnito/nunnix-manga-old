@@ -31,38 +31,27 @@ Column {
         width: controlWidth
         model: jsonData == null ? [] : Object.keys(jsonData)
 
-        delegate: ItemDelegate {
+        delegate: Item {
             width: comboBox.width
-            height: controlWidth / 4
+            implicitHeight: checkDelegate.implicitHeight
 
-            contentItem: Row {
-                CheckBox {
-                    id: checkBox
-                    text: modelData
+            CheckDelegate {
+                id: checkDelegate
 
-                    height: parent.height
-                    width: height
-                    checked: comboBox.checkedList.includes(text)
+                width: parent.width
+                text: modelData
+                checked: comboBox.checkedList.includes(text)
 
-                    onCheckedChanged: {
-                        if (checked && !comboBox.checkedList.includes(text)) {
-                            currentValue.push(jsonData[text])
-                            comboBox.checkedList.push(text)
-                            comboBox.currentIndex = index
-                        }
-                        if (!checked && comboBox.checkedList.includes(text)) {
-                            currentValue.splice(currentValue.indexOf(jsonData[text]))
-                            comboBox.checkedList.splice(comboBox.checkedList.indexOf(text))
-                        }
+                onCheckedChanged: {
+                    if (checked && !comboBox.checkedList.includes(text)) {
+                        currentValue.push(jsonData[text])
+                        comboBox.checkedList.push(text)
+                        comboBox.currentIndex = index
                     }
-                }
-
-                Label {
-                    text: checkBox.text
-                    width: parent.width
-                    height: parent.height
-
-                    verticalAlignment: Qt.AlignVCenter
+                    if (!checked && comboBox.checkedList.includes(text)) {
+                        currentValue.splice(currentValue.indexOf(jsonData[text]))
+                        comboBox.checkedList.splice(comboBox.checkedList.indexOf(text))
+                    }
                 }
             }
         }

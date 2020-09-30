@@ -248,7 +248,7 @@ def search_manga(
 
         exclude_genres (list, optional): Excludes genres id.
 
-        page (str, optional): The page number.
+        page (int, optional): The page number.
 
 
     Returns:
@@ -327,7 +327,11 @@ def search_manga(
             }
         )
 
-    return search_data
+    if search_data == []:
+        error = "HTTP error 404"
+        return error
+    else:
+        return search_data
 
 
 def get_search_controls():

@@ -2,7 +2,9 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Flickable {
+    property alias searchFlickable: searchFlickable
     property alias reloadButton: reloadButton
+    property alias infoIcon: infoIcon
     property alias container: container
 
     property alias searchColumn: searchColumn
@@ -10,11 +12,12 @@ Flickable {
     property alias smallReloadButton: smallReloadButton
     property alias busyIndicator: busyIndicator
 
+    id: searchFlickable
     width: parent.width
     height: parent.height
 
     topMargin: normalSpacing * 2
-    bottomMargin: normalSpacing * 2
+    bottomMargin: normalSpacing * 3
     leftMargin: normalSpacing
 
     maximumFlickVelocity: 1000
@@ -43,8 +46,13 @@ Flickable {
     }
 
 
-    BusyIndicator {id: busyIndicator; anchors.centerIn: parent}
-    ReloadButton {id: reloadButton; anchors.centerIn: parent}
+    ReloadButton {id: reloadButton}
+    InfoIcon {id: infoIcon}
+    BusyIndicator {
+        id: busyIndicator
+        x: reloadButton.x + 60
+        y: reloadButton.y + 20
+    }
 
     Component.onCompleted: {
         genSearchData(true)
@@ -56,17 +64,30 @@ Flickable {
             if (dataSearch[0] != null) {
                 spawnTiles(dataSearch.length, dataSearch)
 
-                isNotLoading = true
-                isStartup = false
+                isLoading = false
+                canFlickableSearch = true
+                isNewSearch = false
                 busyIndicator.running = false
                 smallBusyIndicator.visible = true
             }
             if (error != "") {
-                if (isStartup) {
-                    showReloadButton(false, error)
+                if (error == "HTTP error 404") {
+                    if (isNewSearch) {
+                        showInfoIcon("../../../resources/search_off.svg", qsTr("No results found!"))
+                    }
+                    else {
+                        smallBusyIndicator.running = false
+                        isLoading = false
+                        isEnd = true
+                    }
                 }
                 else {
-                    showReloadButton(true, error)
+                    if (isNewSearch) {
+                        showReloadButton(false, error)
+                    }
+                    else {
+                        showReloadButton(true, error)
+                    }
                 }
             }
         }
@@ -85,6 +106,9 @@ Flickable {
     }
 
     function showReloadButton(isSmall, error) {
+        canFlickableSearch = false
+        isLoading = false
+
         if (isSmall) {
             smallReloadButton.visible = true
             smallReloadButton.label.text = error
@@ -97,8 +121,17 @@ Flickable {
         }
     }
 
+    function showInfoIcon(iconUrl, textInfo) {
+            isLoading = false
+            busyIndicator.running = false
+
+            infoIcon.visible = true
+            infoIcon.label.text = textInfo
+            infoIcon.icon.source = Qt.resolvedUrl(iconUrl)
+    }
+
     function reconnect(isSmall) {
-        isNotLoading = true
+        isLoading = false
         genSearchData(false)
 
         if (isSmall) {
@@ -107,6 +140,7 @@ Flickable {
         }
         else {
             reloadButton.visible = false
+            infoIcon.visible = false
             busyIndicator.running = true
         }
     }
@@ -115,10 +149,10 @@ Flickable {
         var visibleContentHeight = (contentY + height - topMargin) / contentHeight
         var isNearEnd = contentHeight - container.height / (currentPage - 1) <= contentY
 
-        if (isNearEnd) {
+        if (isNearEnd && !isEnd && canFlickableSearch) {
             genSearchData(false)
         }
-        if (visibleContentHeight >= 0.9) {
+        if (isNearEnd && !isEnd) {
             smallBusyIndicator.running = true
         }
         else {
