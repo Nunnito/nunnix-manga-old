@@ -48,13 +48,12 @@ def get_manga_data(url):
     ------------------
     manga_data = {
                 "title": "",
-                "current_state": "",
                 "author": "",
-                "artist": "",
-                "genres": [],
                 "description": "",
                 "thumbnail": "",
+                "genres": [],
                 "total_chapters": "",
+                "current_state": "",
                 "chapters_data": {
                         "chapter_1": {
                                 "name": "Chapter 1",
@@ -104,6 +103,7 @@ def get_manga_data(url):
     genres = [genre.text.strip() for genre in genres]
     data["genres"] = genres
 
+    # Manga total chapters
     total_chapters = parsed_source.find_all("li", {"class": "upload-link"})
     total_chapters = len(total_chapters)
     data["total_chapters"] = total_chapters
@@ -207,7 +207,7 @@ def search_manga(
     erotic="",
     genres=[],
     exclude_genres=[],
-    page="1"
+    page=1
 ):
     """Search manga by different parameters.
 
@@ -350,6 +350,3 @@ def get_search_controls():
     controls.close()
 
     return read_controls
-
-
-print(get_manga_data("https://lectortmo.com/library/manhwa/49708/el-retorno-del-gran-mago-despues-de-4000-anos"))

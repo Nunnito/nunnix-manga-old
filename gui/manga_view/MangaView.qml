@@ -10,7 +10,13 @@ Column {
     Connections {
         target: NunnixManga
         function onManga_data(mangaData, error) {
-            print(mangaData.title)
+            var title = mangaData.title
+            var author = mangaData.author
+            var description = mangaData.description
+            var thumbnail = mangaData.thumbnail
+            var genres = mangaData.genres
+            var total_chapters = mangaData.total_chapters
+            var current_state = mangaData.current_state
         }
     }
 }
