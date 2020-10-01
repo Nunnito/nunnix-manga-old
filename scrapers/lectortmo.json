@@ -2,7 +2,8 @@
     "title": {
         "name": "Buscar: ",
         "type": "textinput",
-        "search_parameter": "title"
+        "search_parameter": "title",
+        "visible": true
     },
 
     "filter_by": {

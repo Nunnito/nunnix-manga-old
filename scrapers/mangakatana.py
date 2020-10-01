@@ -174,7 +174,7 @@ def search_manga(
     sort_by="latest",
     include_mode="and",
     status="",
-    chapters="1",
+    chapters=1,
     genres=[],
     exclude_genres=[],
     page=1
@@ -194,7 +194,7 @@ def search_manga(
                 Valid options: "and" (all selected genres)
                 and "or" (any selected genre).
 
-        statuts (str, optional):
+        status (str, optional):
                 Current manga status. Valid options:
                 "0" (cancelled), "1" (ongoing), "2" (completed).
 

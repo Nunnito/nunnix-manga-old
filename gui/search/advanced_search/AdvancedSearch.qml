@@ -31,6 +31,8 @@ Popup {
         width: parent.width
         height: parent.height
         contentHeight: columnControls.height + titleBar.height
+        maximumFlickVelocity: normalMaximumFlickVelocity
+        flickDeceleration: normalFlickDeceleration
 
         // Scroll indicator.
         ScrollIndicator.vertical: ScrollIndicator {active: true}
@@ -63,12 +65,14 @@ Popup {
             var searchTextInput = Qt.createComponent("search_controls/SearchTextInput.qml")
             var searchComboBox = Qt.createComponent("search_controls/SearchComboBox.qml")
             var searchCheckComboBox = Qt.createComponent("search_controls/SearchCheckComboBox.qml")
+            var searchSlider = Qt.createComponent("search_controls/SearchSlider.qml")
 
             for (var control in controls) {
                 // Creates TextInput control.
                 if (controls[control].type == "textinput") {
                     var textInput = searchTextInput.createObject(columnControls)
 
+                    textInput.visible = controls[control].visible
                     textInput.label.text = controls[control].name
                     textInput.searchParameter = controls[control].search_parameter
                 }
@@ -90,6 +94,18 @@ Popup {
                     checkComboBox.comboBox.displayText = controls[control].combo_name
                     checkComboBox.searchParameter = controls[control].search_parameter
                     checkComboBox.jsonData = controls[control].content
+                }
+                // Creates Slider control.
+                if (controls[control].type == "slider") {
+                    var slider = searchSlider.createObject(columnControls)
+                    var comboModel = []
+
+                    slider.label.text = controls[control].name
+                    slider.slider.from = controls[control].from
+                    slider.slider.to = controls[control].to
+                    slider.slider.stepSize = controls[control].stepSize
+                    slider.searchParameter = controls[control].search_parameter
+                    slider.jsonData = controls[control].content
                 }
             }
         }

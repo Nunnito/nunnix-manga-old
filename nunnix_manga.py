@@ -16,7 +16,7 @@ scale_factor = json.loads(config_file)["system"]["scale_factor"]
 
 class NunnixManga_TMO(QObject):
     temp = True
-    manga_source = lectortmo
+    manga_source = mangakatana
     search_manga_data = pyqtSignal(list, str, arguments=["dataSearch", "error"])
     search_manga_controls = pyqtSignal(str, arguments=["jsonControls"])
 

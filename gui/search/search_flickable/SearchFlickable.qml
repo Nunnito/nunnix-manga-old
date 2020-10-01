@@ -23,8 +23,10 @@ Flickable {
     bottomMargin: normalSpacing * 3
     leftMargin: normalSpacing
 
-    maximumFlickVelocity: 1000
-    interactive: !reloadButton.visible
+    maximumFlickVelocity: normalMaximumFlickVelocity
+    flickDeceleration: normalFlickDeceleration
+    boundsBehavior: Flickable.OvershootBounds
+    interactive: (!reloadButton.visible && !busyIndicator.running)
     contentHeight: container.children.length == 0 ? parent.height : searchColumn.height
     contentWidth: width - normalSpacing
 
@@ -39,7 +41,7 @@ Flickable {
         // Load at the end.
         BusyIndicator {
             id: smallBusyIndicator
-            visible: false
+            running: false
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
@@ -63,6 +65,7 @@ Flickable {
     }
 
     Component.onCompleted: {
+        print(maximumFlickVelocity)
         genSearchData(true)
     }
 
@@ -173,7 +176,7 @@ Flickable {
         if (isNearEnd && !isEnd && canFlickableSearch) {
             genSearchData(false)
         }
-        if (isNearEnd && !isEnd) {
+        if (visibleContentHeight >= 0.9 && !isEnd) {
             smallBusyIndicator.running = true
         }
         else {

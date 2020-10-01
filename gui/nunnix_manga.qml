@@ -14,6 +14,8 @@ ApplicationWindow {
 	property int normalTextFontSize: 14
 	property int normalSpacing: 20
 	property bool darkTheme: true
+	property int normalMaximumFlickVelocity: 1500
+    property int normalFlickDeceleration: 2000
 
 	// Colors used for the entire application.
 	property string backgroundColor: darkTheme? "#121212" :"#ffffff"

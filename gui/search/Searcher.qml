@@ -73,11 +73,9 @@ Column {
             currentPage += 1
 
             // Set searcherFlickable to the initial state.
-            searcherFlickable.busyIndicator.running = true
             searcherFlickable.reloadButton.visible = false
             searcherFlickable.infoIcon.visible = false
             searcherFlickable.smallReloadButton.visible = false
-            searcherFlickable.smallBusyIndicator.running = false
             searcherFlickable.infoIcon.visible = false
         }
     }
