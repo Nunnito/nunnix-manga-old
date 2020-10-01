@@ -2,6 +2,7 @@ import QtQuick.Controls 2.15
 import QtQuick 2.15
 
 Column {
+    // Information icon alias.
     property alias infoIcon: infoIcon
     property alias icon: icon.icon
     property alias label: label
@@ -9,6 +10,7 @@ Column {
 
     property bool isSmall: false
 
+    // Information icon properties.
     id: infoIcon
     visible: false
     x: mainWindow.width / 2 - leftBar.width * 2 - searchFlickable.leftMargin

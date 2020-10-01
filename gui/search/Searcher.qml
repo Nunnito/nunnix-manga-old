@@ -8,6 +8,7 @@ import "search_flickable"
 
 
 Column {
+    // Properties for children of Search.qml.
     property int buttonWidth: 140
     property int buttonHeight: 210
     property int previousColumns: 4
@@ -27,27 +28,32 @@ Column {
     property int advancedSearchEndX: mainWindow.width - leftBar.width
 
     property string name: "searcher"
-    property var searchData: {}
+    property var searchData: {}  // Search data is stored here
 
     SearchToolBar {id: searchToolBar}
     AdvancedSearch {id: advancedSearch}
     SearchFlickable {id: searcherFlickable}
 
+    // Function that generates the search data and stores it in searchData.
     function genSearchData(initPage) {
+        // If the page is not loading.
         if (!isLoading) {
             isLoading = true
-
+ 
+            // If is a new search.
             if (initPage) {
                 isNewSearch = true
                 isEnd = false
                 currentPage = 1
                 
+                // Destroy all the tiles.
                 for (var i=0; i < searcherFlickable.container.children.length; i++){
                     searcherFlickable.container.children[i].destroy()
                 }
                 searcherFlickable.busyIndicator.running = true
             }
 
+            // Create a new search.
             searchData = {}
             for (var i=0; i < advancedSearch.columnControls.children.length; i++) {
                 var key = advancedSearch.columnControls.children[i].searchParameter
@@ -58,15 +64,17 @@ Column {
             NunnixManga.search_manga(JSON.stringify(searchData), currentPage)
             currentPage += 1
 
+            // Set searcherFlickable to the initial state.
+            searcherFlickable.busyIndicator.running = true
             searcherFlickable.reloadButton.visible = false
             searcherFlickable.infoIcon.visible = false
-            searcherFlickable.busyIndicator.running = true
             searcherFlickable.smallReloadButton.visible = false
             searcherFlickable.smallBusyIndicator.running = false
             searcherFlickable.infoIcon.visible = false
         }
     }
 
+    // Function that resets search filters.
     function resetFilters() {
         for (var i=0; i < advancedSearch.columnControls.children.length; i++) {
             var defaultValue = advancedSearch.columnControls.children[i].defaultValue

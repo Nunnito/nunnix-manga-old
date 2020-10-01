@@ -2,6 +2,7 @@ import QtQuick.Controls 2.15
 import QtQuick 2.15
 
 Column {
+    // Reload button alias.
     property alias reloadButton: reloadButton
     property alias icon: icon
     property alias label: label
@@ -9,6 +10,7 @@ Column {
 
     property bool isSmall: false
 
+    // Reload button properties.
     id: reloadButton
     visible: false
     x: mainWindow.width / 2 - leftBar.width * 2 - searchFlickable.leftMargin
@@ -26,7 +28,7 @@ Column {
         flat: true
         anchors.horizontalCenter: parent.horizontalCenter
 
-        onClicked: currentPage -= 1, reconnect(isSmall)
+        onClicked: reconnect(isSmall)
         
         MouseArea {
             id: area

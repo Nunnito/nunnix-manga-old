@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Flickable {
+    // Search flickable alias
     property alias searchFlickable: searchFlickable
     property alias reloadButton: reloadButton
     property alias infoIcon: infoIcon
@@ -13,6 +14,8 @@ Flickable {
     property alias busyIndicator: busyIndicator
 
     id: searchFlickable
+
+    // Search flickable properties
     width: parent.width
     height: parent.height
 
@@ -31,13 +34,16 @@ Flickable {
         width: parent.width
         spacing: normalSpacing * 2
 
-        SearchContainer {id: container}
+        SearchContainer {id: container}  // Here are all the tiles.
+
+        // Load at the end.
         BusyIndicator {
             id: smallBusyIndicator
             visible: false
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
+        // Load at the end in an error.
         ReloadButton {
             id: smallReloadButton
             isSmall: true
@@ -45,9 +51,11 @@ Flickable {
         }
     }
 
-
+    // Appears in an error.
     ReloadButton {id: reloadButton}
     InfoIcon {id: infoIcon}
+
+    // Appears in a new search.
     BusyIndicator {
         id: busyIndicator
         x: reloadButton.x + 60
@@ -61,7 +69,9 @@ Flickable {
     Connections {
         target: NunnixManga
         function onSearch_manga_data(dataSearch, error) {
+            // If dataSearch is not empty
             if (dataSearch[0] != null) {
+                // Create dataSearch.length tiles
                 spawnTiles(dataSearch.length, dataSearch)
 
                 isLoading = false
@@ -70,6 +80,7 @@ Flickable {
                 busyIndicator.running = false
                 smallBusyIndicator.visible = true
             }
+            // If there is an error.
             if (error != "") {
                 if (error == "HTTP error 404") {
                     if (isNewSearch) {
@@ -83,9 +94,11 @@ Flickable {
                 }
                 else {
                     if (isNewSearch) {
+                        // Show reload button
                         showReloadButton(false, error)
                     }
                     else {
+                        // Show small reload button
                         showReloadButton(true, error)
                     }
                 }
@@ -93,6 +106,7 @@ Flickable {
         }
     }
 
+    // Dynamically creates new tiles.
     function spawnTiles(size, dataSearch) {
         var component = Qt.createComponent("../../mangatile/MangaTile.qml")
 
@@ -105,15 +119,19 @@ Flickable {
         }
     }
 
+    // Show reload button.
     function showReloadButton(isSmall, error) {
         canFlickableSearch = false
         isLoading = false
 
+        // Show small reload button.
         if (isSmall) {
             smallReloadButton.visible = true
             smallReloadButton.label.text = error
             smallBusyIndicator.visible = false
         }
+
+        // Show normal reload button.
         else {
             reloadButton.visible = true
             reloadButton.label.text = error
@@ -121,6 +139,7 @@ Flickable {
         }
     }
 
+    // Show information icon.
     function showInfoIcon(iconUrl, textInfo) {
             isLoading = false
             busyIndicator.running = false
@@ -130,8 +149,10 @@ Flickable {
             infoIcon.icon.source = Qt.resolvedUrl(iconUrl)
     }
 
+    // Reconnect function.
     function reconnect(isSmall) {
         isLoading = false
+        currentPage -= 1
         genSearchData(false)
 
         if (isSmall) {

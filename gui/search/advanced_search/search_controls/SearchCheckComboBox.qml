@@ -3,11 +3,13 @@ import QtQuick.Controls.Material 2.15
 import QtQuick 2.15
 
 Column {
+    // Search check combo box alias.
     property alias searchCheckComboBox: searchCheckComboBox
     property alias label: label
     property alias comboBox: comboBox
     property alias mouseArea: mouseArea
 
+    // Search check combo box properties.
     property string searchParameter
     property var jsonData
     property var currentValue: []
@@ -16,6 +18,7 @@ Column {
     Material.background: surfaceColor
     topPadding: label.text ? normalSpacing : 0
 
+    // Search check combo title.
     Label {
         id: label
         color: textColor
@@ -24,6 +27,7 @@ Column {
         font.bold: true
     }
 
+    // Combo box.
     ComboBox {
         property var checkedList: []
         id: comboBox
@@ -35,6 +39,7 @@ Column {
             width: comboBox.width
             implicitHeight: checkDelegate.implicitHeight
 
+            // Custom item delegate.
             CheckDelegate {
                 id: checkDelegate
 
@@ -56,6 +61,7 @@ Column {
             }
         }
 
+        // Custom combo box popup.
         popup: Popup {
             id: popup
             width: comboBox.width

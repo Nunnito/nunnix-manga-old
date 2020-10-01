@@ -3,11 +3,13 @@ import QtQuick.Controls.Material 2.15
 import QtQuick 2.15
 
 Column {
+    // Search combo box alias.
     property alias searchComboBox: searchComboBox
     property alias label: label
     property alias comboBox: comboBox
     property alias mouseArea: mouseArea
 
+    // Search combo box properties.
     property string searchParameter
     property var jsonData
     property var currentValue: jsonData == null ? [] : jsonData[comboBox.currentText]
@@ -16,6 +18,7 @@ Column {
     Material.background: surfaceColor
     topPadding: label.text ? normalSpacing : 0
 
+    // Search combo box title.
     Label {
         id: label
         color: textColor
@@ -24,12 +27,14 @@ Column {
         font.bold: true
     }
 
+    // Combo box.
     ComboBox {
         id: comboBox
 
         width: controlWidth
         model: jsonData == null ? [] : Object.keys(jsonData)
 
+        // Custom combo box popup.
         popup: Popup {
             width: comboBox.width
             padding: 0

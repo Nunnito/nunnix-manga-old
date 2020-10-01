@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// Menu button.
 RoundButton {
     property alias menuButton: menuButton
     property alias menu: menu
@@ -31,9 +32,11 @@ RoundButton {
             id: menuAdvanced
             text: qsTr("Advanced search")
 
+            // Open advanced search menu
             onTriggered: advancedSearch.open()
         }
 
+        // Menu background
         background: Rectangle {
             implicitWidth: menuAdvanced.width
             color: surfaceColor2

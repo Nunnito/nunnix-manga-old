@@ -3,6 +3,7 @@ import QtQuick.Controls.Material 2.15
 import QtQuick 2.15
 
 Column {
+    // Search text input alias.
     property alias searchTextInput: searchTextInput
     property alias label: label
     property alias background: background
@@ -14,6 +15,7 @@ Column {
     property alias focusAnimation: focusAnimation
     property alias placeHolderAnimation: placeHolderAnimation
 
+    // Search text input properties.
     property string searchParameter
     property var currentValue: textInput.text ? textInput.text : ""
 
@@ -21,6 +23,7 @@ Column {
     Material.background: surfaceColor
     topPadding: label.text ? normalSpacing : 0
 
+    // Search text input title.
     Label {
         id: label
         color: textColor
@@ -29,6 +32,7 @@ Column {
         font.bold: true
     }
 
+    // Search text input background.
     Rectangle {
         id: background
 
@@ -40,6 +44,7 @@ Column {
 
         anchors.horizontalCenter: parent.horizontalCenter
 
+        // Line input.
         TextInput {
             id: textInput
 
@@ -56,6 +61,7 @@ Column {
             font.pixelSize: normalTextFontSize
             verticalAlignment: TextInput.AlignVCenter
 
+            // Line input placeholder.
             Label {
                 id: placeHolder
                 text: qsTr("Search here...")
@@ -81,10 +87,12 @@ Column {
                 acceptedButtons: Qt.NoButton
             }
 
+            // On accepted, start new search.
             onAccepted: genSearchData(true)
         }
     }
     
+    // Inactive search text input underline.
     Rectangle {
         id: rectPlaceHolder
 
@@ -92,6 +100,7 @@ Column {
         width: textInput.width
         height: startBottomRectSearchTextHeight
 
+        // Active search text input underline.
         Rectangle {
             id: rectTextFocus
 

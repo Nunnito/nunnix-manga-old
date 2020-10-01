@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Popup {
+    // Advanced search alias.
     property alias advancedSearch: advancedSearch
     property alias label: label
     property alias button: button
@@ -16,11 +17,14 @@ Popup {
     property int endBottomRectSearchTextHeight: 3
 
     id: advancedSearch
+
+    // Advanced search properties.
     modal: true
 
     width: 250 + normalSpacing
     height: parent.height
 
+    // Flickable to scroll.
     Flickable {
         id: flickable
 
@@ -28,11 +32,13 @@ Popup {
         height: parent.height
         contentHeight: columnControls.height + titleBar.height
 
+        // Scroll indicator.
         ScrollIndicator.vertical: ScrollIndicator {active: true}
         clip: true
 
-        AdvancedSearchLabel {id: label}
+        AdvancedSearchLabel {id: label}  // AdvancedSearchLabel
 
+        // Here are all the controls.
         Column {
             id: columnControls
 
@@ -41,9 +47,10 @@ Popup {
 
         }
 
-        AdvancedSearchButton {id: button}
+        AdvancedSearchButton {id: button}  // AdvancedSearchButton
     }
 
+    // Overlay modal color.
     Overlay.modal: Rectangle {
         color: "#AA000000"
     }
@@ -58,12 +65,14 @@ Popup {
             var searchCheckComboBox = Qt.createComponent("search_controls/SearchCheckComboBox.qml")
 
             for (var control in controls) {
+                // Creates TextInput control.
                 if (controls[control].type == "textinput") {
                     var textInput = searchTextInput.createObject(columnControls)
 
                     textInput.label.text = controls[control].name
                     textInput.searchParameter = controls[control].search_parameter
                 }
+                // Creates ComboBox control.
                 if (controls[control].type == "combobox") {
                     var comboBox = searchComboBox.createObject(columnControls)
                     var comboModel = []
@@ -72,6 +81,7 @@ Popup {
                     comboBox.searchParameter = controls[control].search_parameter
                     comboBox.jsonData = controls[control].content
                 }
+                // Creates CheckComboBox control.
                 if (controls[control].type == "checkcombobox") {
                     var checkComboBox = searchCheckComboBox.createObject(columnControls)
                     var comboModel = []
@@ -85,6 +95,7 @@ Popup {
         }
     }
 
+    // Enter advanced search animation.
     enter: Transition {
         NumberAnimation {
             duration: 100
@@ -94,6 +105,7 @@ Popup {
         }
     }
 
+    // Exit advanced search animation.
     exit: Transition {
         NumberAnimation {
             duration: 100
@@ -103,6 +115,7 @@ Popup {
         }
     }
 
+    // Advanced search background.
     background: Rectangle {
         color: backgroundColor
     }

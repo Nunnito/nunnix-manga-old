@@ -4,6 +4,7 @@ import QtQuick.Controls.Material 2.15
 
 
 Rectangle {
+    // Search toolbar alias.
     property alias searchToolBar: searchToolBar
     property alias searchLineEdit: searchLineEdit
     property alias searchButton: searchButton
@@ -12,6 +13,7 @@ Rectangle {
     property alias column: column
     property alias searchArea: searchArea
 
+    // Search toolbar properties.
     property int toolbarHeight: 48
     property int searchInputRadius: 5
     property int iconSize: 24
@@ -23,15 +25,16 @@ Rectangle {
     height: toolbarHeight
     color: surfaceColor
 
+    // Row.
     Row {
         id: column
 
         width: parent.width
         layoutDirection: Qt.RightToLeft
 
-        MenuButton {id: menuButton}
-        SearchButton {id: searchButton}
-        SearchLineEdit {id: searchLineEdit}
+        MenuButton {id: menuButton}          // Menu button.
+        SearchButton {id: searchButton}      // Serch button.
+        SearchLineEdit {id: searchLineEdit}  // Input line.
     }
 
 

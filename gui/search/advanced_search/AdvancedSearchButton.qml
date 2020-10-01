@@ -2,11 +2,16 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Row {
+    // Advanced search button alias.
+    property alias advancedSearchButton: advancedSearchButton
     property alias searchButton: searchButton
     property alias searchArea: searchArea
     property alias resetButton: resetButton
     property alias resetArea: resetArea
 
+    id: advancedSearchButton
+
+    // Advanced search button properties.
     width: parent.width
     spacing: normalSpacing / 2
     topPadding: normalSpacing * 2
@@ -14,6 +19,7 @@ Row {
     anchors.bottom: parent.bottom
     anchors.horizontalCenter: parent.horizontalCenter
 
+    // Search button.
     Button {
         id: searchButton
 
@@ -38,9 +44,11 @@ Row {
             acceptedButtons: Qt.NoButton
         }
 
+        // On clicked, generates new search.
         onClicked: genSearchData(true)
     }
 
+    // Reset button.
     Button {
         id: resetButton
         text: qsTr("Reset")
@@ -56,6 +64,7 @@ Row {
             acceptedButtons: Qt.NoButton
         }
 
+        // On clicked, reset filters.
         onClicked: resetFilters()
     }
 }
