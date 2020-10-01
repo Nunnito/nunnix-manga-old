@@ -20,6 +20,8 @@ class NunnixManga_TMO(QObject):
     search_manga_data = pyqtSignal(list, str, arguments=["dataSearch", "error"])
     search_manga_controls = pyqtSignal(str, arguments=["jsonControls"])
 
+    manga_data = pyqtSignal("QVariant", str, arguments=["mangaData", "error"])
+
     def __init__(self):
         QObject.__init__(self)
         self.thumbnail_dir, self.manga_save_dir = self.get_cache_dir()
@@ -32,6 +34,23 @@ class NunnixManga_TMO(QObject):
     def search_manga(self, parameter_list, page):
         data = Thread(target=self.search_manga_thread, args=[parameter_list, page])
         data.start()
+
+    @pyqtSlot(str)
+    def set_manga_data(self, url):
+        data = Thread(target=self.set_manga_data_thread, args=[url])
+        data.start()
+
+    def set_manga_data_thread(self, url):
+        data = self.manga_source.get_manga_data(url)
+
+        if type(data) == ConnectionError:
+            self.manga_data.emit({}, "ConnectionError")
+        elif type(data) == ReadTimeout:
+            self.manga_data.emit({}, "ReadTimeout")
+        elif type(data) == str:
+            self.manga_data.emit({}, data)
+        else:
+            self.manga_data.emit(data, "")
 
     def search_manga_thread(self, parameter_list, page):
         data = self.manga_source.search_manga(**json.loads(parameter_list), page=page)

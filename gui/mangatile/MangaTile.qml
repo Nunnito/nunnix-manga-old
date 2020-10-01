@@ -24,6 +24,11 @@ Button {
 		 color: surfaceColor
 	 }
 
+	 onClicked: {
+		stackView.push("../manga_view/MangaView.qml")
+		NunnixManga.set_manga_data(mangaLink)
+	 }
+
 	// Manga title image
 	Image {
 		id: thumbnail

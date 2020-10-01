@@ -8,6 +8,12 @@ import "search_flickable"
 
 
 Column {
+    // Searcher alias.
+    property alias searcher: searcher
+    property alias searchToolBar: searchToolBar
+    property alias advancedSearch: advancedSearch
+    property alias searcherFlickable: searcherFlickable
+
     // Properties for children of Search.qml.
     property int buttonWidth: 140
     property int buttonHeight: 210
@@ -29,6 +35,8 @@ Column {
 
     property string name: "searcher"
     property var searchData: {}  // Search data is stored here
+
+    id: searcher
 
     SearchToolBar {id: searchToolBar}
     AdvancedSearch {id: advancedSearch}

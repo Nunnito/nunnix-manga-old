@@ -15,6 +15,7 @@ Rectangle {
 	property int leftBarWidth: 72
 
 	id: leftBar
+	z: 99
 	width: leftBarWidth
 	height: parent.height
 	color: surfaceColor
