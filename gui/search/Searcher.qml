@@ -69,7 +69,7 @@ Column {
 
                 searchData[key] = value
             }
-            NunnixManga.search_manga(JSON.stringify(searchData), currentPage)
+            MangaSearcher.search_manga(JSON.stringify(searchData), currentPage)
             currentPage += 1
 
             // Set searcherFlickable to the initial state.

@@ -26,7 +26,7 @@ Button {
 
 	 onClicked: {
 		stackView.push("../manga_view/MangaView.qml")
-		NunnixManga.set_manga_data(mangaLink)
+		MangaViewer.set_manga_data(mangaLink)
 	 }
 
 	// Manga title image

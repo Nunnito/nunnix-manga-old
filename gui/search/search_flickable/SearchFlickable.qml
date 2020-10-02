@@ -65,12 +65,11 @@ Flickable {
     }
 
     Component.onCompleted: {
-        print(maximumFlickVelocity)
         genSearchData(true)
     }
 
     Connections {
-        target: NunnixManga
+        target: MangaSearcher
         function onSearch_manga_data(dataSearch, error) {
             // If dataSearch is not empty
             if (dataSearch[0] != null) {

@@ -8,7 +8,7 @@ Column {
     }
     
     Connections {
-        target: NunnixManga
+        target: MangaViewer
         function onManga_data(mangaData, error) {
             var title = mangaData.title
             var author = mangaData.author

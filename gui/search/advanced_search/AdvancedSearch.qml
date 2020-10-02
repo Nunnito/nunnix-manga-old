@@ -58,7 +58,7 @@ Popup {
     }
 
     Connections {
-        target: NunnixManga
+        target: MangaSearcher
         function onSearch_manga_controls(jsonControls) {
             var controls = JSON.parse(jsonControls)
             
