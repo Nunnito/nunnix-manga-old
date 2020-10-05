@@ -28,8 +28,10 @@ Column {
         flat: true
         anchors.horizontalCenter: parent.horizontalCenter
 
-        onClicked: reconnect(isSmall)
-        
+        onClicked: {
+            genSearchData(false)
+            currentPage -= 1
+        }
         MouseArea {
             id: area
             anchors.fill: parent

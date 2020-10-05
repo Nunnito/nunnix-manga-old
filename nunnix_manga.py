@@ -5,19 +5,25 @@ from PyQt5.QtGui import QGuiApplication
 from threading import Thread
 from scrapers.tools import tools
 from scrapers import *
+import scrapers
 import json
 import os
 import re
 
-config_file = open("config.json", "r").read()
-scale_factor = json.loads(config_file)["system"]["scale_factor"]
-manga_source = mangakatana
+config_file = json.loads(open("config.json", "r").read())
+scale_factor = config_file["system"]["scale_factor"]
+current_scraper = config_file["scrapers"]["current"]
+
+scraper_data = {}
+manga_source = eval(current_scraper)
+
+for scraper in scrapers.__all__:
+    scraper_data[eval(scraper).name] = scraper
 
 
 class Searcher(QObject):
     global manga_source
 
-    temp = True
     search_manga_data = pyqtSignal(list, str, arguments=["dataSearch", "error"])
     search_manga_controls = pyqtSignal(str, arguments=["jsonControls"])
 
@@ -26,9 +32,17 @@ class Searcher(QObject):
         self.manga_source = manga_source
         self.thumbnail_dir, self.manga_save_dir = tools.get_cache_dir()
 
-    @pyqtSlot(str)
-    def change_manga_source(self, manga_source):
-        exec("self.manga_source = {}".format(manga_source))
+    @pyqtSlot(str, str)
+    def change_manga_source(self, manga_source, alias):
+        self.manga_source = eval(manga_source)
+
+        config_writer("scrapers", "current", value=manga_source)
+        config_writer("scrapers", "current_alias", value=alias)
+
+        config_file_read = json.loads(open("config.json", "r").read())
+        context.setContextProperty("configFile", config_file_read)
+
+        self.emit_controls()
 
     @pyqtSlot(str, int)
     def search_manga(self, parameter_list, page):
@@ -47,10 +61,10 @@ class Searcher(QObject):
         else:
             self.search_manga_data.emit(data, "")
 
+    @pyqtSlot()
+    def emit_controls(self):
         controls = self.manga_source.get_search_controls()
-        if self.temp:
-            self.search_manga_controls.emit(controls)
-            self.temp = False
+        self.search_manga_controls.emit(controls)
 
 
 class Viewer(QObject):
@@ -80,6 +94,20 @@ class Viewer(QObject):
             self.manga_data.emit(data, "")
 
 
+def config_writer(*keys, value=""):
+    file_read = json.loads(open("config.json", "r").read())
+    string_to_exec = "file_read"
+
+    for key in keys:
+        string_to_exec += f"['{key}']"
+    string_to_exec += f"='{value}'"
+
+    exec(string_to_exec)
+
+    with open("config.json", "w") as write_config:
+        json.dump(file_read, write_config, indent=4)
+
+
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
 os.environ["QT_QUICK_CONTROLS_MATERIAL_VARIANT"] = "Dense"
 os.environ["QT_SCALE_FACTOR"] = str(scale_factor)
@@ -92,7 +120,8 @@ engine = QQmlApplicationEngine()
 context = engine.rootContext()
 context.setContextProperty("MangaSearcher", manga_searcher)
 context.setContextProperty("MangaViewer", manga_viewer)
-context.setContextProperty("config_file", config_file)
+context.setContextProperty("configFile", config_file)
+context.setContextProperty("scraperData", scraper_data)
 
 engine.load(__file__.replace("nunnix_manga.py", "gui/nunnix_manga.qml"))
 application.exec_()

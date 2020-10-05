@@ -28,7 +28,7 @@ RoundButton {
             id: menuReload
             text: qsTr("Reload")
 
-            onTriggered: searcherFlickable.reconnect(true)
+            onTriggered: genSearchData(true)
         }
         MenuItem {
             id: menuAdvanced

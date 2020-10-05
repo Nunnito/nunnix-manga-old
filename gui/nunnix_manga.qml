@@ -13,21 +13,21 @@ ApplicationWindow {
 	// Global properties.
 	property int normalTextFontSize: 14
 	property int normalSpacing: 20
-	property bool darkTheme: true
+	property bool darkMode: true
 	property int normalMaximumFlickVelocity: 1500
     property int normalFlickDeceleration: 2000
 
 	// Colors used for the entire application.
-	property string backgroundColor: darkTheme? "#121212" :"#ffffff"
-	property string surfaceColor: darkTheme? "#181818" : "#ffffff"
-	property string surfaceColor2: darkTheme? "#222222" : "#ffffff"
-	property string titleBarColor: darkTheme? "#1F1F1F" : "#ffffff"
-	property string textColor: darkTheme? "#FFFFFF" : "#000000"
-	property string iconColor: darkTheme? "#AAAAAA" : "#000000"
-	property string primaryColor: Material.color(Material.DeepPurple, Material.Shade200)
-	property string secondaryColor: Material.color(Material.DeepPurple)
+	property var materialAccent: Material.DeepPurple
+	property string backgroundColor: darkMode ? "#121212" :"#ffffff"
+	property string surfaceColor: darkMode ? "#181818" : "#ffffff"
+	property string surfaceColor2: darkMode ? "#222222" : "#ffffff"
+	property string titleBarColor: darkMode ? "#1F1F1F" : "#ffffff"
+	property string textColor: darkMode ? "#FFFFFF" : "#000000"
+	property string iconColor: darkMode ? "#AAAAAA" : "#000000"
 	property string textAreaColor: "#2D2D2D"
 	property string placeHolderColor: "#AAAAAA"
+	property string primaryColor: darkMode  ? Material.color(materialAccent, Material.Shade200) : Material.color(materialAccent, Material.Shade500)
 
 	// Aplication Window properties.
 	title: "Nunnix Manga"
@@ -39,7 +39,7 @@ ApplicationWindow {
 
 
 	// Material style color config.
-	Material.theme: darkTheme? Material.Dark : Material.Light
+	Material.theme: darkMode? Material.Dark : Material.Light
 	Material.accent: primaryColor
 	Material.foreground: "white"
 	Material.background: surfaceColor2

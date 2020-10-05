@@ -1,8 +1,9 @@
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 import QtQuick 2.15
 
 // Left bar custom button
-Button {
+ItemDelegate {
     property alias leftBarButton: leftBarButton
 
     // Properties
@@ -12,15 +13,17 @@ Button {
     property var pastCurrentItem
 
     id: leftBarButton
-    flat: stackView.currentItem.name == target ? false : true
+    highlighted: stackView.currentItem.name == target ? true : false
+    display: AbstractButton.IconOnly
 
-    width: parent.parent.width
-    height: width
+    Layout.preferredWidth: parent.parent.width
+    Layout.preferredHeight: width - normalSpacing / 2
 
-    icon.source: flat ? iconOutlined : iconFilled
+
+    icon.source: !highlighted ? iconOutlined : iconFilled
     icon.width: iconSize
     icon.height: iconSize
-    icon.color: flat ? iconColor : primaryColor
+    icon.color: !highlighted ? iconColor : primaryColor
 
     onClicked: {
         if (stackView.currentItem.name != target) {

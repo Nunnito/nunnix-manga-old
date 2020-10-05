@@ -17,16 +17,16 @@ Flickable {
 
     // Search flickable properties
     width: parent.width
-    height: parent.height
+    height: parent.height - (searchToolBar.height + footer.height)
 
     topMargin: normalSpacing * 2
-    bottomMargin: normalSpacing * 3
+    bottomMargin: normalSpacing * 2
     leftMargin: normalSpacing
 
     maximumFlickVelocity: normalMaximumFlickVelocity
     flickDeceleration: normalFlickDeceleration
     boundsBehavior: Flickable.OvershootBounds
-    interactive: (!reloadButton.visible && !busyIndicator.running)
+    interactive: (!reloadButton.visible && !busyIndicator.visible && !infoIcon.visible)
     contentHeight: container.children.length == 0 ? parent.height : searchColumn.height
     contentWidth: width - normalSpacing
 
@@ -41,8 +41,8 @@ Flickable {
         // Load at the end.
         BusyIndicator {
             id: smallBusyIndicator
-            running: false
             anchors.horizontalCenter: parent.horizontalCenter
+            visible: false
         }
 
         // Load at the end in an error.
@@ -50,18 +50,34 @@ Flickable {
             id: smallReloadButton
             isSmall: true
             anchors.horizontalCenter: parent.horizontalCenter
+
+            visible: isSmallError
+            label.text: errorText
         }
     }
 
     // Appears in an error.
-    ReloadButton {id: reloadButton}
-    InfoIcon {id: infoIcon}
+    ReloadButton {
+        id: reloadButton
+
+        visible: isError
+        label.text: errorText
+    }
+    InfoIcon {
+        id: infoIcon
+
+        visible: isInfo
+        label.text: errorText
+        icon.source: infoIconUrl
+    }
 
     // Appears in a new search.
     BusyIndicator {
         id: busyIndicator
         x: reloadButton.x + 60
         y: reloadButton.y + 20
+
+        visible: !reloadButton.visible && !infoIcon.visible && container.children.length == 0
     }
 
     Component.onCompleted: {
@@ -71,38 +87,31 @@ Flickable {
     Connections {
         target: MangaSearcher
         function onSearch_manga_data(dataSearch, error) {
+            smallBusyIndicator.visible = false
+            isLoading = false
+
             // If dataSearch is not empty
             if (dataSearch[0] != null) {
+                isNewSearch = false
+                canFlickableSearch = true
+
                 // Create dataSearch.length tiles
                 spawnTiles(dataSearch.length, dataSearch)
-
-                isLoading = false
-                canFlickableSearch = true
-                isNewSearch = false
-                busyIndicator.running = false
-                smallBusyIndicator.visible = true
             }
             // If there is an error.
             if (error != "") {
+                isEnd = true
+                canFlickableSearch = false
+
                 if (error == "HTTP error 404") {
-                    if (isNewSearch) {
-                        showInfoIcon("../../../resources/search_off.svg", qsTr("No results found!"))
-                    }
-                    else {
-                        smallBusyIndicator.running = false
-                        isLoading = false
-                        isEnd = true
-                    }
+                    isInfo = isNewSearch
+                    infoIconUrl = "../../../resources/search_off.svg"
+                    errorText = qsTr("No results found!")
                 }
                 else {
-                    if (isNewSearch) {
-                        // Show reload button
-                        showReloadButton(false, error)
-                    }
-                    else {
-                        // Show small reload button
-                        showReloadButton(true, error)
-                    }
+                    errorText = error
+                    isError = isNewSearch        // Show reload button
+                    isSmallError = !isNewSearch  // Show small reload button
                 }
             }
         }
@@ -121,65 +130,12 @@ Flickable {
         }
     }
 
-    // Show reload button.
-    function showReloadButton(isSmall, error) {
-        canFlickableSearch = false
-        isLoading = false
-
-        // Show small reload button.
-        if (isSmall) {
-            smallReloadButton.visible = true
-            smallReloadButton.label.text = error
-            smallBusyIndicator.visible = false
-        }
-
-        // Show normal reload button.
-        else {
-            reloadButton.visible = true
-            reloadButton.label.text = error
-            busyIndicator.running = false
-        }
-    }
-
-    // Show information icon.
-    function showInfoIcon(iconUrl, textInfo) {
-            isLoading = false
-            busyIndicator.running = false
-
-            infoIcon.visible = true
-            infoIcon.label.text = textInfo
-            infoIcon.icon.source = Qt.resolvedUrl(iconUrl)
-    }
-
-    // Reconnect function.
-    function reconnect(isSmall) {
-        isLoading = false
-        currentPage -= 1
-        genSearchData(false)
-
-        if (isSmall) {
-            smallReloadButton.visible = false
-            smallBusyIndicator.visible = true
-        }
-        else {
-            reloadButton.visible = false
-            infoIcon.visible = false
-            busyIndicator.running = true
-        }
-    }
-
     onContentYChanged: {
         var visibleContentHeight = (contentY + height - topMargin) / contentHeight
         var isNearEnd = contentHeight - container.height / (currentPage - 1) <= contentY
 
-        if (isNearEnd && !isEnd && canFlickableSearch) {
+        if (visibleContentHeight >= 0.9 && !isEnd && canFlickableSearch) {
             genSearchData(false)
-        }
-        if (visibleContentHeight >= 0.9 && !isEnd) {
-            smallBusyIndicator.running = true
-        }
-        else {
-            smallBusyIndicator.running = false
         }
     }
 }

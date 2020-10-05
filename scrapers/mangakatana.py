@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 
+name = "Mangakatana"
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64)',
     'Referer': "http://mangakatana.com/"}

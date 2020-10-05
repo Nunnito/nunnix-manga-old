@@ -1,11 +1,11 @@
-import QtQuick 2.14
+import QtQuick 2.15
 import QtQuick.Layouts 1.15
-import QtQuick.Controls 2.14
+import QtQuick.Controls 2.15
 
 Rectangle {
 	// Left bar alias.
 	property alias leftBar: leftBar
-	property alias menuButton: menuButton
+	property alias settingsButton: settingsButton
 	property alias libraryButton: libraryButton
 	property alias exploreButton: exploreButton
 	property alias downloadsButton: downloadsButton
@@ -21,12 +21,15 @@ Rectangle {
 	color: surfaceColor
 
 	// Left bar column.
-	Column {
-		anchors.horizontalCenter: parent.horizontalCenter
-
-		MenuButton {id: menuButton}            // Menu button.
+	ColumnLayout {
+		anchors.fill: parent
+		
 		LibraryButton {id: libraryButton}       // Library button.
 		ExploreButton {id: exploreButton}      // Explore button.
 		DownloadsButton {id: downloadsButton}  // Downloads button.
+		HistoryButton {id: historyButton}	   // History button.
+
+		Rectangle {id: spacer; Layout.fillHeight: true}  // Spacer
+		SettingsButton {id: settingsButton}            		 // Menu button.
 	}
 }

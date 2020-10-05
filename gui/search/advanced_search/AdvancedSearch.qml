@@ -10,18 +10,12 @@ Popup {
     property alias flickable: flickable
     property alias columnControls: columnControls
 
-    property int controlWidth: 200
-    property int searchTextInputHeight: 32
-    property int rectSearchTextRadius: 5
-    property int startBottomRectSearchTextHeight: 2
-    property int endBottomRectSearchTextHeight: 3
-
     id: advancedSearch
 
     // Advanced search properties.
     modal: true
 
-    width: 250 + normalSpacing
+    width: advancedSearchWidth
     height: parent.height
 
     // Flickable to scroll.
@@ -66,6 +60,11 @@ Popup {
             var searchComboBox = Qt.createComponent("search_controls/SearchComboBox.qml")
             var searchCheckComboBox = Qt.createComponent("search_controls/SearchCheckComboBox.qml")
             var searchSlider = Qt.createComponent("search_controls/SearchSlider.qml")
+
+            for (var i=0; i < columnControls.children.length; i++){
+                columnControls.children[i].destroy()
+            }
+            columnControls.children.length = 0
 
             for (var control in controls) {
                 // Creates TextInput control.

@@ -14,7 +14,7 @@ Column {
     property alias advancedSearch: advancedSearch
     property alias searcherFlickable: searcherFlickable
 
-    // Properties for children of Search.qml.
+    // Properties for SearchFlickable.
     property int buttonWidth: 140
     property int buttonHeight: 210
     property int previousColumns: 4
@@ -22,6 +22,26 @@ Column {
     property int reloadSmallButtonWidth: 75
     property int reloadButtonTextSize: 24
     property int reloadSmallButtonTextSize: 18
+    property bool isInfo: false
+    property bool isError: false
+    property bool isSmallError: false
+    property string errorText
+    property string infoIconUrl
+
+    // Properties for AdvancedSearch.
+    property int advancedSearchWidth: 250 + normalSpacing
+    property int advancedSearchStartX: mainWindow.width - advancedSearchWidth - leftBar.width
+    property int advancedSearchEndX: mainWindow.width - leftBar.width
+    property int controlWidth: 200
+    property int searchTextInputHeight: 32
+    property int rectSearchTextRadius: 5
+    property int startBottomRectSearchTextHeight: 2
+    property int endBottomRectSearchTextHeight: 3
+
+    // Properties for SearchToolBar.
+    property int toolbarHeight: 48
+    property int searchInputRadius: 5
+    property int iconSize: 24
 
     property int currentPage
     property bool isNewSearch
@@ -29,9 +49,6 @@ Column {
     property bool isEnd: false
     property bool canFlickableSearch: true
 
-    property int advancedSearchWidth: 250 + normalSpacing
-    property int advancedSearchStartX: mainWindow.width - advancedSearchWidth - leftBar.width
-    property int advancedSearchEndX: mainWindow.width - leftBar.width
 
     property string name: "searcher"
     property var searchData: {}  // Search data is stored here
@@ -41,24 +58,28 @@ Column {
     SearchToolBar {id: searchToolBar}
     AdvancedSearch {id: advancedSearch}
     SearchFlickable {id: searcherFlickable}
+    Footer {id: footer}
 
     // Function that generates the search data and stores it in searchData.
     function genSearchData(initPage) {
         // If the page is not loading.
         if (!isLoading) {
             isLoading = true
+            isError = false
+            isSmallError = false
+            isInfo = false
+            isEnd = false
  
             // If is a new search.
             if (initPage) {
                 isNewSearch = true
-                isEnd = false
                 currentPage = 1
                 
                 // Destroy all the tiles.
                 for (var i=0; i < searcherFlickable.container.children.length; i++){
                     searcherFlickable.container.children[i].destroy()
                 }
-                searcherFlickable.busyIndicator.running = true
+                searcherFlickable.container.children.length = 0
             }
 
             // Create a new search.
@@ -69,14 +90,10 @@ Column {
 
                 searchData[key] = value
             }
+            searcherFlickable.smallBusyIndicator.visible = searcherFlickable.container.children.length != 0
+
             MangaSearcher.search_manga(JSON.stringify(searchData), currentPage)
             currentPage += 1
-
-            // Set searcherFlickable to the initial state.
-            searcherFlickable.reloadButton.visible = false
-            searcherFlickable.infoIcon.visible = false
-            searcherFlickable.smallReloadButton.visible = false
-            searcherFlickable.infoIcon.visible = false
         }
     }
 

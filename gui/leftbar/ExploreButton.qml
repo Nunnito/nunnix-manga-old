@@ -11,7 +11,7 @@ LeftBarButton {
 
     // On clicked, switch to the searcher.
     onClicked: {
-        if (flat) {
+        if (!highlighted) {
             stackView.push("../search/Searcher.qml")
         }
     }

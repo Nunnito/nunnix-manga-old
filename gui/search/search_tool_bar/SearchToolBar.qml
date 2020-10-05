@@ -13,11 +13,6 @@ Rectangle {
     property alias column: column
     property alias searchArea: searchArea
 
-    // Search toolbar properties.
-    property int toolbarHeight: 48
-    property int searchInputRadius: 5
-    property int iconSize: 24
-
     id: searchToolBar
     z: 1
 

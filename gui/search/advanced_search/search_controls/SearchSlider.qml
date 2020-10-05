@@ -56,6 +56,6 @@ Column {
     }
 
     function setDefault() {
-        slider.from = 0
+        slider.value = 0
     }
 }
