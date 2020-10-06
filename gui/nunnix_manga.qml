@@ -12,6 +12,7 @@ ApplicationWindow {
 
 	// Global properties.
 	property int normalTextFontSize: 14
+	property int bigTextFontSize: 22
 	property int normalSpacing: 20
 	property bool darkMode: true
 	property int normalMaximumFlickVelocity: 1500
@@ -34,7 +35,7 @@ ApplicationWindow {
 	flags: Qt.FramelessWindowHint
 	width: Screen.width / 1.5
 	height: Screen.height / 1.5
-	minimumWidth: Screen.width / 1.5
+	// minimumWidth: Screen.width / 1.5
 	minimumHeight: Screen.height / 1.5
 
 
@@ -67,7 +68,7 @@ ApplicationWindow {
 				id: stackView
 
 				height: parent.height
-				width: mainWindow.width - leftBar.width - layout.spacing
+				width: leftBar.visible ? mainWindow.width - leftBar.width - layout.spacing : mainWindow.width - layout.spacing
 				initialItem: "library/Library.qml"
 			}
 		}

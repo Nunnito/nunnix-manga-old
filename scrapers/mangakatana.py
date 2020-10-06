@@ -50,7 +50,7 @@ def get_manga_data(url):
                 "thumbnail": "",
                 "genres": [],
                 "total_chapters": "",
-                "current_state": "",
+                "current_status": "",
                 "chapters_data": {
                         "chapter_1": {
                                 "name": "Chapter 1",
@@ -75,7 +75,7 @@ def get_manga_data(url):
         "thumbnail": "",
         "genres": [],
         "total_chapters": "",
-        "current_state": "",
+        "current_status": "",
         "chapters": {
         }
     }
@@ -110,10 +110,10 @@ def get_manga_data(url):
     total_chapters = re.search(r"\d+", total_chapters.text).group()
     data["total_chapters"] = total_chapters
 
-    # Manga current state
-    current_state = parsed_source.find("div", {"class": "status"})
-    current_state = current_state.text.strip()
-    data["current_state"] = current_state
+    # Manga current status
+    current_status = parsed_source.find("div", {"class": "status"})
+    current_status = current_status.text.strip()
+    data["current_status"] = current_status
 
     # Manga chapters data
     chapters = parsed_source.find("div", {"class": "chapters"}).find_all("tr")

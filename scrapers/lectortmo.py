@@ -54,7 +54,7 @@ def get_manga_data(url):
                 "thumbnail": "",
                 "genres": [],
                 "total_chapters": "",
-                "current_state": "",
+                "current_status": "",
                 "chapters_data": {
                         "chapter_1": {
                                 "name": "Chapter 1",
@@ -79,7 +79,7 @@ def get_manga_data(url):
         "thumbnail": "",
         "genres": [],
         "total_chapters": "",
-        "current_state": "",
+        "current_status": "",
         "chapters": {
         }
     }
@@ -112,20 +112,20 @@ def get_manga_data(url):
     # Manga author
     try:
         author = parsed_source.find("h5", {"class": "card-title text-truncate"})
-        author = author.text.replace(",", "").strip()
+        author = author.text.replace(",", "").strip().title()
         data["author"] = author
     except AttributeError:
         author = "n/a"
         data["author"] = author
 
-    # Manga current state
+    # Manga current status
     try:
-        current_state = parsed_source.find("span", {"class": "book-status"})
-        current_state = current_state.text.strip()
-        data["current_state"] = current_state
+        current_status = parsed_source.find("span", {"class": "book-status"})
+        current_status = current_status.text.strip()
+        data["current_status"] = current_status
     except AttributeError:
-        current_state = "One shot"
-        data["current_state"] = current_state
+        current_status = "One shot"
+        data["current_status"] = current_status
 
     # Manga chapters data
     chapters = parsed_source.find_all("li", {"class": "upload-link"})

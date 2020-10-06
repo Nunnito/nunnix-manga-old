@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// TEMPORAL CODE, FOR TESTING
 ComboBox {
     property string currentSource: scraperData[currentText]
     property var sourceAlias: []

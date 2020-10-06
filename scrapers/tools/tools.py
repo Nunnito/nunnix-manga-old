@@ -9,6 +9,9 @@ HEADERS = {
 
 
 def download_image(link, directory, image_name):
+    if os.path.exists(directory + image_name):
+        return True
+
     image = requests.get(link, headers=HEADERS)
 
     if image.status_code == 200:

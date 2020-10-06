@@ -13,13 +13,16 @@ Button {
 	property alias tooltip: tooltip
 	property alias tooltipLabel: tooltipLabel
 
+	property string mangaLink
+	property string mangaThumbnail: thumbnail.source
+	property var imageName: /[^/]\w+\..{3,4}$/.exec(mangaThumbnail)
+
 	id: thumbnailButton
 
 	// Manga tile properties.
 	width: buttonWidth
 	height: buttonHeight
 
-	property string mangaLink
 	background: Rectangle {
 		 color: surfaceColor
 	 }
@@ -53,6 +56,7 @@ Button {
 		onStatusChanged: {
 			if (status == 1) {
 				showAnimation.running = true
+				MangaSearcher.download_thumbnail(thumbnail.source, imageName)
 			}
 		}
 	}
@@ -82,8 +86,8 @@ Button {
 
 		// Gradient.
 		gradient: Gradient {
-			GradientStop {position: 0.8; color: "#00000000"}
-			GradientStop {position: 0.9; color: "#CC000000"}
+			GradientStop { position: 0.8; color: "#00000000"}
+			GradientStop { position: 0.9; color: "#CC000000"}
 			GradientStop { position: 1.0; color: backgroundColor}
 		}
 	}
