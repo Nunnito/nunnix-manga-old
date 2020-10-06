@@ -92,7 +92,7 @@ def get_manga_data(url):
 
     # Manga description
     description = parsed_source.find("div", {"class": "summary"})
-    description = description.text.strip()
+    description = description.find("p").text.strip()
     data["description"] = description
 
     # Manga thumbnail

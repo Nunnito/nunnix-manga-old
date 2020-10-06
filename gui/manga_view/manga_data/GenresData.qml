@@ -7,16 +7,20 @@ Column {
     property alias flickable: flickable
     property alias categoryRow: categoryRow
     property alias genres: genres
+    property var model: genres.model
 
     id: genresData
     width: parent.width
 
+    // Genres label
     Label {
         id: label
         text: "Genres"
         font.bold: true
+        opacity: genres.model != null
     }
 
+    // Flickable to flick
     Flickable {
         id: flickable
 
@@ -27,6 +31,7 @@ Column {
         contentWidth: categoryRow.width
         boundsBehavior: Flickable.OvershootBounds
 
+        // Scroll indicator
         ScrollIndicator.horizontal: ScrollIndicator {active: true}
 
         Row {
@@ -56,10 +61,26 @@ Column {
 
                         color: "transparent"
                         border.color: primaryColor
-                        border.width: 1
+                        border.width: genresBorderWidth
                     }
                 }
             }
+
+            // Loader placeholder
+            LoaderPlaceHolder {
+                width: genresData.width - normalSpacing
+                height: 50
+                gradient.width: genresData.width - 100
+                interval: 500
+                visible: genres.model == null
+            }
+        }
+    }
+
+    OpacityAnimator {id: opacityAnim; target: genresData; from: 0; to: 1; duration: animTime}
+    onModelChanged: {
+        if (model != null) {
+            opacityAnim.start()
         }
     }
 }

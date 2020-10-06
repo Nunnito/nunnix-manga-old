@@ -14,4 +14,14 @@ Label {
 
     bottomPadding: normalSpacing
     rightPadding: normalSpacing
+
+    LoaderPlaceHolder {
+        width: 250
+        gradient.width: 200
+        visible: !text
+        interval: 1000
+    }
+
+    OpacityAnimator {id: opacityAnim; target: title; from: 0; to: 1; duration: animTime}
+    onTextChanged: opacityAnim.start()
 }

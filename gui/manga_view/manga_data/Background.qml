@@ -23,6 +23,17 @@ Item {
                 GradientStop { position: 1.0; color: backgroundColor}
             }
         }
+
+        Rectangle {
+            anchors.fill: parent
+            visible: image.status == 1 ? 0:1
+
+            gradient: Gradient {
+                GradientStop { position: 0.6; color: surfaceColor}
+                GradientStop { position: 0.9; color: backgroundColor}
+                GradientStop { position: 1.0; color: backgroundColor}
+            }
+        }
     }
 
     FastBlur {

@@ -10,7 +10,7 @@ Item {
     property alias author: author
     property alias status: status
     property alias genres: genresData.genres
-    property alias description: descriptionData.description
+    property alias description: descriptionData
     property alias background: background
     property alias row: row
     id: mangaData

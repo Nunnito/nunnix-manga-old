@@ -5,6 +5,9 @@ import "manga_data"
 Column {
     property int imageWidth: 210
     property int imageHeight: 315
+    property int animTime: 500
+    property int genresBorderWidth: 1
+    property string previousThumbnail
 
     MangaData {id: dataManga}
 
@@ -19,12 +22,12 @@ Column {
             var total_chapters = mangaData.total_chapters
             var status = mangaData.current_status
 
-            dataManga.image.source = thumbnail
+            dataManga.image.source = previousThumbnail
             dataManga.title.text = title
-            dataManga.author.text = "<b>" + qsTr("Author: ") + "</b>" + author
-            dataManga.status.text =  "<b>" + qsTr("Status: ") + "</b>" + status
+            dataManga.author.authorText = author
+            dataManga.status.statusText = status
             dataManga.genres.model = genres
-            dataManga.description.text = description
+            dataManga.description.descriptionText = description
         }
     }
 

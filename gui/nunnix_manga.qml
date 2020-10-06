@@ -23,6 +23,7 @@ ApplicationWindow {
 	property string backgroundColor: darkMode ? "#121212" :"#ffffff"
 	property string surfaceColor: darkMode ? "#181818" : "#ffffff"
 	property string surfaceColor2: darkMode ? "#222222" : "#ffffff"
+	property string surfaceColor3: darkMode ? "#303030" : "#ffffff"
 	property string titleBarColor: darkMode ? "#1F1F1F" : "#ffffff"
 	property string textColor: darkMode ? "#FFFFFF" : "#000000"
 	property string iconColor: darkMode ? "#AAAAAA" : "#000000"
@@ -35,7 +36,7 @@ ApplicationWindow {
 	flags: Qt.FramelessWindowHint
 	width: Screen.width / 1.5
 	height: Screen.height / 1.5
-	// minimumWidth: Screen.width / 1.5
+	minimumWidth: Screen.width / 1.5
 	minimumHeight: Screen.height / 1.5
 
 
