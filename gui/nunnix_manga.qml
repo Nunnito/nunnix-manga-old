@@ -11,6 +11,7 @@ ApplicationWindow {
 	id: mainWindow
 
 	// Global properties.
+	property int smallTextFontSize: 12
 	property int normalTextFontSize: 14
 	property int bigTextFontSize: 22
 	property int normalSpacing: 20
@@ -73,5 +74,14 @@ ApplicationWindow {
 				initialItem: "library/Library.qml"
 			}
 		}
+	}
+
+	function copy(content) {
+		var textEdit = Qt.createQmlObject("import QtQuick 2.15; TextEdit{visible: false}", mainWindow)
+
+		textEdit.text = content
+		textEdit.selectAll()
+		textEdit.copy()
+		textEdit.destroy()
 	}
 }

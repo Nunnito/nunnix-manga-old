@@ -1,8 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtGraphicalEffects 1.15
 
 Item {
+    // MangaData alias
     property alias mangaData: mangaData
     property alias image: image
     property alias column: column
@@ -14,7 +14,9 @@ Item {
     property alias background: background
     property alias row: row
     id: mangaData
+
     width: parent.width
+    height: row.height
 
     Background {id: background}
 

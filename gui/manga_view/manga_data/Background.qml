@@ -3,6 +3,11 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 
 Item {
+    property alias background: background
+    property alias gradientBackground: gradientBackground
+    property alias gradientPlaceHolder: gradientPlaceHolder
+    property alias fastBlur: fastBlur
+
     width: parent.width
     
     Image {
@@ -15,6 +20,7 @@ Item {
         fillMode: Image.PreserveAspectCrop
         
         Rectangle {
+            id: gradientBackground
             anchors.fill: parent
 
             gradient: Gradient {
@@ -25,6 +31,8 @@ Item {
         }
 
         Rectangle {
+            id: gradientPlaceHolder
+
             anchors.fill: parent
             visible: image.status == 1 ? 0:1
 
@@ -37,6 +45,8 @@ Item {
     }
 
     FastBlur {
+        id: fastBlur
+
         width: background.width
         height: background.height
         source: background

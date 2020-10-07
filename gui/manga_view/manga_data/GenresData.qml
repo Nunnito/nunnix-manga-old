@@ -7,6 +7,7 @@ Column {
     property alias flickable: flickable
     property alias categoryRow: categoryRow
     property alias genres: genres
+
     property var model: genres.model
 
     id: genresData
@@ -73,6 +74,19 @@ Column {
                 gradient.width: genresData.width - 100
                 interval: 500
                 visible: genres.model == null
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.NoButton
+            propagateComposedEvents: true
+
+            onEntered: {
+                if (flickable.contentWidth > flickable.width) {
+                    flickableView.interactive = false
+                }
             }
         }
     }

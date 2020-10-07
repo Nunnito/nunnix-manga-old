@@ -144,7 +144,7 @@ def get_manga_data(url):
 
         # Chapter links
         chapters_links.append(parsed_source.find("li", {"class": "upload-link"}))
-        chapters_links[0] = chapters_links[0].find("a").get("href")
+        chapters_links[0] = chapters_links[0].find("a", {"class": "btn"}).get("href")
 
     else:
         for chapter in chapters:

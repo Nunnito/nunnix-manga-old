@@ -5,6 +5,7 @@ Column {
     property alias label: label
     property alias flickable: flickable
     property alias description: description
+
     property string descriptionText: descriptionText
 
     id: descriptionData
@@ -57,6 +58,18 @@ Column {
                     gradient.width: descriptionData.width - 100
                     interval: 500
                     visible: !description.text
+                }
+            }
+        }
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.NoButton
+            propagateComposedEvents: true
+
+            onEntered: {
+                if (flickable.contentHeight > flickable.height) {
+                    flickableView.interactive = false
                 }
             }
         }

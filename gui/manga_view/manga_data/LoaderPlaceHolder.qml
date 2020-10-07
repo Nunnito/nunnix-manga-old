@@ -4,6 +4,8 @@ import QtQuick.Controls 2.15
 Rectangle {
     property alias loader: loader
     property alias gradient: gradient
+    property alias animation: animation
+
     property int interval: interval
 
     id: loader
@@ -25,6 +27,7 @@ Rectangle {
         }
     }
     SequentialAnimation {
+        id: animation
         running: true
         loops: Animation.Infinite
 

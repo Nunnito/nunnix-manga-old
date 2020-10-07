@@ -10,7 +10,7 @@ Rectangle {
     property alias searchButton: searchButton
     property alias menuButton: menuButton
 
-    property alias column: column
+    property alias row: row
     property alias searchArea: searchArea
 
     id: searchToolBar
@@ -22,7 +22,7 @@ Rectangle {
 
     // Row.
     Row {
-        id: column
+        id: row
 
         width: parent.width
         layoutDirection: Qt.RightToLeft
