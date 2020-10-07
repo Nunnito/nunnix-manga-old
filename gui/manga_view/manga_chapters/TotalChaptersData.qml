@@ -20,8 +20,8 @@ Label {
 
     LoaderPlaceHolder {
         x: parent.leftPadding
-        width: 250
-        gradient.width: 200
+        width: 150
+        gradient.width: 100
         visible: chapters == ""
         interval: 1000
     }

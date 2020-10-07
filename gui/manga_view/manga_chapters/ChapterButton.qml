@@ -22,6 +22,7 @@ ItemDelegate {
 
         font.pixelSize: normalTextFontSize
         elide: Text.ElideRight
+        leftPadding: normalSpacing / 4
 
         // Date
         Label {
@@ -31,6 +32,7 @@ ItemDelegate {
 
             anchors.bottom: parent.bottom
             anchors.left: parent.left
+            leftPadding: normalSpacing / 4
         }
     }
 
