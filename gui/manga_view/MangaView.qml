@@ -39,12 +39,13 @@ Item {
             id: flickableView
 
             width: parent.width
-            height: parent.height
+            height: parent.height - mangaToolBar.height
             contentHeight: dataManga.row.height + mangaChapters.height + mangaToolBar.height
 
             maximumFlickVelocity: normalMaximumFlickVelocity
             flickDeceleration: normalFlickDeceleration
             boundsBehavior: Flickable.OvershootBounds
+            ScrollBar.vertical: ScrollBar { }
 
             Column {
                 anchors.fill: parent
@@ -72,6 +73,7 @@ Item {
                 dataManga.genres.model = genres
                 dataManga.description.descriptionText = description
 
+                mangaChapters.totalChapters.chapters = total_chapters
                 for (var i=0; i < total_chapters; i++) {
                     mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i + 1)])
                 }

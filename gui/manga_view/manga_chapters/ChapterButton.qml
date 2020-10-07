@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Controls 2.15
 
-Button {
+ItemDelegate {
     property alias chapterButton: chapterButton
 
     property string chapterName
@@ -15,7 +15,6 @@ Button {
     height: normalSpacing * 4 - normalSpacing / 2
 
     text: chapterName
-    opacity: 0
 
     contentItem: Label {
         text: chapterButton.text
@@ -33,5 +32,13 @@ Button {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
         }
+    }
+
+    // Separator
+    Rectangle {
+        width: parent.width
+        height: 1
+        color: parent.pressed ? primaryColor : surfaceColor4
+        y: parent.height
     }
 }

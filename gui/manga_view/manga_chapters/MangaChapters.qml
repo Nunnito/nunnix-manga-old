@@ -4,11 +4,11 @@ import QtQuick.Controls 2.15
 
 Column {
     property alias mangaChapters: mangaChapters
+    property alias totalChapters: totalChapters
     id: mangaChapters
+    width: parent.width
 
-    width: parent.width - rightPadding * 2
-    rightPadding: normalSpacing
-    leftPadding: normalSpacing
+    TotalChaptersData {id: totalChapters}
 
     function spawnChapter(data) {
         var chapterButton = Qt.createComponent("ChapterButton.qml")

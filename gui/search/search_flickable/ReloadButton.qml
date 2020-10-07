@@ -29,8 +29,8 @@ Column {
         anchors.horizontalCenter: parent.horizontalCenter
 
         onClicked: {
-            genSearchData(false)
             currentPage -= 1
+            genSearchData(false)
         }
         MouseArea {
             id: area

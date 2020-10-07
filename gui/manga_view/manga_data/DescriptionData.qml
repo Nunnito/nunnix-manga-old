@@ -49,17 +49,17 @@ Column {
         Column {
             spacing: 5
 
-            Repeater {
-                model: 3
+            // Repeater {
+                // model: 3
 
                 LoaderPlaceHolder {
                     width: descriptionData.width - normalSpacing
-                    height: 20
-                    gradient.width: descriptionData.width - 100
+                    height: 100
+                    gradient.width: width - 100
                     interval: 500
                     visible: !description.text
                 }
-            }
+            // }
         }
         MouseArea {
             anchors.fill: parent
