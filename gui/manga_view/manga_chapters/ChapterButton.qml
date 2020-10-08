@@ -16,6 +16,11 @@ ItemDelegate {
 
     text: chapterName
 
+    onClicked: {
+        stackView.push("../../reader/Reader.qml")
+        MangaReader.set_images(chapterLink)
+    }
+
     contentItem: Label {
         text: chapterButton.text
         color: textColor

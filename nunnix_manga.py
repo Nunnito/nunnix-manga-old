@@ -101,6 +101,18 @@ class Viewer(QObject):
             self.manga_data.emit(data, "")
 
 
+class Reader(QObject):
+    get_images = pyqtSignal(list, arguments=["images"])
+
+    def __init__(self):
+        QObject.__init__(self)
+
+    @pyqtSlot(str)
+    def set_images(self, url):
+        images = manga_source.get_chapters_images(url)
+        self.get_images.emit(images)
+
+
 def config_writer(*keys, value=""):
     file_read = json.loads(open("config.json", "r").read())
     string_to_exec = "file_read"
@@ -125,11 +137,13 @@ application = QGuiApplication([])
 
 manga_searcher = Searcher()
 manga_viewer = Viewer()
+manga_reader = Reader()
 engine = QQmlApplicationEngine()
 
 context = engine.rootContext()
 context.setContextProperty("MangaSearcher", manga_searcher)
 context.setContextProperty("MangaViewer", manga_viewer)
+context.setContextProperty("MangaReader", manga_reader)
 context.setContextProperty("configFile", config_file)
 context.setContextProperty("scraperData", scraper_data)
 context.setContextProperty("thumbnailDir", thumbnail_dir)

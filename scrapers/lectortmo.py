@@ -13,7 +13,8 @@ def get_source(url, image_mode=False):
     try:
         if image_mode:
             url = requests.head(url, headers=HEADERS, timeout=30).headers["Location"]
-            url = url.replace("paginated", "cascade")
+            chapter_id = re.search(r"\w+/\w+/(\w+)", url).groups()[0]
+            url = f"https://lectortmo.com/viewer/{chapter_id}/cascade"
 
         print("\nLoading page data...")
         src = requests.get(url, headers=HEADERS, timeout=30)
@@ -72,6 +73,7 @@ def get_manga_data(url):
         return parsed_source
 
     # Dictionary where all manga data will be stored
+    one_shot = False
     data = {
         "title": "",
         "author": "",
@@ -124,6 +126,7 @@ def get_manga_data(url):
         current_status = current_status.text.strip()
         data["current_status"] = current_status
     except AttributeError:
+        one_shot = True
         current_status = "One shot"
         data["current_status"] = current_status
 
@@ -149,7 +152,10 @@ def get_manga_data(url):
     else:
         for chapter in chapters:
             # Chapter name
-            name = chapter.find("a", {"class": "btn-collapse"}).text.strip()
+            if one_shot:
+                name = chapter.find("a").text.strip()
+            else:
+                name = chapter.find("a", {"class": "btn-collapse"}).text.strip()
             chapters_name.append(name)
 
             # Chapter upload date
