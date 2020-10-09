@@ -137,41 +137,28 @@ def get_manga_data(url):
     chapters_upload_date = []
     chapters_links = []
 
-    if total_chapters == 1:  # If is oneshot
+    for chapter in chapters:
         # Chapter name
-        chapters_name.append("1")
+        if one_shot:
+            name = "One shot"
+        else:
+            name = chapter.find("a", {"class": "btn-collapse"}).text.strip()
+        chapters_name.append(name)
 
         # Chapter upload date
-        chapters_upload_date.append(chapters[0].find("span", {"class": "badge"}))
-        chapters_upload_date[0] = chapters_upload_date[0].text.strip()
+        upload_date = chapter.find("span", {"class": "badge"}).text.strip()
+        chapters_upload_date.append(upload_date)
 
-        # Chapter links
-        chapters_links.append(parsed_source.find("li", {"class": "upload-link"}))
-        chapters_links[0] = chapters_links[0].find("a", {"class": "btn"}).get("href")
-
-    else:
-        for chapter in chapters:
-            # Chapter name
-            if one_shot:
-                name = chapter.find("a").text.strip()
-            else:
-                name = chapter.find("a", {"class": "btn-collapse"}).text.strip()
-            chapters_name.append(name)
-
-            # Chapter upload date
-            upload_date = chapter.find("span", {"class": "badge"}).text.strip()
-            chapters_upload_date.append(upload_date)
-
-            # Chapter link
-            link = chapter.find("a", {"class": "btn"}).get("href")
-            chapters_links.append(link)
+        # Chapter link
+        link = chapter.find("a", {"class": "btn"}).get("href")
+        chapters_links.append(link)
 
     # Adds a dictionary to each chapter
-    for chapter_number, chapter_link in enumerate(chapters_links[::-1]):
-        data["chapters"]["chapter_" + str(chapter_number + 1)] = {
-            "name": chapters_name[::-1][chapter_number],
-            "upload_date": chapters_upload_date[::-1][chapter_number],
-            "link": chapters_links[::-1][chapter_number]
+    for chapter_number, chapter_link in enumerate(chapters_links):
+        data["chapters"]["chapter_" + str(chapter_number)] = {
+            "name": chapters_name[chapter_number],
+            "upload_date": chapters_upload_date[chapter_number],
+            "link": chapters_links[chapter_number]
         }
 
     return data

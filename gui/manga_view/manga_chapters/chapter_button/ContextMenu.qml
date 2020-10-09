@@ -10,7 +10,9 @@ Menu {
     }
     MenuItem {
         id: bookmark
-        text: qsTr("Bookmark")
+        text: bookmarked ? qsTr("Unbookmark") : qsTr("Bookmark")
+
+        onTriggered: bookmarked = !bookmarked
     }
     MenuItem {
         id: markAsRead
@@ -18,6 +20,9 @@ Menu {
 
         onTriggered: read = !read
     }
+    MenuSeparator {}
+    MenuItem{text: "Copy chapter link"}
+    MenuItem{text: "Mark previous as read"}
     background: Rectangle {
         implicitWidth: markAsRead.width
         color: surfaceColor2

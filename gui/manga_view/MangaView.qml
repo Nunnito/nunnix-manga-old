@@ -52,6 +52,7 @@ Item {
                 anchors.fill: parent
 
                 MangaData {id: dataManga}
+                TotalChaptersData {id: totalChapters}
                 MangaChapters {id: mangaChapters}
             }
         }
@@ -75,9 +76,10 @@ Item {
                 dataManga.description.descriptionText = description
 
                 mangaName = title
-                mangaChapters.totalChapters.chapters = total_chapters
+                totalChapters.chapters = total_chapters
+
                 for (var i=0; i < total_chapters; i++) {
-                    mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i + 1)])
+                    mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i)])
                 }
             }
         }

@@ -1,5 +1,5 @@
 import QtQuick 2.15
-import QtQuick.Controls.Material 2.15
+import QtGraphicalEffects 1.15
 import QtQuick.Controls 2.15
 
 ItemDelegate {
@@ -16,8 +16,7 @@ ItemDelegate {
     property bool bookmarked
 
     property string buttonColor: textColor
-
-    Material.background: surfaceColor
+    property int index
 
     id: chapterButton
     width: parent.width
@@ -25,13 +24,34 @@ ItemDelegate {
 
     text: chapterName
 
-    contentItem: Label {
-        text: chapterButton.text
-        color: buttonColor
+    contentItem: Item {
 
-        font.pixelSize: normalTextFontSize
-        elide: Text.ElideRight
-        leftPadding: normalSpacing / 4
+        Row {
+            // Bookmark icon
+            Image {
+                visible: bookmarked
+
+                sourceSize.width: iconSize
+                sourceSize.height: iconSize
+                source: "../../../../resources/bookmark.svg"
+
+                ColorOverlay {
+                    anchors.fill: parent
+                    source: parent
+                    color: primaryColor
+                }
+            }
+            // Chapter name
+            Label {
+                id: name
+                text: chapterButton.text
+                color: buttonColor
+
+                font.pixelSize: normalTextFontSize
+                elide: Text.ElideRight
+                leftPadding: normalSpacing / 4
+            }
+        }
 
         // Date
         Label {
@@ -42,17 +62,6 @@ ItemDelegate {
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             leftPadding: normalSpacing / 4
-        }
-
-        RoundButton {
-            enabled: false
-            flat: true
-            icon.source: "../../../../resources/bookmark.svg"
-            icon.color: primaryColor
-            icon.width: iconSize
-            icon.height: iconSize
-            x: parent.contentWidth
-            y: -15
         }
     }
 
@@ -86,8 +95,9 @@ ItemDelegate {
 
 
     onClicked: {
-        stackView.push("../../reader/Reader.qml")
-        MangaReader.set_images(chapterLink, mangaName, chapterName)
+        print(index)
+        // stackView.push("../../../reader/Reader.qml")
+        // MangaReader.set_images(chapterLink, mangaName, chapterName)
     }
 
     onReadChanged: {
@@ -95,7 +105,32 @@ ItemDelegate {
             buttonColor = surfaceColor4
         }
         else {
-            buttonColor = textColor
+            if (bookmarked) {
+                buttonColor = primaryColor
+            }
+            else {
+                buttonColor = textColor
+            }
         }
+    }
+
+    onBookmarkedChanged: {
+        if (bookmarked) {
+            if (!read) {
+                buttonColor = primaryColor
+            }
+        }
+        else {
+            if (read) {
+                buttonColor = surfaceColor4
+            }
+            else {
+                buttonColor = textColor
+            }
+        }
+    }
+
+    function markPreviousAsRead(firstIndex) {
+        
     }
 }
