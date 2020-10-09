@@ -95,9 +95,8 @@ ItemDelegate {
 
 
     onClicked: {
-        print(index)
-        // stackView.push("../../../reader/Reader.qml")
-        // MangaReader.set_images(chapterLink, mangaName, chapterName)
+        stackView.push("../../../reader/Reader.qml")
+        MangaReader.set_images(chapterLink, mangaName, chapterName)
     }
 
     onReadChanged: {
@@ -131,6 +130,8 @@ ItemDelegate {
     }
 
     function markPreviousAsRead(firstIndex) {
-        
+        for (var i=firstIndex+1; i < mangaChapters.children.length; i++) {
+            mangaChapters.children[i].read = true
+        }
     }
 }

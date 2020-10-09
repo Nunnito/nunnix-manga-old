@@ -46,21 +46,12 @@ Column {
             font.pixelSize: normalTextFontSize
         }
 
-        Column {
-            spacing: 5
-
-            // Repeater {
-                // model: 3
-
-                LoaderPlaceHolder {
-                    width: descriptionData.width - normalSpacing
-                    height: 100
-                    gradient.width: width - 100
-                    interval: 500
-                    visible: !description.text
-                }
-            // }
+        LoaderPlaceHolder {
+            width: descriptionData.width - normalSpacing
+            height: 100
+            visible: !description.text
         }
+
         MouseArea {
             anchors.fill: parent
             hoverEnabled: true

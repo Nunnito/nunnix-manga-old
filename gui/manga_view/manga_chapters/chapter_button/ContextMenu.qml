@@ -20,9 +20,21 @@ Menu {
 
         onTriggered: read = !read
     }
+
     MenuSeparator {}
-    MenuItem{text: "Copy chapter link"}
-    MenuItem{text: "Mark previous as read"}
+
+    MenuItem {
+        id: copyLink
+        text: qsTr("Copy chapter link")
+
+        onTriggered: copy(chapterLink)
+    }
+    MenuItem {
+        id: previousAsRead
+        text: qsTr("Mark previous as read")
+
+        onTriggered: markPreviousAsRead(index)
+    }
     background: Rectangle {
         implicitWidth: markAsRead.width
         color: surfaceColor2

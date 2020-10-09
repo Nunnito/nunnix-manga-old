@@ -12,9 +12,6 @@ Label {
 
     LoaderPlaceHolder {
         width: 150
-        height: font.pixelSize
-        gradient.width: 100
-        interval: 500
         visible: !authorText
     }
 

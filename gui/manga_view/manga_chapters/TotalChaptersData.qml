@@ -21,9 +21,7 @@ Label {
     LoaderPlaceHolder {
         x: parent.leftPadding
         width: 150
-        gradient.width: 100
         visible: chapters == ""
-        interval: 1000
     }
 
     OpacityAnimator {id: opacityAnim; target: totalChapters; from: 0; to: 1; duration: animTime}

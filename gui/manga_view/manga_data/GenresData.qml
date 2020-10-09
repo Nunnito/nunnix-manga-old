@@ -71,8 +71,6 @@ Column {
             LoaderPlaceHolder {
                 width: genresData.width - normalSpacing
                 height: 50
-                gradient.width: genresData.width - 100
-                interval: 500
                 visible: genres.model == null
             }
         }

@@ -14,9 +14,6 @@ Label {
 
     LoaderPlaceHolder {
         width: 100
-        height: font.pixelSize
-        gradient.width: 75
-        interval: 500
         visible: !statusText
     }
 
