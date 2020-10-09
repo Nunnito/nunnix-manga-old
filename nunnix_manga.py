@@ -107,8 +107,8 @@ class Reader(QObject):
     def __init__(self):
         QObject.__init__(self)
 
-    @pyqtSlot(str)
-    def set_images(self, url):
+    @pyqtSlot(str, str, str)
+    def set_images(self, url, name, chapter):
         images = manga_source.get_chapters_images(url)
         self.get_images.emit(images)
 

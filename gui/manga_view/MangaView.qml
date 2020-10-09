@@ -26,6 +26,7 @@ Item {
 
     property string previousThumbnail
     property string mangaLink
+    property string mangaName
 
     id: mangaView
     
@@ -73,6 +74,7 @@ Item {
                 dataManga.genres.model = genres
                 dataManga.description.descriptionText = description
 
+                mangaName = title
                 mangaChapters.totalChapters.chapters = total_chapters
                 for (var i=0; i < total_chapters; i++) {
                     mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i + 1)])

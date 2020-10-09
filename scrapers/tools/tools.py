@@ -4,17 +4,18 @@ import os
 import sys
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64)',
-    'Referer': "https://lectortmo.com/"}
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64)'}
 
 
 def download_image(link, directory, image_name):
     if os.path.exists(directory + image_name):
         return True
 
+    print("Downloading image...")
     image = requests.get(link, headers=HEADERS)
 
     if image.status_code == 200:
+        print("Image downloaded!")
         with open(directory + image_name, "wb") as save_image:
             save_image.write(image.content)
         return True

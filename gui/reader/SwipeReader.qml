@@ -1,24 +1,45 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-SwipeView {
+Flickable {
     property var listImages
     id: swipeReader
 
     width: reader.width
     height: reader.height
-    orientation: Qt.Vertical
+    contentHeight: column.height
+    boundsMovement: Flickable.StopAtBounds
 
-    Repeater {
-        id: repeater
-        model: listImages == null ? null : listImages.length
+    ScrollBar.vertical: ScrollBar { }
 
-        Loader {
-            id: loader
-            active: SwipeView.isCurrentItem || SwipeView.isNextItem || SwipeView.isPreviousItem
+    Column {
+        id: column
+        spacing: normalSpacing / 2
 
-            source: "ChapterImage.qml"
+        Repeater {
+            id: repeater
+            model: listImages == null ? null : listImages.length
+
+            ChapterImage {}
         }
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        z: -1
+        hoverEnabled: true
+        cursorShape: cursorShape = Qt.OpenHandCursor
+
+        onPositionChanged: {
+            print(contentY)
+            if (pressedButtons == Qt.LeftButton) {
+                cursorShape = Qt.ClosedHandCursor
+            }
+            else {
+                cursorShape = Qt.OpenHandCursor
+            }
+        }
+        onWheel: contentY -= wheel.angleDelta.y / 4
     }
     
     Connections {

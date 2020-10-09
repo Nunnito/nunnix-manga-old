@@ -6,7 +6,6 @@ Column {
     property alias infoIcon: infoIcon
     property alias icon: icon.icon
     property alias label: label
-    property alias area: area
 
     property bool isSmall: false
 
@@ -21,16 +20,15 @@ Column {
 
         width: isSmall ? reloadSmallButtonWidth : reloadButtonWidth
         height: width
+
         icon.width: width
         icon.color: iconColor
         icon.height: width
+
         flat: true
+        enabled: false
+
         anchors.horizontalCenter: parent.horizontalCenter
-        
-        MouseArea {
-            id: area
-            anchors.fill: parent
-        }
     }
 
     Label {

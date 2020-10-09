@@ -308,7 +308,7 @@ def search_manga(
         url += f"&yonkoma={yonkoma}&amateur={amateur}"
     else:
         genres = [f"&genders[]={genre}" for genre in genres]
-        exclude_genres = [f"&exclude_genders[]={genre}" for genre in genres]
+        exclude_genres = [f"&exclude_genders[]={exclude}" for exclude in exclude_genres]
         genres = "".join(genres)
         exclude_genres = "".join(exclude_genres)
 

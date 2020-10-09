@@ -11,7 +11,7 @@ Column {
     TotalChaptersData {id: totalChapters}
 
     function spawnChapter(data) {
-        var chapterButton = Qt.createComponent("ChapterButton.qml")
+        var chapterButton = Qt.createComponent("chapter_button/ChapterButton.qml")
         var button = chapterButton.createObject(mangaChapters)
 
         button.chapterName = data.name
