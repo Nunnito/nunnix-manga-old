@@ -136,11 +136,11 @@ def get_manga_data(url):
         chapters_links.append(link)
 
     # Adds a dictionary to each chapter
-    for chapter_number, chapter_link in enumerate(chapters_links[::-1]):
-        data["chapters"]["chapter_" + str(chapter_number + 1)] = {
-            "name": chapters_name[::-1][chapter_number],
-            "upload_date": chapters_upload_date[::-1][chapter_number],
-            "link": chapters_links[::-1][chapter_number]
+    for chapter_number, chapter_link in enumerate(chapters_links):
+        data["chapters"]["chapter_" + str(chapter_number)] = {
+            "name": chapters_name[chapter_number],
+            "upload_date": chapters_upload_date[chapter_number],
+            "link": chapters_links[chapter_number]
         }
 
     return data
