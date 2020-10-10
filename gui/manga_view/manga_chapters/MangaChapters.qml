@@ -27,4 +27,40 @@ Column {
             children[i].rotation += 180
         }
     }
+
+    function showRead(bookmarked) {
+        for (var i=0; i < children.length; i++) {
+            if (bookmarked) {
+                children[i].visible = children[i].read && children[i].bookmarked
+            }
+            else {
+                children[i].visible = children[i].read
+            }
+        }
+    }
+
+    function showUnread(bookmarked) {
+        for (var i=0; i < children.length; i++) {
+            if (bookmarked) {
+                children[i].visible = !children[i].read && children[i].bookmarked
+            }
+            else {
+                children[i].visible = !children[i].read
+            }
+        }
+    }
+
+    function showBookmarked(read, unread) {
+        for (var i=0; i < children.length; i++) {
+            if (read) {
+                children[i].visible = children[i].bookmarked && children[i].read
+            }
+            else if (unread) {
+                children[i].visible = children[i].bookmarked && !children[i].read
+            }
+            else {
+                children[i].visible = children[i].bookmarked
+            }
+        }
+    }
 }

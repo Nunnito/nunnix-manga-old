@@ -31,6 +31,7 @@ ApplicationWindow {
 	property string iconColor: darkMode ? "#AAAAAA" : "#000000"
 	property string textAreaColor: "#2D2D2D"
 	property string placeHolderColor: "#AAAAAA"
+	property string modalColor: "#AA000000"
 	property string primaryColor: darkMode  ? Material.color(materialAccent, Material.Shade200) : Material.color(materialAccent, Material.Shade500)
 
 	// Aplication Window properties.

@@ -1,3 +1,4 @@
+from requests.exceptions import ConnectionError, ReadTimeout
 from pathlib import Path
 import requests
 import os
@@ -11,18 +12,23 @@ def download_image(link, directory, image_name):
     if os.path.exists(directory + image_name):
         return True
 
-    print("Downloading image...")
-    image = requests.get(link, headers=HEADERS)
+    try:
+        print("Downloading image...")
+        image = requests.get(link, headers=HEADERS, timeout=60)
 
-    if image.status_code == 200:
-        print("Image downloaded!")
-        with open(directory + image_name, "wb") as save_image:
-            save_image.write(image.content)
-        return True
-    else:
-        error = f"HTTP error {src.status_code}"
+        if image.status_code == 200:
+            print("Image downloaded!")
+            with open(directory + image_name, "wb") as save_image:
+                save_image.write(image.content)
+            return True
+        else:
+            error = f"HTTP error {src.status_code}"
+            print(error)
+            return False
+
+    except (ConnectionError, ReadTimeout) as error:
         print(error)
-        return error
+        return False
 
 
 def get_cache_dir():

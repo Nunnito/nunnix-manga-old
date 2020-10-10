@@ -48,7 +48,7 @@ Popup {
 
     // Overlay modal color.
     Overlay.modal: Rectangle {
-        color: "#AA000000"
+        color: modalColor
     }
 
     Connections {

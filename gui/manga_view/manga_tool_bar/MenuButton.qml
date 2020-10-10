@@ -30,10 +30,19 @@ RoundButton {
             onTriggered: copy(mangaLink)
         }
 
+        MenuItem {
+            id: menuFilter
+            text: qsTr("Filters")
+
+            onTriggered: filters.open()
+        }
+
         // Menu background
         background: Rectangle {
             implicitWidth: menuCopyLink.width
             color: surfaceColor2
         }
     }
+
+    FilterMenu {id: filters}
 }

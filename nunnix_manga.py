@@ -14,7 +14,7 @@ config_file = json.loads(open("config.json", "r").read())
 scale_factor = config_file["system"]["scale_factor"]
 current_scraper = config_file["scrapers"]["current"]
 
-thumbnail_dir, manga_save_dir = tools.get_cache_dir()
+thumbnail_dir, cache_save_dir = tools.get_cache_dir()
 
 scraper_data = {}
 manga_source = eval(current_scraper)
@@ -102,15 +102,32 @@ class Viewer(QObject):
 
 
 class Reader(QObject):
-    get_images = pyqtSignal(list, arguments=["images"])
+    get_images = pyqtSignal(str, arguments=["images"])
 
     def __init__(self):
         QObject.__init__(self)
 
-    @pyqtSlot(str, str, str)
-    def set_images(self, url, name, chapter):
-        images = manga_source.get_chapters_images(url)
-        self.get_images.emit(images)
+    @pyqtSlot(str, str, str, bool)
+    def set_images(self, url, name, chapter, cached):
+        data = Thread(target=self.set_images_thread, args=[url, name, chapter, cached])
+        data.start()
+
+    def set_images_thread(self, url, name, chapter, cached):
+        if cached:
+            images = manga_source.get_chapters_images(url)
+            chapter_dir = cache_save_dir + name + "/" + chapter + "/"
+
+            if not os.path.exists(chapter_dir):
+                os.makedirs(chapter_dir)
+
+            for i in range(len(images)):
+                image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
+                image_path = chapter_dir + image_name
+
+                image = tools.download_image(images[i], chapter_dir, image_name)
+                while not image:
+                    image = tools.download_image(images[i], chapter_dir, image_name)
+                self.get_images.emit(image_path)
 
 
 def config_writer(*keys, value=""):

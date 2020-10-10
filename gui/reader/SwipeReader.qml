@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 
 Flickable {
     property var listImages
+    property int currentIndex: 0
     id: swipeReader
 
     width: reader.width
@@ -15,13 +16,6 @@ Flickable {
     Column {
         id: column
         spacing: normalSpacing / 2
-
-        Repeater {
-            id: repeater
-            model: listImages == null ? null : listImages.length
-
-            ChapterImage {}
-        }
     }
 
     MouseArea {
@@ -31,7 +25,6 @@ Flickable {
         cursorShape: cursorShape = Qt.OpenHandCursor
 
         onPositionChanged: {
-            print(contentY)
             if (pressedButtons == Qt.LeftButton) {
                 cursorShape = Qt.ClosedHandCursor
             }
@@ -44,8 +37,14 @@ Flickable {
     
     Connections {
         target: MangaReader
+
         function onGet_images(images) {
-            listImages = images
+            var chapterImage = Qt.createComponent("ChapterImage.qml")
+            var image = chapterImage.createObject(column)
+
+            image.index = currentIndex
+            image.source = images
+            currentIndex += 1
         }
     }
 }

@@ -96,7 +96,7 @@ ItemDelegate {
 
     onClicked: {
         stackView.push("../../../reader/Reader.qml")
-        MangaReader.set_images(chapterLink, mangaName, chapterName)
+        MangaReader.set_images(chapterLink, mangaName, chapterName, true)
     }
 
     onReadChanged: {
