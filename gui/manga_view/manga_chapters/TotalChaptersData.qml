@@ -1,6 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import "../manga_data"
+import "../manga_data/data"
 
 // Total chapters
 Label {
