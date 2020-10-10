@@ -3,6 +3,7 @@ from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
 from PyQt5.QtGui import QGuiApplication
 from threading import Thread
+from pathlib import Path
 from scrapers.tools import tools
 from scrapers import *
 import scrapers
@@ -80,7 +81,7 @@ class Searcher(QObject):
         for thumbnail in data:
             name = re.search(r"[^/]\w+\..{3,4}$", thumbnail["thumbnail"]).group()
             if os.path.exists(thumbnail_dir + name):
-                thumbnail["thumbnail"] = thumbnail_dir + name
+                thumbnail["thumbnail"] = Path(thumbnail_dir + name).as_uri()
 
         return data
 
@@ -154,7 +155,7 @@ class Downloader(QObject):
             while not image:
                 image = tools.download_image(images[i], chapter_dir, image_name)
 
-            self.get_images.emit(image_path, index, len(images), i + 1)
+            self.get_images.emit(Path(image_path).as_uri(), index, len(images), i + 1)
 
         self.downloaded.emit(index)
 

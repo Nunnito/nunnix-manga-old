@@ -36,7 +36,7 @@ ApplicationWindow {
 
 	// Aplication Window properties.
 	title: "Nunnix Manga"
-	flags: Qt.FramelessWindowHint
+	flags: Qt.FramelessWindowHint | Qt.Window
 	width: Screen.width / 1.5
 	height: Screen.height / 1.5
 	minimumWidth: Screen.width / 1.5

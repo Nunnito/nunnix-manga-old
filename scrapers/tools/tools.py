@@ -40,9 +40,9 @@ def get_cache_dir():
         downloads = home + "/.nunnix-manga/manga/"
 
     if sys.platform == "win32":
-        thumbnails = "file:///" + home + "\\AppData\\Local\\nunnix-manga\\thumbnails\\"
-        cache = "file:///" + home + "\\AppData\\Local\\nunnix-manga\\manga-cache\\"
-        downloads = "file:///" + home + "\\AppData\\Local\\nunnix-manga\\manga-downloads\\"
+        thumbnails = home + "/AppData/Local/nunnix-manga/thumbnails/"
+        cache = home + "/AppData/Local/nunnix-manga/manga-cache/"
+        downloads = home + "/AppData/Local/nunnix-manga/manga-downloads/"
 
     if not os.path.exists(thumbnails):
         os.makedirs(thumbnails)
