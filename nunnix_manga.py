@@ -8,6 +8,7 @@ from scrapers.tools import tools
 from scrapers import *
 import scrapers
 import json
+import sys
 import os
 import re
 
@@ -183,7 +184,7 @@ def config_writer(*keys, value=""):
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
 os.environ["QT_QUICK_CONTROLS_MATERIAL_VARIANT"] = "Dense"
 os.environ["QT_SCALE_FACTOR"] = str(scale_factor)
-application = QGuiApplication([])
+application = QGuiApplication(sys.argv)
 
 manga_searcher = Searcher()
 manga_viewer = Viewer()
@@ -202,4 +203,4 @@ context.setContextProperty("scraperData", scraper_data)
 context.setContextProperty("thumbnailDir", thumbnail_dir)
 
 engine.load(__file__.replace("nunnix_manga.py", "gui/nunnix_manga.qml"))
-application.exec_()
+sys.exit(application.exec_())
