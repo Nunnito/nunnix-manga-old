@@ -14,7 +14,7 @@ config_file = json.loads(open("config.json", "r").read())
 scale_factor = config_file["system"]["scale_factor"]
 current_scraper = config_file["scrapers"]["current"]
 
-thumbnail_dir, cache_save_dir = tools.get_cache_dir()
+thumbnail_dir, cache_save_dir, downloads_dir = tools.get_cache_dir()
 
 scraper_data = {}
 manga_source = eval(current_scraper)
@@ -114,37 +114,49 @@ class Viewer(QObject):
 
 # Manga reader
 class Reader(QObject):
-    get_images = pyqtSignal(str, arguments=["images"])
+    def __init__(self):
+        QObject.__init__(self)
+
+
+class Downloader(QObject):
+    get_images = pyqtSignal(str, int, int, int, arguments=["images", "buttonIndex", "imagesCount", "downloadCount"])
+    downloaded = pyqtSignal(int, arguments="buttonIndex")
 
     def __init__(self):
         QObject.__init__(self)
 
     # Set images thread
-    @pyqtSlot(str, str, str, bool)
-    def set_images(self, url, name, chapter, cached):
-        data = Thread(target=self.set_images_thread, args=[url, name, chapter, cached])
+    @pyqtSlot(str, str, str, bool, int)
+    def set_images(self, url, name, chapter, cached, index):
+        data = Thread(target=self.set_images_thread, args=[url, name, chapter, cached, index])
         data.start()
 
     # Set images
-    def set_images_thread(self, url, name, chapter, cached):
-        # If the image will not be downloaded
+    def set_images_thread(self, url, name, chapter, cached, index):
+        images = manga_source.get_chapters_images(url)
+
+        # If the image will not be saved
         if cached:
-            images = manga_source.get_chapters_images(url)
             chapter_dir = cache_save_dir + name + "/" + chapter + "/"
+        # If the image will be saved
+        else:
+            chapter_dir = downloads_dir + name + "/" + chapter + "/"
 
-            # If the chapter directory does not exists
-            if not os.path.exists(chapter_dir):
-                os.makedirs(chapter_dir)
+        # If the chapter directory does not exists
+        if not os.path.exists(chapter_dir):
+            os.makedirs(chapter_dir)
 
-            for i in range(len(images)):
-                image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
-                image_path = chapter_dir + image_name
+        for i in range(len(images)):
+            image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
+            image_path = chapter_dir + image_name
 
+            image = tools.download_image(images[i], chapter_dir, image_name)
+            while not image:
                 image = tools.download_image(images[i], chapter_dir, image_name)
-                while not image:
-                    image = tools.download_image(images[i], chapter_dir, image_name)
 
-                self.get_images.emit(image_path)
+            self.get_images.emit(image_path, index, len(images), i + 1)
+
+        self.downloaded.emit(index)
 
 
 # Writes keys and value to the config file.
@@ -175,6 +187,7 @@ application = QGuiApplication([])
 manga_searcher = Searcher()
 manga_viewer = Viewer()
 manga_reader = Reader()
+manga_downloader = Downloader()
 engine = QQmlApplicationEngine()
 
 # Pass variables to QML
@@ -182,6 +195,7 @@ context = engine.rootContext()
 context.setContextProperty("MangaSearcher", manga_searcher)
 context.setContextProperty("MangaViewer", manga_viewer)
 context.setContextProperty("MangaReader", manga_reader)
+context.setContextProperty("MangaDownloader", manga_downloader)
 context.setContextProperty("configFile", config_file)
 context.setContextProperty("scraperData", scraper_data)
 context.setContextProperty("thumbnailDir", thumbnail_dir)

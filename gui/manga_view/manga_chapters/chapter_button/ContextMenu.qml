@@ -8,6 +8,8 @@ Menu {
     MenuItem {
         id: download
         text: qsTr("Download")
+
+        onTriggered: queued = true
     }
     // Bookmark/unbookmark chapter
     MenuItem {

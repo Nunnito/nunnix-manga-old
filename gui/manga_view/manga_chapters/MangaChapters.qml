@@ -31,10 +31,13 @@ Column {
     }
 
     // Show reads chapters
-    function showRead(bookmarked) {
+    function showRead(bookmarked, downloaded) {
         for (var i=0; i < children.length; i++) {
             if (bookmarked) {
                 children[i].visible = children[i].read && children[i].bookmarked
+            }
+            else if (downloaded) {
+                children[i].visible = children[i].read && children[i].downloaded
             }
             else {
                 children[i].visible = children[i].read
@@ -43,10 +46,13 @@ Column {
     }
 
     // Show unread chapters
-    function showUnread(bookmarked) {
+    function showUnread(bookmarked, downloaded) {
         for (var i=0; i < children.length; i++) {
             if (bookmarked) {
                 children[i].visible = !children[i].read && children[i].bookmarked
+            }
+            else if (downloaded) {
+                children[i].visible = !children[i].read && children[i].downloaded
             }
             else {
                 children[i].visible = !children[i].read
@@ -55,7 +61,7 @@ Column {
     }
 
     // Show bookmarked chapters
-    function showBookmarked(read, unread) {
+    function showBookmarked(read, unread, downloaded) {
         for (var i=0; i < children.length; i++) {
             if (read) {
                 children[i].visible = children[i].bookmarked && children[i].read
@@ -63,8 +69,29 @@ Column {
             else if (unread) {
                 children[i].visible = children[i].bookmarked && !children[i].read
             }
+            else if (downloaded) {
+                children[i].visible = children[i].bookmarked && children[i].downloaded
+            }
             else {
                 children[i].visible = children[i].bookmarked
+            }
+        }
+    }
+
+    // Show downloaded chapters
+    function showDownloaded(read, unread, bookmarked) {
+        for (var i=0; i < children.length; i++) {
+            if (read) {
+                children[i].visible = children[i].downloaded && children[i].read
+            }
+            else if (unread) {
+                children[i].visible = children[i].downloaded && !children[i].read
+            }
+            else if (bookmarked) {
+                children[i].visible = children[i].downloaded && children[i].bookmarked
+            }
+            else {
+                children[i].visible = children[i].downloaded
             }
         }
     }

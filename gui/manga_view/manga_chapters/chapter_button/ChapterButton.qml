@@ -10,13 +10,23 @@ ItemDelegate {
     property string chapterDate
     property string chapterLink
 
+    property string queuedText: qsTr("Queued")
+    property string downloadingText: qsTr("Downloading...") + " " + count + "/" + total
+    property string downloadedText: qsTr("Downloaded")
+
+    property bool queued
     property bool downloaded
     property bool downloading
     property bool read
     property bool bookmarked
 
     property string buttonColor: textColor
+    property string downloadStatus: queued ? queuedText : downloading ? downloadingText : downloaded ? downloadedText : ""
+
+    property bool cached: true
     property int index
+    property int total
+    property int count
 
     id: chapterButton
     width: parent.width
@@ -63,6 +73,17 @@ ItemDelegate {
             anchors.left: parent.left
             leftPadding: normalSpacing / 4
         }
+
+        // Queued/downloading/downloaded status
+        Label {
+            text: downloadStatus
+            color: placeHolderColor
+            font.pixelSize: smallTextFontSize
+            font.capitalization: Font.AllUppercase
+
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+        }
     }
 
     // Separator
@@ -96,7 +117,7 @@ ItemDelegate {
 
     onClicked: {
         stackView.push("../../../reader/Reader.qml")
-        MangaReader.set_images(chapterLink, mangaName, chapterName, true)
+        MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index)
     }
 
     onReadChanged: {
@@ -129,9 +150,36 @@ ItemDelegate {
         }
     }
 
+    onQueuedChanged: {
+        if (queued) {
+            cached = false
+            MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index)
+        }
+    }
+
     function markPreviousAsRead(firstIndex) {
         for (var i=firstIndex+1; i < mangaChapters.children.length; i++) {
             mangaChapters.children[i].read = true
+        }
+    }
+
+    
+    Connections {
+        target: MangaDownloader
+        function onGet_images(images, buttonIndex, imagesCount, downloadCount) {
+            if (buttonIndex == index) {
+                queued = false
+                downloading = true
+                total = imagesCount
+                count = downloadCount
+            }
+        }
+
+        function onDownloaded(buttonIndex) {
+            if (buttonIndex == index) {
+                downloading = false
+                downloaded = true
+            }
         }
     }
 }

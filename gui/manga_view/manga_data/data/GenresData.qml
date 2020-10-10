@@ -17,7 +17,7 @@ Column {
     // Genres label
     Label {
         id: label
-        text: "Genres"
+        text: qsTr("Genres")
         font.bold: true
         opacity: genres.model != null
     }

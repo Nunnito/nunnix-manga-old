@@ -36,7 +36,7 @@ Flickable {
     }
     
     Connections {
-        target: MangaReader
+        target: MangaDownloader
 
         function onGet_images(images) {
             var chapterImage = Qt.createComponent("ChapterImage.qml")

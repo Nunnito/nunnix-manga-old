@@ -28,11 +28,14 @@ Menu {
             onCheckedChanged: {
                 if (checked) {
                     checkUnread.checked = false
-                    mangaChapters.showRead(checkBookmarked.checked)
+                    mangaChapters.showRead(checkBookmarked.checked, checkDownloaded.checked)
                 }
                 else {
                     if (checkBookmarked.checked) {
-                        mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked)
+                        mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked, checkDownloaded.checked)
+                    }
+                    if (checkDownloaded.checked) {
+                        mangaChapters.showDownloaded(checkRead.checked, checkUnread.checked, checkBookmarked.checked)
                     }
                 }
             }
@@ -48,11 +51,14 @@ Menu {
             onCheckedChanged: {
                 if (checked) {
                     checkRead.checked = false
-                    mangaChapters.showUnread(checkBookmarked.checked)
+                    mangaChapters.showUnread(checkBookmarked.checked, checkDownloaded.checked)
                 }
                 else {
                     if (checkBookmarked.checked) {
-                        mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked)
+                        mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked, checkDownloaded.checked)
+                    }
+                    if (checkDownloaded.checked) {
+                        mangaChapters.showDownloaded(checkRead.checked, checkUnread.checked, checkBookmarked.checked)
                     }
                 }
             }
@@ -67,14 +73,17 @@ Menu {
 
             onCheckedChanged: {
                 if (checked) {
-                    mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked)
+                    mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked, checkDownloaded.checked)
                 }
                 else {
                     if (checkRead.checked) {
-                        mangaChapters.showRead(checkBookmarked.checked)
+                        mangaChapters.showRead(checkBookmarked.checked, checkDownloaded.checked)
                     }
                     if (checkUnread.checked) {
-                        mangaChapters.showUnread(checkBookmarked.checked)
+                        mangaChapters.showUnread(checkBookmarked.checked, checkDownloaded.checked)
+                    }
+                    if (checkDownloaded.checked) {
+                        mangaChapters.showDownloaded(checkRead.checked, checkUnread.checked, checkBookmarked.checked)
                     }
                 }
             }
@@ -84,6 +93,23 @@ Menu {
 
             text: qsTr("Downloaded")
             width: parent.width
+
+            onCheckedChanged: {
+                if (checked) {
+                    mangaChapters.showDownloaded(checkRead.checked, checkUnread.checked, checkBookmarked.checked)
+                }
+                else {
+                    if (checkRead.checked) {
+                        mangaChapters.showRead(checkBookmarked.checked, checkDownloaded.checked)
+                    }
+                    if (checkUnread.checked) {
+                        mangaChapters.showUnread(checkBookmarked.checked, checkDownloaded.checked)
+                    }
+                    if (checkBookmarked.checked) {
+                        mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked, checkDownloaded.checked)
+                    }
+                }
+            }
         }
     }
 
