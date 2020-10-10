@@ -1,5 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+
+// Description data
 Column {
     property alias descriptionData: descriptionData
     property alias label: label
@@ -11,6 +13,7 @@ Column {
     id: descriptionData
     width: parent.width
 
+    // Title
     Label {
         id: label
         text: qsTr("Description")
@@ -22,6 +25,7 @@ Column {
         opacity: description.text ? 1 : 0
     }
 
+    // Flickable, if there is no space available
     Flickable {
         id: flickable
 
@@ -35,6 +39,7 @@ Column {
 
         ScrollIndicator.vertical: ScrollIndicator {active: true}
 
+        // Description
         Label {
             id: description
             text: descriptionText

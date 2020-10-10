@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// Manga image
 Image {
     property alias image: image
     property alias rectPlaceHolder: rectPlaceHolder

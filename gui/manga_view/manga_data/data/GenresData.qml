@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// Genres data
 Column {
     property alias genresData: genresData
     property alias label: label
@@ -21,7 +22,7 @@ Column {
         opacity: genres.model != null
     }
 
-    // Flickable to flick
+    // Flickable, if there is no space available
     Flickable {
         id: flickable
 

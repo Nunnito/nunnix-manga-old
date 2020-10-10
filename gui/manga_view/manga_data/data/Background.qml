@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
 
+// A blurry image
 Item {
     property alias background: background
     property alias gradientBackground: gradientBackground
@@ -23,6 +24,7 @@ Item {
             id: gradientBackground
             anchors.fill: parent
 
+            // Add a gradient to the image background
             gradient: Gradient {
                 GradientStop { position: 0.6; color: "#CC000000"}
                 GradientStop { position: 0.9; color: backgroundColor}
@@ -30,6 +32,7 @@ Item {
             }
         }
 
+        // If there is no image
         Rectangle {
             id: gradientPlaceHolder
 

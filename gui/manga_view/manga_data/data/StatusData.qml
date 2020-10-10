@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// Status data
 Label {
     property alias status: status
     property string statusText: statusText
