@@ -16,7 +16,8 @@ Item {
 
     // Properties for MangaToolBar
     property int toolbarHeight: 48
-    property int iconSize: 24 
+    property int iconSize: 24
+    property int filterMenuWidth: 250
 
     // Properties for DataManga
     property int imageWidth: 210
@@ -51,14 +52,15 @@ Item {
             Column {
                 anchors.fill: parent
 
-                MangaData {id: dataManga}
-                TotalChaptersData {id: totalChapters}
-                MangaChapters {id: mangaChapters}
+                MangaData {id: dataManga}              // Manga data
+                TotalChaptersData {id: totalChapters}  // Chapters data
+                MangaChapters {id: mangaChapters}      // Chapters data
             }
         }
 
         Connections {
             target: MangaViewer
+            // Set the data
             function onManga_data(mangaData, error) {
                 var title = mangaData.title
                 var author = mangaData.author
@@ -84,12 +86,11 @@ Item {
             }
         }
 
-        Component.onDestruction: leftBar.visible = true
         Component.onCompleted: leftBar.visible = false
         
     }
 
-    Keys.onEscapePressed: stackView.pop() // To exit.
+    Keys.onEscapePressed: stackView.pop(), leftBar.visible = true // To exit.
 
     // To force focus.
     MouseArea {

@@ -1,9 +1,13 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+// Filters
 Menu {
+    property bool uncheckedFilters: (!checkRead.checked && !checkUnread.checked && !checkBookmarked.checked && !checkDownloaded.checked)
+
     id: filters
-    width: 250
+    width: filterMenuWidth
+
     Column {
         leftPadding: normalSpacing / 2
 
@@ -13,10 +17,8 @@ Menu {
             font.pixelSize: normalTextFontSize
             leftPadding: normalSpacing / 4
         }
-        CheckBox {
-            text: qsTr("All")
-            width: parent.width
-        }
+
+        // Read checkbox
         CheckBox {
             id: checkRead
 
@@ -28,8 +30,15 @@ Menu {
                     checkUnread.checked = false
                     mangaChapters.showRead(checkBookmarked.checked)
                 }
+                else {
+                    if (checkBookmarked.checked) {
+                        mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked)
+                    }
+                }
             }
         }
+
+        // Unread checkbox
         CheckBox {
             id: checkUnread
 
@@ -41,8 +50,15 @@ Menu {
                     checkRead.checked = false
                     mangaChapters.showUnread(checkBookmarked.checked)
                 }
+                else {
+                    if (checkBookmarked.checked) {
+                        mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked)
+                    }
+                }
             }
         }
+
+        // Bookmarked checkbox
         CheckBox {
             id: checkBookmarked
 
@@ -52,6 +68,14 @@ Menu {
             onCheckedChanged: {
                 if (checked) {
                     mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked)
+                }
+                else {
+                    if (checkRead.checked) {
+                        mangaChapters.showRead(checkBookmarked.checked)
+                    }
+                    if (checkUnread.checked) {
+                        mangaChapters.showUnread(checkBookmarked.checked)
+                    }
                 }
             }
         }
@@ -66,15 +90,27 @@ Menu {
     Column {
         topPadding: normalSpacing
         leftPadding: normalSpacing / 2
+        
         Label {
             text: qsTr("Order by")
             color: placeHolderColor
             font.pixelSize: normalTextFontSize
             leftPadding: normalSpacing / 4
         }
+
+        // Reverse the view
         CheckBox {
             text: qsTr("Chapter number")
             width: parent.width
+
+            onCheckedChanged: mangaChapters.swap()
+        }
+    }
+
+    // If nothing is checked, show all
+    onUncheckedFiltersChanged: {
+        if (uncheckedFilters) {
+            mangaChapters.showAll()
         }
     }
 }
