@@ -75,7 +75,7 @@ ItemDelegate {
 
     ContextMenu {id: contextMenu}
 
-
+    // Open the context menu
     MouseArea {
         id: mouseArea
     

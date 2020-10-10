@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Controls 2.15
 
+// Chapters columns, with context menu
 Column {
     property alias mangaChapters: mangaChapters
     property int currentIndex: 0
@@ -20,6 +21,7 @@ Column {
         currentIndex += 1
     }
 
+    // Reverse column
     function swap() {
         rotation += 180
 
@@ -28,6 +30,7 @@ Column {
         }
     }
 
+    // Show reads chapters
     function showRead(bookmarked) {
         for (var i=0; i < children.length; i++) {
             if (bookmarked) {
@@ -39,6 +42,7 @@ Column {
         }
     }
 
+    // Show unread chapters
     function showUnread(bookmarked) {
         for (var i=0; i < children.length; i++) {
             if (bookmarked) {
@@ -50,6 +54,7 @@ Column {
         }
     }
 
+    // Show bookmarked chapters
     function showBookmarked(read, unread) {
         for (var i=0; i < children.length; i++) {
             if (read) {
@@ -64,6 +69,7 @@ Column {
         }
     }
 
+    // Show all chapters
     function showAll() {
         for (var i=0; i < children.length; i++) {
             children[i].visible = true

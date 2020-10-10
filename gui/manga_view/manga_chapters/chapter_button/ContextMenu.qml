@@ -4,16 +4,19 @@ import QtQuick.Controls 2.15
 Menu {
     id: menu
 
+    // Download chapter
     MenuItem {
         id: download
         text: qsTr("Download")
     }
+    // Bookmark/unbookmark chapter
     MenuItem {
         id: bookmark
         text: bookmarked ? qsTr("Unbookmark") : qsTr("Bookmark")
 
         onTriggered: bookmarked = !bookmarked
     }
+    // Mark chapter as read/unread
     MenuItem {
         id: markAsRead
         text: read ? qsTr("Mark as unread") : qsTr("Mark as read")
@@ -23,12 +26,14 @@ Menu {
 
     MenuSeparator {}
 
+    // Copy chapter link
     MenuItem {
         id: copyLink
         text: qsTr("Copy chapter link")
 
         onTriggered: copy(chapterLink)
     }
+    // Mark all previous chapters as read
     MenuItem {
         id: previousAsRead
         text: qsTr("Mark previous as read")

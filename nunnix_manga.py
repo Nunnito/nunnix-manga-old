@@ -127,6 +127,7 @@ class Reader(QObject):
                 image = tools.download_image(images[i], chapter_dir, image_name)
                 while not image:
                     image = tools.download_image(images[i], chapter_dir, image_name)
+
                 self.get_images.emit(image_path)
 
 

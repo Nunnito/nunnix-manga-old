@@ -31,6 +31,7 @@ def download_image(link, directory, image_name):
         return False
 
 
+# Creates two cache directories
 def get_cache_dir():
     home = str(Path.home())
     if sys.platform == "linux":

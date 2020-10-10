@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import "../manga_data"
 
+// Total chapters
 Label {
     property alias totalChapters: totalChapters
     property string chapters
