@@ -28,7 +28,6 @@ Rectangle {
 		anchors.verticalCenter: parent.verticalCenter
 
 		// Row properties.
-		spacing: normalSpacing / 4
 		layoutDirection: Qt.RightToLeft
 		height: titleBarRowHeight
 

@@ -23,6 +23,7 @@ Rectangle {
 	// Left bar column.
 	ColumnLayout {
 		anchors.fill: parent
+		spacing: 0
 		
 		LibraryButton {id: libraryButton}       // Library button.
 		ExploreButton {id: exploreButton}      // Explore button.
