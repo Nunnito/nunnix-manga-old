@@ -52,6 +52,7 @@ Column {
 
                     onClicked: {
                         stackView.pop()
+                        leftBar.visible = true
                         stackView.children[1].searchToolBar.searchLineEdit.searchInput.text = text
                         stackView.children[1].genSearchData(true)
                     }

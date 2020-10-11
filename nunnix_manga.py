@@ -140,6 +140,7 @@ class Downloader(QObject):
         # If the image will not be saved
         if cached:
             chapter_dir = cache_save_dir + name + "/" + chapter + "/"
+            index = -1
         # If the image will be saved
         else:
             chapter_dir = downloads_dir + name + "/" + chapter + "/"
