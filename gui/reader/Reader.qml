@@ -11,10 +11,7 @@ Item {
 
     MouseArea {
         id: mouseArea
-        z: -1
-
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
 
         hoverEnabled: true
         acceptedButtons: Qt.NoButton
