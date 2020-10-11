@@ -43,5 +43,8 @@ Menu {
         onTriggered: markPreviousAsRead(index)
     }
 
-    onClosed: mouseArea.acceptedButtons = Qt.RightButton
+    onClosed: mouseArea.acceptedButtons = Qt.RightButton, parent.active = false
+
+    Component.onCompleted: popup()
+    Component.onDestruction: mouseArea.acceptedButtons = Qt.RightButton, parent.active = false
 }

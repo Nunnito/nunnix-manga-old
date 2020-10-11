@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 
 ItemDelegate {
     property alias chapterButton: chapterButton
-    property alias contextMenu: contextMenu
+    property alias loader: loader
 
     property string chapterName
     property string chapterDate
@@ -94,7 +94,11 @@ ItemDelegate {
         y: parent.height
     }
 
-    ContextMenu {id: contextMenu}
+    Loader {
+        id: loader
+        active: false
+        source: "ContextMenu.qml"
+    }
 
     // Open the context menu
     MouseArea {
@@ -105,11 +109,11 @@ ItemDelegate {
         acceptedButtons: Qt.RightButton
         onPressed: {
             if (mouse.button == Qt.RightButton) {
-                contextMenu.popup()
+                loader.active = true
                 acceptedButtons = Qt.LeftButton | Qt.RightButton
             }
             if (mouse.button == Qt.LeftButton) {
-                contextMenu.dismiss()
+                loader.active = false
             }
         }
     }
