@@ -30,6 +30,7 @@ Column {
     // Combo box.
     ComboBox {
         id: comboBox
+        Material.elevation: 2
 
         width: controlWidth
         model: jsonData == null ? [] : Object.keys(jsonData)
