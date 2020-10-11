@@ -137,6 +137,11 @@ class Downloader(QObject):
     def set_images_thread(self, url, name, chapter, cached, index):
         images = manga_source.get_chapters_images(url)
 
+        # Windows folders support.
+        expr = re.compile(r"[\\/:*?\"<>|]")
+        name = re.sub(expr, "", name)  
+        chapter = re.sub(expr, "", chapter)
+
         # If the image will not be saved
         if cached:
             chapter_dir = cache_save_dir + name + "/" + chapter + "/"
@@ -147,7 +152,7 @@ class Downloader(QObject):
 
         # If the chapter directory does not exists
         if not os.path.exists(chapter_dir):
-            os.makedirs(chapter_dir)
+            os.makedirs(Path(chapter_dir).absolute())
 
         for i in range(len(images)):
             image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
