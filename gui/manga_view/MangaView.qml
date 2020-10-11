@@ -25,13 +25,26 @@ Item {
     property int animTime: 500
     property int genresBorderWidth: 1
 
+    // Properties for MangaView
     property string previousThumbnail
     property string mangaLink
     property string mangaName
 
+    property string title
+    property string author
+    property string description
+    property string thumbnail
+    property string status
+    property var genres
+    property int total_chapters
+
+    property bool bookmarked
+    property bool downloaded
+
     id: mangaView
     
     Column {
+        Button {onClicked: saveManga()}
         width: parent.width
         height: parent.height
 
@@ -62,13 +75,13 @@ Item {
             target: MangaViewer
             // Set the data
             function onManga_data(mangaData, error) {
-                var title = mangaData.title
-                var author = mangaData.author
-                var description = mangaData.description
-                var thumbnail = mangaData.thumbnail
-                var genres = mangaData.genres
-                var total_chapters = mangaData.total_chapters
-                var status = mangaData.current_status
+                title = mangaData.title
+                author = mangaData.author
+                description = mangaData.description
+                thumbnail = mangaData.thumbnail
+                genres = mangaData.genres
+                total_chapters = mangaData.total_chapters
+                status = mangaData.current_status
 
                 dataManga.image.source = previousThumbnail
                 dataManga.title.text = title
@@ -103,5 +116,20 @@ Item {
         hoverEnabled: true
         acceptedButtons: Qt.NoButton
         onEntered: parent.forceActiveFocus(), flickableView.interactive = true
+    }
+
+    function saveManga() {
+        var mangaDict = {}
+
+        mangaDict.title = title
+        mangaDict.author = author
+        mangaDict.description = description
+        mangaDict.thumbnail = previousThumbnail
+        mangaDict.genres = genres
+        mangaDict.total_chapters = total_chapters
+        mangaDict.current_status = status
+        mangaDict.link = mangaLink
+
+        print(JSON.stringify(mangaDict))
     }
 }

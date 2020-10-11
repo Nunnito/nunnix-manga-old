@@ -12,7 +12,7 @@ import sys
 import os
 import re
 
-config_file = json.loads(open("config.json", "r").read())
+config_file = tools.config_file()
 scale_factor = config_file["system"]["scale_factor"]
 current_scraper = config_file["scrapers"]["current"]
 
@@ -40,8 +40,12 @@ class Searcher(QObject):
         manga_source = eval(manga_source_name)  # New manga source.
 
         # Write the config file.
-        config_writer("scrapers", "current", value=manga_source_name)
-        config_writer("scrapers", "current_alias", value=alias)
+        tools.config_writer("scrapers", "current", value=manga_source_name)
+        tools.config_writer("scrapers", "current_alias", value=alias)
+
+        # Reads and sends to QML.
+        config_file_read = tools.config_file()
+        context.setContextProperty("configFile", config_file_read)
 
         self.emit_controls()
 
@@ -81,7 +85,7 @@ class Searcher(QObject):
     def check_thumbnail(self, data):
         for thumbnail in data:
             name = re.search(r"[^/]\w+\..{3,4}$", thumbnail["thumbnail"]).group()
-            if os.path.exists(thumbnail_dir + name):
+            if Path(thumbnail_dir + name).exists():
                 thumbnail["thumbnail"] = Path(thumbnail_dir + name).as_uri()
 
         return data
@@ -139,7 +143,7 @@ class Downloader(QObject):
 
         # Windows folders support.
         expr = re.compile(r"[\\/:*?\"<>|]")
-        name = re.sub(expr, "", name)  
+        name = re.sub(expr, "", name)
         chapter = re.sub(expr, "", chapter)
 
         # If the image will not be saved
@@ -151,7 +155,7 @@ class Downloader(QObject):
             chapter_dir = downloads_dir + name + "/" + chapter + "/"
 
         # If the chapter directory does not exists
-        if not os.path.exists(chapter_dir):
+        if not Path(chapter_dir).exists():
             os.makedirs(Path(chapter_dir).absolute())
 
         for i in range(len(images)):
@@ -165,26 +169,6 @@ class Downloader(QObject):
             self.get_images.emit(Path(image_path).as_uri(), index, len(images), i + 1)
 
         self.downloaded.emit(index)
-
-
-# Writes keys and value to the config file.
-def config_writer(*keys, value=""):
-    file_read = json.loads(open("config.json", "r").read())
-    string_to_exec = "file_read"
-
-    for key in keys:
-        string_to_exec += f"['{key}']"
-    string_to_exec += f"='{value}'"  # String to execute.
-
-    exec(string_to_exec)  # Creates keys and a value.
-
-    # Writes.
-    with open("config.json", "w") as write_config:
-        json.dump(file_read, write_config, indent=4)
-
-    # Reads and sends to QML.
-    config_file_read = json.loads(open("config.json", "r").read())
-    context.setContextProperty("configFile", config_file_read)
 
 
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
@@ -209,5 +193,5 @@ context.setContextProperty("scraperData", scraper_data)
 context.setContextProperty("thumbnailDir", thumbnail_dir)
 context.setContextProperty("os", sys.platform)
 
-engine.load(__file__.replace("nunnix_manga.py", "gui/nunnix_manga.qml"))
+engine.load("gui/nunnix_manga.qml")
 sys.exit(application.exec_())
