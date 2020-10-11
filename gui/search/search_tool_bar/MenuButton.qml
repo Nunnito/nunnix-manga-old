@@ -37,11 +37,5 @@ RoundButton {
             // Open advanced search menu
             onTriggered: advancedSearch.open()
         }
-
-        // Menu background
-        background: Rectangle {
-            implicitWidth: menuAdvanced.width
-            color: surfaceColor2
-        }
     }
 }

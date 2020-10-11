@@ -3,6 +3,12 @@ import QtQuick.Controls 2.15
 
 // Filters
 Menu {
+    property alias checkRead: checkRead
+    property alias checkUnread: checkUnread
+    property alias checkBookmarked: checkBookmarked
+    property alias checkDownloaded: checkDownloaded
+    property alias checkReverse: checkReverse
+
     property bool uncheckedFilters: (!checkRead.checked && !checkUnread.checked && !checkBookmarked.checked && !checkDownloaded.checked)
 
     id: filters
@@ -126,6 +132,7 @@ Menu {
 
         // Reverse the view
         CheckBox {
+            id: checkReverse
             text: qsTr("Chapter number")
             width: parent.width
 

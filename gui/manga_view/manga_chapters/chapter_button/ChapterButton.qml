@@ -117,7 +117,7 @@ ItemDelegate {
 
     onClicked: {
         stackView.push("../../../reader/Reader.qml")
-        MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index)
+        MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index, downloaded)
     }
 
     onReadChanged: {
@@ -151,9 +151,10 @@ ItemDelegate {
     }
 
     onQueuedChanged: {
-        if (queued) {
+        if (queued && !downloadInProgress) {
             cached = false
-            MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index)
+            downloadInProgress = true
+            MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index, downloaded)
         }
     }
 
@@ -163,7 +164,17 @@ ItemDelegate {
         }
     }
 
-    
+    // Download the next chapter in queue
+    function refreshDownload() {
+        for (var i=0; i < mangaChapters.children.length; i++) {
+            if (mangaChapters.children[i].queued == true) {
+                mangaChapters.children[i].queued = false
+                mangaChapters.children[i].queued = true
+            }
+        }
+    }
+
+
     Connections {
         target: MangaDownloader
         function onGet_images(images, buttonIndex, imagesCount, downloadCount) {
@@ -179,6 +190,8 @@ ItemDelegate {
             if (buttonIndex == index) {
                 downloading = false
                 downloaded = true
+                downloadInProgress = false
+                refreshDownload()
             }
         }
     }

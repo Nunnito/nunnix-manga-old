@@ -17,7 +17,6 @@ Column {
     property int lastIndexOfLabel
 
     id: searchSlider
-    Material.background: surfaceColor
     topPadding: label.text ? normalSpacing : 0
 
     // Search slider title.

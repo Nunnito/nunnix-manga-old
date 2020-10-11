@@ -20,7 +20,6 @@ Column {
     property var currentValue: textInput.text ? textInput.text : ""
 
     id: searchTextInput
-    Material.background: surfaceColor
     topPadding: label.text ? normalSpacing : 0
 
     // Search text input title.

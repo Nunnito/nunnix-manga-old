@@ -39,7 +39,7 @@ Item {
     property int total_chapters
 
     property bool bookmarked
-    property bool downloaded
+    property bool downloadInProgress
 
     id: mangaView
     
@@ -120,6 +120,9 @@ Item {
 
     function saveManga() {
         var mangaDict = {}
+        var chaptersDict = {}
+        var filters = mangaToolBar.menuButton.filters
+        var chapters = mangaChapters.children
 
         mangaDict.title = title
         mangaDict.author = author
@@ -129,7 +132,38 @@ Item {
         mangaDict.total_chapters = total_chapters
         mangaDict.current_status = status
         mangaDict.link = mangaLink
+        mangaDict.bookmarked = bookmarked
 
-        print(JSON.stringify(mangaDict))
+        mangaDict.filters = {
+            read: filters.checkRead.checked,
+            unread: filters.checkUnread.checked,
+            bookmarked: filters.checkBookmarked.checked,
+            downloaded: filters.checkDownloaded.checked,
+            reverse: filters.checkReverse.checked
+        }
+
+        for (var i=0; i < chapters.length; i++) {
+            var chapterName = chapters[i].chapterName
+            var chapterLink = chapters[i].chapterLink
+            var chapterUploadDate = chapters[i].chapterDate
+            var chapterBookmarked = chapters[i].bookmarked
+            var chapterRead = chapters[i].read
+            var chapterQueued = chapters[i].queued
+            var chapterDownloading = chapters[i].downloading
+            var chapterDownloaded = chapters[i].downloaded
+
+            chaptersDict["chapter_" + i] = {
+                name: chapterName,
+                link: chapterLink,
+                upload_date: chapterUploadDate,
+                bookmarked: chapterBookmarked,
+                read: chapterRead,
+                queued: chapterQueued,
+                downloading: chapterDownloading,
+                downloaded: chapterDownloaded
+            }
+            
+            mangaDict.chapters = chaptersDict
+        }
     }
 }

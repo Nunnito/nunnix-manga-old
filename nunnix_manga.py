@@ -132,14 +132,15 @@ class Downloader(QObject):
         QObject.__init__(self)
 
     # Set images thread
-    @pyqtSlot(str, str, str, bool, int)
-    def set_images(self, url, name, chapter, cached, index):
-        data = Thread(target=self.set_images_thread, args=[url, name, chapter, cached, index])
+    @pyqtSlot(str, str, str, bool, int, bool)
+    def set_images(self, url, name, chapter, cached, index, downloaded):
+        data = Thread(target=self.set_images_thread, args=[url, name, chapter, cached, index, downloaded])
         data.start()
 
     # Set images
-    def set_images_thread(self, url, name, chapter, cached, index):
-        images = manga_source.get_chapters_images(url)
+    def set_images_thread(self, url, name, chapter, cached, index, downloaded):
+        if cached or not downloaded:
+            images = manga_source.get_chapters_images(url)
 
         # Windows folders support.
         expr = re.compile(r"[\\/:*?\"<>|]")
@@ -153,6 +154,8 @@ class Downloader(QObject):
         # If the image will be saved
         else:
             chapter_dir = downloads_dir + name + "/" + chapter + "/"
+            if downloaded:
+                images = [image for image in os.walk(chapter_dir)][0][2]
 
         # If the chapter directory does not exists
         if not Path(chapter_dir).exists():
@@ -162,9 +165,10 @@ class Downloader(QObject):
             image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
             image_path = chapter_dir + image_name
 
-            image = tools.download_image(images[i], chapter_dir, image_name)
-            while not image:
+            if cached or not downloaded:
                 image = tools.download_image(images[i], chapter_dir, image_name)
+                while not image:
+                    image = tools.download_image(images[i], chapter_dir, image_name)
 
             self.get_images.emit(Path(image_path).as_uri(), index, len(images), i + 1)
 

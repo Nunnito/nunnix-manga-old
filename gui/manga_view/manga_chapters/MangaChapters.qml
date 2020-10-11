@@ -102,4 +102,16 @@ Column {
             children[i].visible = true
         }
     }
+
+    // Downloads chapters
+    function downloadChapters(unread) {
+        for (var i=0; i < children.length; i++) {
+            if (unread) {
+                children[i].queued = !children[i].read
+            }
+            else {
+                children[i].queued = true
+            }
+        }
+    }
 }

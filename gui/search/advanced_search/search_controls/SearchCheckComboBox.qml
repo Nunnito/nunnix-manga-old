@@ -15,7 +15,6 @@ Column {
     property var currentValue: []
 
     id: searchCheckComboBox
-    Material.background: surfaceColor
     topPadding: label.text ? normalSpacing : 0
 
     // Search check combo title.

@@ -7,7 +7,7 @@ Menu {
     // Download chapter
     MenuItem {
         id: download
-        text: qsTr("Download")
+        text: downloaded ? qsTr("Delete") : qsTr("Download")
 
         onTriggered: queued = true
     }
@@ -41,10 +41,6 @@ Menu {
         text: qsTr("Mark previous as read")
 
         onTriggered: markPreviousAsRead(index)
-    }
-    background: Rectangle {
-        implicitWidth: markAsRead.width
-        color: surfaceColor2
     }
 
     onClosed: mouseArea.acceptedButtons = Qt.RightButton

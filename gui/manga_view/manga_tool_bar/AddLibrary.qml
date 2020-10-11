@@ -11,8 +11,10 @@ RoundButton {
     height: mangaToolBar.height
     width: height
 
-    icon.source: "../../../resources/bookmark_border.svg"
-    icon.color: iconColor
+    icon.source: bookmarked ? "../../../resources/bookmark.svg" : "../../../resources/bookmark_border.svg"
+    icon.color: bookmarked ? primaryColor : iconColor
     icon.width: iconSize
     icon.height: iconSize
+
+    onClicked: bookmarked = !bookmarked
 }

@@ -4,8 +4,10 @@ import QtQuick.Controls 2.15
 // Menu button.
 RoundButton {
     property alias menuButton: menuButton
+    property alias filters: filters
     property alias menu: menu
     property alias menuCopyLink: menuCopyLink
+    property alias menuFilter: menuFilter
 
     id: menuButton
     flat: true
@@ -35,12 +37,6 @@ RoundButton {
             text: qsTr("Filters")
 
             onTriggered: filters.open()
-        }
-
-        // Menu background
-        background: Rectangle {
-            implicitWidth: menuCopyLink.width
-            color: surfaceColor2
         }
     }
 

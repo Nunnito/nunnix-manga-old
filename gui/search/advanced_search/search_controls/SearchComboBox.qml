@@ -15,7 +15,6 @@ Column {
     property var currentValue: jsonData == null ? [] : jsonData[comboBox.currentText]
 
     id: searchComboBox
-    Material.background: surfaceColor
     topPadding: label.text ? normalSpacing : 0
 
     // Search combo box title.
