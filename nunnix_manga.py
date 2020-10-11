@@ -207,6 +207,7 @@ context.setContextProperty("MangaDownloader", manga_downloader)
 context.setContextProperty("configFile", config_file)
 context.setContextProperty("scraperData", scraper_data)
 context.setContextProperty("thumbnailDir", thumbnail_dir)
+context.setContextProperty("os", sys.platform)
 
 engine.load(__file__.replace("nunnix_manga.py", "gui/nunnix_manga.qml"))
 sys.exit(application.exec_())

@@ -32,7 +32,14 @@ Flickable {
                 cursorShape = Qt.OpenHandCursor
             }
         }
-        onWheel: contentY -= wheel.angleDelta.y / 4
+        onWheel: {
+            if (os == "win32") {
+                contentY -= wheel.angleDelta.y
+            }
+            if (os == "linux") {
+                contentY -= wheel.angleDelta.y / 4
+            }
+        }
     }
     
     Connections {

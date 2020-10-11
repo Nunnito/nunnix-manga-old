@@ -46,7 +46,7 @@ Item {
 
             maximumFlickVelocity: normalMaximumFlickVelocity
             flickDeceleration: normalFlickDeceleration
-            boundsBehavior: Flickable.OvershootBounds
+            boundsMovement: Flickable.StopAtBounds
             ScrollBar.vertical: ScrollBar { }
 
             Column {
