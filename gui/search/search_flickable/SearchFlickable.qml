@@ -124,7 +124,7 @@ Flickable {
         for (var i=0; i < size; i++) {
             var tile = component.createObject(container)
 
-            tile.label.text = dataSearch[i].title            // Tile title.
+            tile.title = dataSearch[i].title            // Tile title.
             tile.thumbnail.source = dataSearch[i].thumbnail  // Tile thumbnail.
             tile.mangaLink = dataSearch[i].link              // Tile link.
         }

@@ -81,29 +81,46 @@ class Searcher(QObject):
 
 # Manga viewer (data)
 class Viewer(QObject):
-    manga_data = pyqtSignal("QVariant", str, arguments=["mangaData", "error"])
+    manga_data = pyqtSignal("QVariant", str, str, arguments=["mangaData", "source", "error"])
 
     def __init__(self):
         QObject.__init__(self)
 
     # Set manga data thread
-    @pyqtSlot(str)
-    def set_manga_data(self, url):
-        data = Thread(target=self.set_manga_data_thread, args=[url])
+    @pyqtSlot(str, str, str)
+    def set_manga_data(self, url, source, name):
+        data = Thread(target=self.set_manga_data_thread, args=[url, source, name])
         data.start()
 
+    @pyqtSlot(str, str, str)
+    def save_manga(self, data, source, name):
+        name = re.sub(windows_expr, "", name)  # Windows folders support.
+        source_config_dir = manga_config_dir + "/" + source + "/"
+
+        # If the manga config does not exists
+        if not Path(source_config_dir).exists():
+            os.makedirs(Path(source_config_dir).absolute())
+
+        with open(source_config_dir + name + ".json", "w") as config:
+            json.dump(json.loads(data), config, indent=4, ensure_ascii=False)
+
     # Set manga data
-    def set_manga_data_thread(self, url):
-        data = manga_source.get_manga_data(url)
+    def set_manga_data_thread(self, url, source, name):
+        config_manga_file = manga_config_dir + "/" + source + "/" + name + ".json"
+
+        if Path(config_manga_file).exists():
+            data = json.load(open(config_manga_file))
+        else:
+            data = manga_source.get_manga_data(url)
 
         if type(data) == ConnectionError:
-            self.manga_data.emit({}, "ConnectionError")
+            self.manga_data.emit({}, "", "ConnectionError")
         elif type(data) == ReadTimeout:
-            self.manga_data.emit({}, "ReadTimeout")
+            self.manga_data.emit({}, "", "ReadTimeout")
         elif type(data) == str:
-            self.manga_data.emit({}, data)
+            self.manga_data.emit({}, "", data)
         else:
-            self.manga_data.emit(data, "")
+            self.manga_data.emit(data, manga_source.name, "")
 
 
 # Manga reader
@@ -131,9 +148,8 @@ class Downloader(QObject):
             images = manga_source.get_chapters_images(url)
 
         # Windows folders support.
-        expr = re.compile(r"[\\/:*?\"<>|]")
-        name = re.sub(expr, "", name)
-        chapter = re.sub(expr, "", chapter)
+        name = re.sub(windows_expr, "", name)
+        chapter = re.sub(windows_expr, "", chapter)
 
         # If the image will not be saved
         if cached:
@@ -174,6 +190,8 @@ manga_source = eval(current_scraper)
 
 for scraper in scrapers.__all__:
     scraper_data[eval(scraper).name] = scraper
+
+windows_expr = re.compile(r"[\\/:*?\"<>|]")
 
 
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"

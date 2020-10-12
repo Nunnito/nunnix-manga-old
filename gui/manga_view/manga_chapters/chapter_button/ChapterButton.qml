@@ -121,7 +121,7 @@ ItemDelegate {
 
     onClicked: {
         stackView.push("../../../reader/Reader.qml")
-        MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index, downloaded)
+        MangaDownloader.set_images(chapterLink, title, chapterName, cached, index, downloaded)
     }
 
     onReadChanged: {
@@ -158,7 +158,7 @@ ItemDelegate {
         if (queued && !downloadInProgress) {
             cached = false
             downloadInProgress = true
-            MangaDownloader.set_images(chapterLink, mangaName, chapterName, cached, index, downloaded)
+            MangaDownloader.set_images(chapterLink, title, chapterName, cached, index, downloaded)
         }
     }
 

@@ -28,7 +28,7 @@ Item {
     // Properties for MangaView
     property string previousThumbnail
     property string mangaLink
-    property string mangaName
+    property string mangaSource
 
     property string title
     property string author
@@ -74,8 +74,7 @@ Item {
         Connections {
             target: MangaViewer
             // Set the data
-            function onManga_data(mangaData, error) {
-                title = mangaData.title
+            function onManga_data(mangaData, source, error) {
                 author = mangaData.author
                 description = mangaData.description
                 thumbnail = mangaData.thumbnail
@@ -90,8 +89,8 @@ Item {
                 dataManga.genres.model = genres
                 dataManga.description.descriptionText = description
 
-                mangaName = title
                 totalChapters.chapters = total_chapters
+                mangaSource = source
 
                 for (var i=0; i < total_chapters; i++) {
                     mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i)])
@@ -133,6 +132,7 @@ Item {
         mangaDict.current_status = status
         mangaDict.link = mangaLink
         mangaDict.bookmarked = bookmarked
+        mangaDict.source = mangaSource
 
         mangaDict.filters = {
             read: filters.checkRead.checked,
@@ -163,9 +163,8 @@ Item {
                 downloaded: chapterDownloaded
             }
             
-            mangaDict.chapters = chaptersDict
         }
-
-        print(copy(JSON.stringify(mangaDict)))
+        mangaDict.chapters = chaptersDict
+        MangaViewer.save_manga(JSON.stringify(mangaDict), mangaSource, title)
     }
 }

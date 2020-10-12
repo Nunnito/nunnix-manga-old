@@ -7,7 +7,7 @@ Button {
 	property alias thumbnail: thumbnail
 	property alias showAnimation: showAnimation
 	property alias labelBackground: labelBackground
-	property alias label: label
+	property alias title: label.text
 	property alias busyIndicator: busyIndicator
 	property alias mouseArea: mouseArea
 	property alias tooltip: tooltip
@@ -15,6 +15,7 @@ Button {
 
 	property string mangaLink
 	property string mangaThumbnail: thumbnail.source
+	property string source: configFile.scrapers.current_alias
 	property var imageName: /[^/]\w+\..{3,4}$/.exec(mangaThumbnail)
 
 	id: thumbnailButton
@@ -28,8 +29,8 @@ Button {
 	 }
 
 	 onClicked: {
-		stackView.push("../manga_view/MangaView.qml", {"previousThumbnail": mangaThumbnail, "mangaLink": mangaLink})
-		MangaViewer.set_manga_data(mangaLink)
+		stackView.push("../manga_view/MangaView.qml", {"previousThumbnail": mangaThumbnail, "mangaLink": mangaLink, "title": title})
+		MangaViewer.set_manga_data(mangaLink, source, title)
 	 }
 
 	// Manga title image
