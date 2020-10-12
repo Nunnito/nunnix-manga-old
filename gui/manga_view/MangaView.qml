@@ -165,5 +165,7 @@ Item {
             
             mangaDict.chapters = chaptersDict
         }
+
+        print(copy(JSON.stringify(mangaDict)))
     }
 }

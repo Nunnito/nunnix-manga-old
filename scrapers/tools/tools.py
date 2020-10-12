@@ -37,12 +37,16 @@ def get_cache_dir():
     if sys.platform == "linux":
         thumbnails = home + "/.cache/nunnix-manga/thumbnails/"
         cache = home + "/.cache/nunnix-manga/manga-cache/"
-        downloads = home + "/.nunnix-manga/manga/"
+        downloads = home + "/.local/share/nunnix-manga/manga/"
+        config = home + "/.config/nunnix-manga/config/"
+        manga_config = home + "/.config/nunnix-manga/config/manga"
 
     if sys.platform == "win32":
         thumbnails = home + "/AppData/Local/nunnix-manga/thumbnails/"
         cache = home + "/AppData/Local/nunnix-manga/manga-cache/"
         downloads = home + "/AppData/Local/nunnix-manga/manga-downloads/"
+        config = home + "/AppData/Local/nunnix-manga/config"
+        manga_config = home + "/AppData/Local/nunnix-manga/config/manga"
 
     if not Path(thumbnails).exists():
         os.makedirs(thumbnails)
@@ -50,8 +54,12 @@ def get_cache_dir():
         os.makedirs(cache)
     if not Path(downloads).exists():
         os.makedirs(downloads)
+    if not Path(config).exists():
+        os.makedirs(config)
+    if not Path(manga_config).exists():
+        os.makedirs(manga_config)
 
-    return thumbnails, cache, downloads
+    return thumbnails, cache, downloads, config, manga_config
 
 
 # Writes keys and value to the config file.

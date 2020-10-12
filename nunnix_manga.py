@@ -12,18 +12,6 @@ import sys
 import os
 import re
 
-config_file = tools.config_file()
-scale_factor = config_file["system"]["scale_factor"]
-current_scraper = config_file["scrapers"]["current"]
-
-thumbnail_dir, cache_save_dir, downloads_dir = tools.get_cache_dir()
-
-scraper_data = {}
-manga_source = eval(current_scraper)
-
-for scraper in scrapers.__all__:
-    scraper_data[eval(scraper).name] = scraper
-
 
 # Manga searcher.
 class Searcher(QObject):
@@ -173,6 +161,19 @@ class Downloader(QObject):
             self.get_images.emit(Path(image_path).as_uri(), index, len(images), i + 1)
 
         self.downloaded.emit(index)
+
+
+config_file = tools.config_file()
+scale_factor = config_file["system"]["scale_factor"]
+current_scraper = config_file["scrapers"]["current"]
+
+thumbnail_dir, cache_save_dir, downloads_dir, config_dir, manga_config_dir = tools.get_cache_dir()
+
+scraper_data = {}
+manga_source = eval(current_scraper)
+
+for scraper in scrapers.__all__:
+    scraper_data[eval(scraper).name] = scraper
 
 
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
