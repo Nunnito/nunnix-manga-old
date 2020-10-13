@@ -92,9 +92,11 @@ Item {
                 totalChapters.chapters = total_chapters
                 mangaSource = source
 
-                for (var i=0; i < total_chapters; i++) {
-                    mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i)])
-                }
+                sleep(250, function() {
+                    for (var i=0; i < total_chapters; i++) {
+                        mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i)])
+                    }
+                })
             }
         }
 
@@ -115,6 +117,13 @@ Item {
         hoverEnabled: true
         acceptedButtons: Qt.NoButton
         onEntered: parent.forceActiveFocus(), flickableView.interactive = true
+    }
+
+    function sleep(delayTime, callBack) {
+        var timer = Qt.createQmlObject("import QtQuick 2.15; Timer {}", parent)
+        timer.interval = delayTime
+        timer.triggered.connect(callBack)
+        timer.start()
     }
 
     function saveManga() {
