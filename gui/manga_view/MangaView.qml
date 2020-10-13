@@ -74,7 +74,7 @@ Item {
         Connections {
             target: MangaViewer
             // Set the data
-            function onManga_data(mangaData, source, error) {
+            function onManga_data(mangaData, source, error, saved) {
                 author = mangaData.author
                 description = mangaData.description
                 thumbnail = mangaData.thumbnail
@@ -92,9 +92,36 @@ Item {
                 totalChapters.chapters = total_chapters
                 mangaSource = source
 
+                if (saved) {
+                    mangaLink = mangaData.link
+                    bookmarked = mangaData.bookmarked
+                }
+
                 sleep(250, function() {
                     for (var i=0; i < total_chapters; i++) {
-                        mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + (i)])
+                        mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + i])
+
+                        if (saved) {
+                            var chapters = mangaChapters.children
+                            var chaptersData = mangaData.chapters["chapter_" + i]
+
+                            chapters[i].bookmarked = chaptersData.bookmarked
+                            chapters[i].read = chaptersData.read
+                            chapters[i].queued = chaptersData.queued
+                            chapters[i].downloading = chaptersData.downloading
+                            chapters[i].downloaded = chaptersData.downloaded
+                        }
+                    }
+
+                    if (saved) {
+                        var filters = mangaToolBar.menuButton.filters
+                        var dataFilters = mangaData.filters
+
+                        filters.checkRead.checked = dataFilters.read
+                        filters.checkUnread.checked = dataFilters.unread
+                        filters.checkBookmarked.checked = dataFilters.bookmarked
+                        filters.checkDownloaded.checked = dataFilters.downloaded
+                        filters.checkReverse.checked = dataFilters.reverse
                     }
                 })
             }
@@ -119,6 +146,7 @@ Item {
         onEntered: parent.forceActiveFocus(), flickableView.interactive = true
     }
 
+    // Sleep function, to wait.
     function sleep(delayTime, callBack) {
         var timer = Qt.createQmlObject("import QtQuick 2.15; Timer {}", parent)
         timer.interval = delayTime
@@ -139,9 +167,9 @@ Item {
         mangaDict.genres = genres
         mangaDict.total_chapters = total_chapters
         mangaDict.current_status = status
+        mangaDict.source = mangaSource
         mangaDict.link = mangaLink
         mangaDict.bookmarked = bookmarked
-        mangaDict.source = mangaSource
 
         mangaDict.filters = {
             read: filters.checkRead.checked,

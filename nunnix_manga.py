@@ -81,7 +81,7 @@ class Searcher(QObject):
 
 # Manga viewer (data)
 class Viewer(QObject):
-    manga_data = pyqtSignal("QVariant", str, str, arguments=["mangaData", "source", "error"])
+    manga_data = pyqtSignal("QVariant", str, str, bool, arguments=["mangaData", "source", "error", "saved"])
 
     def __init__(self):
         QObject.__init__(self)
@@ -110,17 +110,19 @@ class Viewer(QObject):
 
         if Path(config_manga_file).exists():
             data = json.load(open(config_manga_file))
+            saved = True
         else:
             data = manga_source.get_manga_data(url)
+            saved = False
 
         if type(data) == ConnectionError:
-            self.manga_data.emit({}, "", "ConnectionError")
+            self.manga_data.emit({}, "", "ConnectionError", False)
         elif type(data) == ReadTimeout:
-            self.manga_data.emit({}, "", "ReadTimeout")
+            self.manga_data.emit({}, "", "ReadTimeout", False)
         elif type(data) == str:
-            self.manga_data.emit({}, "", data)
+            self.manga_data.emit({}, "", data, False)
         else:
-            self.manga_data.emit(data, manga_source.name, "")
+            self.manga_data.emit(data, manga_source.name, "", saved)
 
 
 # Manga reader
@@ -146,7 +148,6 @@ class Downloader(QObject):
     def set_images_thread(self, url, name, chapter, cached, link, downloaded):
         if cached or not downloaded:
             images = manga_source.get_chapters_images(url)
-        print(link)
 
         # Windows folders support.
         name = re.sub(windows_expr, "", name)
