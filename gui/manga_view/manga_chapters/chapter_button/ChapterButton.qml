@@ -23,7 +23,7 @@ ItemDelegate {
     property string buttonColor: textColor
     property string downloadStatus: queued ? queuedText : downloading ? downloadingText : downloaded ? downloadedText : ""
 
-    property bool cached: true
+    property bool cached: downloaded ? false : true
     property int index
     property int total
     property int count
@@ -125,6 +125,10 @@ ItemDelegate {
     }
 
     onReadChanged: {
+        if (!markAsReadRecursive) {
+            saveManga()
+        }
+
         if (read) {
             buttonColor = surfaceColor4
         }
@@ -139,6 +143,8 @@ ItemDelegate {
     }
 
     onBookmarkedChanged: {
+        saveManga()
+
         if (bookmarked) {
             if (!read) {
                 buttonColor = primaryColor
@@ -155,6 +161,8 @@ ItemDelegate {
     }
 
     onQueuedChanged: {
+        saveManga()
+
         if (queued && !downloadInProgress) {
             cached = false
             downloadInProgress = true
@@ -163,9 +171,12 @@ ItemDelegate {
     }
 
     function markPreviousAsRead(firstIndex) {
+        markAsReadRecursive = true
         for (var i=firstIndex+1; i < mangaChapters.children.length; i++) {
             mangaChapters.children[i].read = true
         }
+        markAsReadRecursive = false
+        saveManga()
     }
 
     // Download the next chapter in queue

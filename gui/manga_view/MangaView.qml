@@ -40,11 +40,11 @@ Item {
 
     property bool bookmarked
     property bool downloadInProgress
+    property bool markAsReadRecursive
 
     id: mangaView
     
     Column {
-        Button {onClicked: saveManga()}
         width: parent.width
         height: parent.height
 

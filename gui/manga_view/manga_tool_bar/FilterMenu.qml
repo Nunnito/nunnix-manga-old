@@ -32,6 +32,8 @@ Menu {
             width: parent.width
 
             onCheckedChanged: {
+                saveManga()
+
                 if (checked) {
                     checkUnread.checked = false
                     mangaChapters.showRead(checkBookmarked.checked, checkDownloaded.checked)
@@ -55,6 +57,8 @@ Menu {
             width: parent.width
 
             onCheckedChanged: {
+                saveManga()
+
                 if (checked) {
                     checkRead.checked = false
                     mangaChapters.showUnread(checkBookmarked.checked, checkDownloaded.checked)
@@ -78,6 +82,8 @@ Menu {
             width: parent.width
 
             onCheckedChanged: {
+                saveManga()
+
                 if (checked) {
                     mangaChapters.showBookmarked(checkRead.checked, checkUnread.checked, checkDownloaded.checked)
                 }
@@ -101,6 +107,8 @@ Menu {
             width: parent.width
 
             onCheckedChanged: {
+                saveManga()
+
                 if (checked) {
                     mangaChapters.showDownloaded(checkRead.checked, checkUnread.checked, checkBookmarked.checked)
                 }
@@ -136,7 +144,7 @@ Menu {
             text: qsTr("Chapter number")
             width: parent.width
 
-            onCheckedChanged: mangaChapters.swap()
+            onCheckedChanged: mangaChapters.swap(), saveManga()
         }
     }
 

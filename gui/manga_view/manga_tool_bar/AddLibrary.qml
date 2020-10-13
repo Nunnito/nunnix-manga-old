@@ -16,5 +16,5 @@ RoundButton {
     icon.width: iconSize
     icon.height: iconSize
 
-    onClicked: bookmarked = !bookmarked
+    onClicked: bookmarked = !bookmarked, saveManga()
 }
