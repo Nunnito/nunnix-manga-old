@@ -167,6 +167,7 @@ ItemDelegate {
             cached = false
             downloadInProgress = true
             MangaDownloader.set_images(chapterLink, title, chapterName, cached, chapterLink, downloaded)
+            saveManga()
         }
     }
 
@@ -206,6 +207,7 @@ ItemDelegate {
                 downloading = false
                 downloaded = true
                 downloadInProgress = false
+                saveManga()
                 refreshDownload()
             }
         }
