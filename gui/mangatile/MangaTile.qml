@@ -30,7 +30,7 @@ Button {
 
 	 onClicked: {
 		stackView.push("../manga_view/MangaView.qml", {"previousThumbnail": mangaThumbnail, "mangaLink": mangaLink, "title": title})
-		MangaViewer.set_manga_data(mangaLink, source, title)
+		MangaViewer.set_manga_data(mangaLink, source, title, false)
 	 }
 
 	// Manga title image

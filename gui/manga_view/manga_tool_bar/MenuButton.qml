@@ -38,6 +38,17 @@ RoundButton {
 
             onTriggered: filters.open()
         }
+
+        MenuItem {
+            id: reloadMenu
+            text: qsTr("Reload")
+
+            onTriggered: {
+                forced = true
+                MangaViewer.set_manga_data(mangaLink, mangaSource, title, bookmarked, forced)
+                forced = false
+            }
+        }
     }
 
     FilterMenu {id: filters}

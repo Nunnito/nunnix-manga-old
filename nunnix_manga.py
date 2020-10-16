@@ -87,9 +87,9 @@ class Viewer(QObject):
         QObject.__init__(self)
 
     # Set manga data thread
-    @pyqtSlot(str, str, str)
-    def set_manga_data(self, url, source, name):
-        data = Thread(target=self.set_manga_data_thread, args=[url, source, name])
+    @pyqtSlot(str, str, str, bool)
+    def set_manga_data(self, url, source, name, forced):
+        data = Thread(target=self.set_manga_data_thread, args=[url, source, name, forced])
         data.start()
 
     @pyqtSlot(str, str, str)
@@ -105,12 +105,16 @@ class Viewer(QObject):
             json.dump(json.loads(data), config, indent=4, ensure_ascii=False)
 
     # Set manga data
-    def set_manga_data_thread(self, url, source, name):
+    def set_manga_data_thread(self, url, source, name, forced):
         config_manga_file = manga_config_dir + "/" + source + "/" + name + ".json"
 
         if Path(config_manga_file).exists():
             data = json.load(open(config_manga_file))
             saved = True
+
+            if forced:
+                data = manga_source.get_manga_data(url)
+                saved = False
         else:
             data = manga_source.get_manga_data(url)
             saved = False

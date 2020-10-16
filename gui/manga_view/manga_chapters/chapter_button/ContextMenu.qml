@@ -28,6 +28,13 @@ Menu {
 
     MenuSeparator {}
 
+    MenuItem {
+        id: select
+        text: qsTr("Select")
+
+        onTriggered: copy(chapterLink)
+    }
+
     // Copy chapter link
     MenuItem {
         id: copyLink

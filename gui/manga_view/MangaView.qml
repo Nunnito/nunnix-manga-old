@@ -41,6 +41,7 @@ Item {
     property bool bookmarked
     property bool downloadInProgress
     property bool markAsReadRecursive
+    property bool forced
 
     id: mangaView
     
@@ -98,7 +99,7 @@ Item {
                 }
 
                 sleep(250, function() {
-                    for (var i=0; i < total_chapters; i++) {
+                    for (var i=mangaChapters.children.length; i < total_chapters; i++) {
                         mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + i])
 
                         if (saved) {
