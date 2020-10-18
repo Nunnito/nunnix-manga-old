@@ -114,4 +114,62 @@ Column {
             }
         }
     }
+
+    function markSelectedAsRead(read) {
+        for (var i=0; i < children.length; i++) {
+            if (children[i].highlighted) {
+                children[i].read = read
+            }
+        }
+    }
+
+    function bookmarkSelected(bookmarked) {
+        for (var i=0; i < children.length; i++) {
+            if (children[i].highlighted) {
+                children[i].bookmarked = bookmarked
+            }
+        }
+    }
+
+    function downloadSelected() {
+        for (var i=0; i < children.length; i++) {
+            if (children[i].highlighted) {
+                children[i].queued = true
+            }
+        }
+    }
+
+    function deleteSelected() {
+        for (var i=0; i < children.length; i++) {
+            if (children[i].highlighted) {
+                children[i].deleteManga()
+            }
+        }
+    }
+
+    function deselectAll() {
+        for (var i=0; i < children.length; i++) {
+            if (children[i].highlighted) {
+                children[i].highlighted = false
+            }
+            children[i].mouseArea.acceptedButtons = Qt.RightButton
+        }
+        mangaToolBar.toolBarStackView.pop()
+        selecting = false
+    }
+
+    function isDeselectedAll() {
+        for (var i=0; i < children.length; i++) {
+            if (children[i].highlighted) {
+                return false
+            }
+        }
+        deselectAll()
+    }
+
+    function activeLeftButton() {
+        for (var i=0; i < children.length; i++) {
+            children[i].mouseArea.acceptedButtons = Qt.LeftButton
+        }
+    }
 }

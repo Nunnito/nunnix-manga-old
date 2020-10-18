@@ -128,6 +128,17 @@ class Viewer(QObject):
         else:
             self.manga_data.emit(data, manga_source.name, "", saved)
 
+    @pyqtSlot(str, str, str)
+    def delete_manga(self, source, name, chapter):
+        chapter_dir = downloads_dir + source + "/" + name + "/" + chapter + "/"
+
+        for image in os.walk(chapter_dir):
+            images_name = image[2]
+
+            for image_name in images_name:
+                image_path = image[0] + image_name
+                os.remove(image_path)
+
 
 # Manga reader
 class Reader(QObject):
@@ -143,13 +154,13 @@ class Downloader(QObject):
         QObject.__init__(self)
 
     # Set images thread
-    @pyqtSlot(str, str, str, bool, str, bool)
-    def set_images(self, url, name, chapter, cached, index, downloaded):
-        data = Thread(target=self.set_images_thread, args=[url, name, chapter, cached, index, downloaded])
+    @pyqtSlot(str, str, str, str, bool, str, bool)
+    def set_images(self, url, source, name, chapter, cached, index, downloaded):
+        data = Thread(target=self.set_images_thread, args=[url, source, name, chapter, cached, index, downloaded])
         data.start()
 
     # Set images
-    def set_images_thread(self, url, name, chapter, cached, link, downloaded):
+    def set_images_thread(self, url, source, name, chapter, cached, link, downloaded):
         if cached or not downloaded:
             images = manga_source.get_chapters_images(url)
 
@@ -159,11 +170,11 @@ class Downloader(QObject):
 
         # If the image will not be saved
         if cached:
-            chapter_dir = cache_save_dir + name + "/" + chapter + "/"
+            chapter_dir = cache_save_dir + source + "/" + name + "/" + chapter + "/"
             link = None
         # If the image will be saved
         else:
-            chapter_dir = downloads_dir + name + "/" + chapter + "/"
+            chapter_dir = downloads_dir + source + "/" + name + "/" + chapter + "/"
             if downloaded:
                 images = [image for image in os.walk(chapter_dir)][0][2]
 

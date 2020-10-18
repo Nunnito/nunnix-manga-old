@@ -5,6 +5,7 @@ import QtQuick.Controls 2.15
 ItemDelegate {
     property alias chapterButton: chapterButton
     property alias loader: loader
+    property alias mouseArea: mouseArea
 
     property string chapterName
     property string chapterDate
@@ -116,12 +117,28 @@ ItemDelegate {
                 loader.active = false
             }
         }
+
+        onClicked: {
+            if (selecting) {
+                parent.highlighted = !parent.highlighted
+                isDeselectedAll()
+                if (parent.highlighted) {
+                    mangaToolBar.toolBarStackView.children[1].updateSelectBar(read, bookmarked, downloaded, true)
+                }
+                else {
+                    mangaToolBar.toolBarStackView.children[1].updateSelectBar(read, bookmarked, downloaded, false)
+                }
+                mangaToolBar.toolBarStackView.children[1].setReadText()
+                mangaToolBar.toolBarStackView.children[1].setBookmarkText()
+                mangaToolBar.toolBarStackView.children[1].setDownloadText()
+            }
+        }
     }
 
 
     onClicked: {
         stackView.push("../../../reader/Reader.qml")
-        MangaDownloader.set_images(chapterLink, title, chapterName, cached, chapterLink, downloaded)
+        MangaDownloader.set_images(chapterLink, mangaSource, title, chapterName, cached, chapterLink, downloaded)
     }
 
     onReadChanged: {
@@ -166,9 +183,13 @@ ItemDelegate {
         if (queued && !downloadInProgress) {
             cached = false
             downloadInProgress = true
-            MangaDownloader.set_images(chapterLink, title, chapterName, cached, chapterLink, downloaded)
+            MangaDownloader.set_images(chapterLink, mangaSource, title, chapterName, cached, chapterLink, downloaded)
             saveManga()
         }
+    }
+
+    onDownloadedChanged: {
+        saveManga()
     }
 
     function markPreviousAsRead(firstIndex) {
@@ -178,6 +199,11 @@ ItemDelegate {
         }
         markAsReadRecursive = false
         saveManga()
+    }
+
+    function deleteManga() {
+        MangaViewer.delete_manga(mangaSource, title, chapterName)
+        downloaded = false
     }
 
     // Download the next chapter in queue
@@ -207,7 +233,6 @@ ItemDelegate {
                 downloading = false
                 downloaded = true
                 downloadInProgress = false
-                saveManga()
                 refreshDownload()
             }
         }

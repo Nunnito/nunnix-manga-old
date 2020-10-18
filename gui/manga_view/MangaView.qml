@@ -42,6 +42,7 @@ Item {
     property bool downloadInProgress
     property bool markAsReadRecursive
     property bool forced
+    property bool selecting
 
     id: mangaView
     
@@ -132,7 +133,14 @@ Item {
         
     }
 
-    Keys.onEscapePressed: stackView.pop(), leftBar.visible = true // To exit.
+    Keys.onEscapePressed: {
+        if (selecting) {
+            mangaChapters.deselectAll()
+        }
+        else {
+            stackView.pop(), leftBar.visible = true // To exit.
+        }
+    }
 
     // To force focus.
     MouseArea {

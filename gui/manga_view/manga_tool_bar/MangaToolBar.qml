@@ -5,11 +5,12 @@ import QtQuick.Controls.Material 2.15
 
 Rectangle {
     property alias mangaToolBar: mangaToolBar
-    property alias row: row
-    property alias menuButton: menuButton
-    property alias downloadButton: downloadButton
-    property alias addLibrary: addLibrary
-    property alias toolBarArea: toolBarArea
+    property alias toolBarStackView: toolBarStackView
+
+    property var menuButton: toolBarStackView.children[0].menuButton
+    property var downloadButton: toolBarStackView.children[0].downloadButton
+    property var addLibrary: toolBarStackView.children[0].addLibrary
+    property var toolBarArea: toolBarStackView.children[0].toolBarArea
 
     id: mangaToolBar
     z: 1
@@ -18,14 +19,13 @@ Rectangle {
     height: toolbarHeight
     color: surfaceColor
 
-    Row {
-        id: row
-        width: parent.width
-        layoutDirection: Qt.RightToLeft
 
-        MenuButton {id: menuButton}          // Menu button
-        DownloadButton {id: downloadButton}  // Download button
-        AddLibrary {id: addLibrary}          // Add to library
+    StackView {
+        id: toolBarStackView
+
+        height: parent.height
+        width: parent.width
+        initialItem: "optionsMenuBar.qml"
     }
 
 	MouseArea {

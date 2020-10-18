@@ -9,7 +9,7 @@ Menu {
         id: download
         text: downloaded ? qsTr("Delete") : qsTr("Download")
 
-        onTriggered: queued = true
+        onTriggered: downloaded ? deleteManga() : queued = true
     }
     // Bookmark/unbookmark chapter
     MenuItem {
@@ -30,9 +30,21 @@ Menu {
 
     MenuItem {
         id: select
-        text: qsTr("Select")
+        text: chapterButton.highlighted ? qsTr("Deselect") : qsTr("Select")
 
-        onTriggered: copy(chapterLink)
+        onTriggered: {
+            chapterButton.highlighted = !chapterButton.highlighted
+
+            if (!selecting) {
+                mangaToolBar.toolBarStackView.push("../../manga_tool_bar/selectMenuBar.qml")
+                mangaToolBar.toolBarStackView.children[1].updateSelectBar(read, bookmarked, downloaded, true)
+                mangaToolBar.toolBarStackView.children[1].setReadText()
+                mangaToolBar.toolBarStackView.children[1].setBookmarkText()
+                mangaToolBar.toolBarStackView.children[1].setDownloadText()
+                selecting = true
+                activeLeftButton()
+            }
+        }
     }
 
     // Copy chapter link
@@ -50,8 +62,10 @@ Menu {
         onTriggered: markPreviousAsRead(index)
     }
 
-    onClosed: mouseArea.acceptedButtons = Qt.RightButton, parent.active = false
-
     Component.onCompleted: popup()
-    Component.onDestruction: mouseArea.acceptedButtons = Qt.RightButton, parent.active = false
+    Component.onDestruction: {
+        if (!selecting) {
+            mouseArea.acceptedButtons = Qt.RightButton, parent.active = false
+        }
+    }
 }
