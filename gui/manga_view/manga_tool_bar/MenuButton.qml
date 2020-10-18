@@ -45,7 +45,7 @@ RoundButton {
 
             onTriggered: {
                 forced = true
-                MangaViewer.set_manga_data(mangaLink, mangaSource, title, bookmarked, forced)
+                MangaViewer.set_manga_data(mangaLink, mangaSource, title, forced)
                 forced = false
             }
         }
