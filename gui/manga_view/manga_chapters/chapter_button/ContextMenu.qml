@@ -62,6 +62,7 @@ Menu {
         onTriggered: markPreviousAsRead(index)
     }
 
+    onClosed: parent.active = false
     Component.onCompleted: popup()
     Component.onDestruction: {
         if (!selecting) {
