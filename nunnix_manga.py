@@ -81,7 +81,7 @@ class Searcher(QObject):
 
 # Manga viewer (data)
 class Viewer(QObject):
-    manga_data = pyqtSignal("QVariant", str, str, bool, arguments=["mangaData", "source", "error", "saved"])
+    manga_data = pyqtSignal("QVariant", "QVariant", str, str, bool, arguments=["mangaData", "source", "error", "saved"])
 
     def __init__(self):
         QObject.__init__(self)
@@ -107,12 +107,14 @@ class Viewer(QObject):
     # Set manga data
     def set_manga_data_thread(self, url, source, name, forced):
         config_manga_file = manga_config_dir + "/" + source + "/" + name + ".json"
+        data_saved = {}
 
         if Path(config_manga_file).exists():
             data = json.load(open(config_manga_file))
             saved = True
 
             if forced:
+                data_saved = data
                 data = manga_source.get_manga_data(url)
                 saved = False
         else:
@@ -120,13 +122,13 @@ class Viewer(QObject):
             saved = False
 
         if type(data) == ConnectionError:
-            self.manga_data.emit({}, "", "ConnectionError", False)
+            self.manga_data.emit({}, {}, "", "ConnectionError", False)
         elif type(data) == ReadTimeout:
-            self.manga_data.emit({}, "", "ReadTimeout", False)
+            self.manga_data.emit({}, {}, "", "ReadTimeout", False)
         elif type(data) == str:
-            self.manga_data.emit({}, "", data, False)
+            self.manga_data.emit({}, {}, "", data, False)
         else:
-            self.manga_data.emit(data, manga_source.name, "", saved)
+            self.manga_data.emit(data, data_saved, manga_source.name, "", saved)
 
     @pyqtSlot(str, str, str)
     def delete_manga(self, source, name, chapter):

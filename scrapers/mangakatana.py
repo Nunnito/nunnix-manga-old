@@ -124,7 +124,7 @@ def get_manga_data(url):
 
     for chapter in chapters:
         # Chapter name
-        name = chapter.find("div", {"class": "chapter"}).text.strip()
+        name = chapter.find("div", {"class": "chapter"}).find("a").text.strip()
         chapters_name.append(name)
 
         # Chapter upload date

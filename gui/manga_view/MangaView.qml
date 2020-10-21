@@ -43,6 +43,7 @@ Item {
     property bool markAsReadRecursive
     property bool forced
     property bool selecting
+    property bool chaptersFinished
 
     id: mangaView
     
@@ -76,7 +77,7 @@ Item {
         Connections {
             target: MangaViewer
             // Set the data
-            function onManga_data(mangaData, source, error, saved) {
+            function onManga_data(mangaData, mangaDataSaved, source, error, saved) {
                 author = mangaData.author
                 description = mangaData.description
                 thumbnail = mangaData.thumbnail
@@ -99,8 +100,14 @@ Item {
                     bookmarked = mangaData.bookmarked
                 }
 
+                if (mangaChapters.children.length != 0) {
+                    for (var i=0; i < mangaChapters.children.length; i++) {
+                        mangaChapters.children[i].destroy()
+                    }
+                }
+
                 sleep(250, function() {
-                    for (var i=mangaChapters.children.length; i < total_chapters; i++) {
+                    for (var i=0; i < total_chapters; i++) {
                         mangaChapters.spawnChapter(mangaData["chapters"]["chapter_" + i])
 
                         if (saved) {
@@ -125,6 +132,36 @@ Item {
                         filters.checkDownloaded.checked = dataFilters.downloaded
                         filters.checkReverse.checked = dataFilters.reverse
                     }
+
+                    if (Object.keys(mangaDataSaved).length != 0) {
+                        var addSaved = 0
+                        var chapted_saved_name = ""
+                        var chapters = mangaChapters.children
+
+                        
+                        for (var i=0; i < mangaChapters.children.length; i++) {
+                            var chapter_name = JSON.stringify(mangaData.chapters["chapter_" + i].name)
+                            var chaptersData = mangaDataSaved.chapters["chapter_" + (i - addSaved)]
+
+                            if (mangaDataSaved.chapters["chapter_" + ((mangaChapters.children.length - 1) - i)] == null) {
+                                addSaved += 1
+                            }
+                            else {
+                                var chaptersSaved = mangaDataSaved.chapters["chapter_" + (i - addSaved)]
+                                chapted_saved_name = JSON.stringify(chaptersSaved.name)
+
+                            }
+
+                            if (chapter_name == chapted_saved_name) {
+                                chapters[i].bookmarked = chaptersData.bookmarked
+                                chapters[i].read = chaptersData.read
+                                chapters[i].queued = chaptersData.queued
+                                chapters[i].downloading = chaptersData.downloading
+                                chapters[i].downloaded = chaptersData.downloaded
+                            }
+                        }
+                    }
+                    chaptersFinished = true
                 })
             }
         }
@@ -211,6 +248,8 @@ Item {
             
         }
         mangaDict.chapters = chaptersDict
-        MangaViewer.save_manga(JSON.stringify(mangaDict), mangaSource, title)
+        if (chaptersFinished) {
+            MangaViewer.save_manga(JSON.stringify(mangaDict), mangaSource, title)
+        }
     }
 }
