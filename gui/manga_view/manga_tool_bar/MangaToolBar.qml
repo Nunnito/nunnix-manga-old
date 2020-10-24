@@ -32,6 +32,6 @@ Rectangle {
         id: toolBarArea
 
 		anchors.fill: parent
-		acceptedButtons: Qt.NoButton 
+        z: -1
 	}
 }

@@ -43,6 +43,7 @@ Item {
     property bool markAsReadRecursive
     property bool forced
     property bool selecting
+    property bool reversed
     property bool chaptersFinished
 
     id: mangaView

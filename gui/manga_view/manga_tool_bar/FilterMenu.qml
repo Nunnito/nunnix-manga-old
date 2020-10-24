@@ -144,7 +144,7 @@ Menu {
             text: qsTr("Chapter number")
             width: parent.width
 
-            onCheckedChanged: mangaChapters.swap(), saveManga()
+            onCheckedChanged: mangaChapters.reverse(), saveManga(), reversed = !reversed
         }
     }
 

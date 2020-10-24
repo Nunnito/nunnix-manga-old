@@ -18,11 +18,15 @@ Column {
         button.chapterLink = data.link
         button.index = currentIndex
 
+        if (reversed) {
+            button.rotation += 180
+        }
+
         currentIndex += 1
     }
 
     // Reverse column
-    function swap() {
+    function reverse() {
         rotation += 180
 
         for (var i=0; i < children.length; i++) {
