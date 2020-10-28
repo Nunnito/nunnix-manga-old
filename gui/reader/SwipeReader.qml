@@ -4,6 +4,8 @@ import QtQuick.Controls 2.15
 Flickable {
     property var listImages
     property int currentIndex: 0
+    property bool loaded
+
     id: swipeReader
 
     width: reader.width
@@ -45,13 +47,17 @@ Flickable {
     Connections {
         target: MangaDownloader
 
-        function onGet_images(images) {
+        function onGet_images(images, buttonLink, imagesCount, downloadCount) {
             var chapterImage = Qt.createComponent("ChapterImage.qml")
             var image = chapterImage.createObject(column)
 
             image.index = currentIndex
             image.source = images
             currentIndex += 1
+
+            if (imagesCount == downloadCount) {
+                loaded = true
+            }
         }
     }
 }
