@@ -10,9 +10,7 @@ Item {
     property alias mangaToolBar: mangaToolBar
     property alias dataManga: dataManga
     property alias mangaChapters: mangaChapters
-
     property alias flickableView: flickableView
-    property alias mouseArea: mouseArea
 
     // Properties for MangaToolBar
     property int toolbarHeight: 48
@@ -171,26 +169,18 @@ Item {
         
     }
 
-    Keys.onEscapePressed: {
-        if (selecting) {
-            mangaChapters.deselectAll()
+    Shortcut {
+        enabled: stackView.currentItem == mangaView
+        sequence: StandardKey.Cancel
+
+        onActivated: {
+            if (selecting) {
+                mangaChapters.deselectAll()
+            }
+            else {
+                stackView.pop(), leftBar.visible = true // To exit.
+            }
         }
-        else {
-            stackView.pop(), leftBar.visible = true // To exit.
-        }
-    }
-
-    // To force focus.
-    MouseArea {
-        id: mouseArea
-        z: -1
-
-        width: parent.width
-        height: parent.height
-
-        hoverEnabled: true
-        acceptedButtons: Qt.NoButton
-        onEntered: parent.forceActiveFocus(), flickableView.interactive = true
     }
 
     // Sleep function, to wait.

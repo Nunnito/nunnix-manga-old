@@ -7,14 +7,11 @@ Item {
         SwipeReader {id: swipeReader}
     }
 
-    Keys.onEscapePressed: stackView.pop()
 
-    MouseArea {
-        id: mouseArea
-        anchors.fill: parent
+    Shortcut {
+        enabled: stackView.currentItem == reader
+        sequence: StandardKey.Cancel
 
-        hoverEnabled: true
-        acceptedButtons: Qt.NoButton
-        onEntered: parent.forceActiveFocus()
+        onActivated: stackView.pop()
     }
 }
