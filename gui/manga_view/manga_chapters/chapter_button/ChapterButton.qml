@@ -208,7 +208,7 @@ ItemDelegate {
 
     // Download the next chapter in queue
     function refreshDownload() {
-        for (var i=0; i < mangaChapters.children.length; i++) {
+        for (var i=mangaChapters.children.length - 1; i >= 0; i--) {
             if (mangaChapters.children[i].queued == true) {
                 mangaChapters.children[i].queued = false
                 mangaChapters.children[i].queued = true
@@ -219,7 +219,7 @@ ItemDelegate {
 
     Connections {
         target: MangaDownloader
-        function onGet_images(images, buttonLink, imagesCount, downloadCount) {
+        function onGet_images(images, imgWidth, imgHeight, buttonLink, imagesCount, downloadCount) {
             if (buttonLink == chapterLink) {
                 queued = false
                 downloading = true

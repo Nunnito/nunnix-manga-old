@@ -136,7 +136,7 @@ Column {
     }
 
     function downloadSelected() {
-        for (var i=0; i < children.length; i++) {
+        for (var i=children.length - 1; i >= 0; i--) {
             if (children[i].highlighted) {
                 children[i].queued = true
             }

@@ -2,9 +2,9 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QVariant
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
 from PyQt5.QtGui import QGuiApplication
+from scrapers.tools import tools
 from threading import Thread
 from pathlib import Path
-from scrapers.tools import tools
 from scrapers import *
 import scrapers
 import json
@@ -95,23 +95,24 @@ class Viewer(QObject):
     @pyqtSlot(str, str, str)
     def save_manga(self, data, source, name):
         name = re.sub(windows_expr, "", name)  # Windows folders support.
-        source_config_dir = manga_config_dir + "/" + source + "/"
+        source_config_dir = Path(manga_config_dir, source, name)
 
         # If the manga config does not exists
         if not Path(source_config_dir).exists():
             os.makedirs(Path(source_config_dir).absolute())
 
-        with open(source_config_dir + name + ".json", "w") as config:
+        with open(str(Path(source_config_dir, name)) + ".json", "w") as config:
             json.dump(json.loads(data), config, indent=4, ensure_ascii=False)
 
     # Set manga data
     def set_manga_data_thread(self, url, source, name, forced):
-        config_manga_file = manga_config_dir + "/" + source + "/" + name + ".json"
+        config_manga_file = str(Path(manga_config_dir, source, name, name)) + ".json"
         data_saved = {}
 
         if Path(config_manga_file).exists():
-            data = json.load(open(config_manga_file))
-            saved = True
+            with open(config_manga_file) as f:
+                data = json.load(f)
+                saved = True
 
             if forced:
                 data_saved = data
@@ -132,6 +133,8 @@ class Viewer(QObject):
 
     @pyqtSlot(str, str, str)
     def delete_manga(self, source, name, chapter):
+        chapter = re.sub(windows_expr, "", chapter)  # Windows folders support.
+        name = re.sub(windows_expr, "", name)  # Windows folders support.
         chapter_dir = downloads_dir + source + "/" + name + "/" + chapter + "/"
 
         for image in os.walk(chapter_dir):
@@ -149,7 +152,8 @@ class Reader(QObject):
 
 
 class Downloader(QObject):
-    get_images = pyqtSignal(str, str, int, int, arguments=["images", "buttonLink", "imagesCount", "downloadCount"])
+    get_images = pyqtSignal(str, int, int, str, int, int, arguments=[
+        "images", "imgWidth", "imgHeight" "buttonLink", "imagesCount", "downloadCount"])
     downloaded = pyqtSignal(str, arguments="buttonLink")
 
     def __init__(self):
@@ -169,6 +173,9 @@ class Downloader(QObject):
         # Windows folders support.
         name = re.sub(windows_expr, "", name)
         chapter = re.sub(windows_expr, "", chapter)
+
+        images_size = {}
+        images_config_path = Path(manga_config_dir, source, name, chapter)
 
         # If the image will not be saved
         if cached:
@@ -193,7 +200,18 @@ class Downloader(QObject):
                 while not image:
                     image = tools.download_image(images[i], chapter_dir, image_name)
 
-            self.get_images.emit(Path(image_path).as_uri(), link, len(images), i + 1)
+            if os.path.exists(str(images_config_path) + ".json") and images_size == {}:
+                with open(str(images_config_path) + ".json") as f:
+                    sizes = json.load(f)
+                    width = sizes[image_name][0]
+                    height = sizes[image_name][1]
+            else:
+                width, height = tools.get_image_size(image_path)
+                images_size[image_name] = [width, height]
+                with open(str(images_config_path) + ".json", "w") as image_config:
+                    json.dump(images_size, image_config, indent=4)
+
+            self.get_images.emit(Path(image_path).as_uri(), width, height, link, len(images), i + 1)
 
         self.downloaded.emit(link)
 

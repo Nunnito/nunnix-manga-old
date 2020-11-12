@@ -2,62 +2,46 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Flickable {
-    property var listImages
     property int currentIndex: 0
-    property bool loaded
+    property int setIndex: 0
 
     id: swipeReader
 
     width: reader.width
     height: reader.height
     contentHeight: column.height
-    boundsMovement: Flickable.StopAtBounds
 
-    ScrollBar.vertical: ScrollBar { }
+    boundsMovement: Flickable.StopAtBounds
+    interactive: true
+
+    ScrollBar.vertical: ScrollBar {}
 
     Column {
         id: column
-        spacing: normalSpacing / 2
+        spacing: normalSpacing
     }
 
     MouseArea {
-        anchors.fill: parent
         z: -1
-        hoverEnabled: true
-        cursorShape: cursorShape = Qt.OpenHandCursor
+        anchors.fill: parent
 
-        onPositionChanged: {
-            if (pressedButtons == Qt.LeftButton) {
-                cursorShape = Qt.ClosedHandCursor
-            }
-            else {
-                cursorShape = Qt.OpenHandCursor
-            }
-        }
         onWheel: {
-            if (os == "win32") {
-                contentY -= wheel.angleDelta.y
-            }
-            if (os == "linux") {
-                contentY -= wheel.angleDelta.y / 4
-            }
+            swipeReader.contentY -= wheel.angleDelta.y / moveFlickable
         }
     }
     
     Connections {
         target: MangaDownloader
 
-        function onGet_images(images, buttonLink, imagesCount, downloadCount) {
-            var chapterImage = Qt.createComponent("ChapterImage.qml")
-            var image = chapterImage.createObject(column)
+        function onGet_images(images, imgWidth, imgHeight, buttonLink, imagesCount, downloadCount) {
+            var image = Qt.createComponent("ChapterImage.qml")
+            image = image.createObject(column)
 
-            image.index = currentIndex
+            image.realWidth = imgWidth
+            image.realHeight = imgHeight
+            image.index = setIndex
             image.source = images
-            currentIndex += 1
-
-            if (imagesCount == downloadCount) {
-                loaded = true
-            }
+            setIndex++
         }
     }
 }

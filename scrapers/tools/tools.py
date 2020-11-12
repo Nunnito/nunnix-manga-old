@@ -1,5 +1,6 @@
 from requests.exceptions import ConnectionError, ReadTimeout
 from pathlib import Path
+from PIL import Image
 import requests
 import json
 import os
@@ -95,9 +96,14 @@ def config_file():
         with open(config_path, "w") as config_file:
             json.dump(default_config, config_file, indent=4)
 
-    config_file = json.loads(open(config_path, "r").read())
+    with open(config_path) as f:
+        config_file = json.load(f)
     return config_file
 
 
-def manga_writer():
-    pass
+def get_image_size(image_path):
+    image = Image.open(image_path)
+    size = image.size
+    image.close()
+
+    return size

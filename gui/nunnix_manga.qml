@@ -19,6 +19,15 @@ ApplicationWindow {
 	property int normalMaximumFlickVelocity: 1500
     property int normalFlickDeceleration: 2000
 
+	property int moveFlickable: {
+		if (os == "win32") {
+			return 1
+		}
+		if (os == "linux") {
+			return 4
+		}
+	}
+
 	// Colors used for the entire application.
 	property var materialAccent: Material.DeepPurple
 	property string backgroundColor: darkMode ? "#121212" :"#ffffff"
