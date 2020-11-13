@@ -137,13 +137,13 @@ class Viewer(QObject):
         chapter = re.sub(windows_expr, "", chapter)
         name = re.sub(windows_expr, "", name)
 
-        chapter_dir = downloads_dir + source + "/" + name + "/" + chapter + "/"
+        chapter_dir = Path(downloads_dir, source, name, chapter)
 
-        for image in os.walk(chapter_dir):
+        for image in os.walk(chapter_dir.absolute()):
             images_name = image[2]
 
             for image_name in images_name:
-                image_path = image[0] + image_name
+                image_path = Path(image[0], image_name)
                 os.remove(image_path)
 
 
@@ -178,24 +178,26 @@ class Downloader(QObject):
 
         images_size = {}
         images_config_path = Path(manga_config_dir, source, name, chapter)
+        if not images_config_path.exists():
+            os.makedirs(images_config_path)
 
         # If the image will not be saved
         if cached:
-            chapter_dir = cache_save_dir + source + "/" + name + "/" + chapter + "/"
+            chapter_dir = Path(cache_save_dir, source, name, chapter)
             link = None
         # If the image will be saved
         else:
-            chapter_dir = downloads_dir + source + "/" + name + "/" + chapter + "/"
+            chapter_dir = Path(downloads_dir, source, name, chapter)
             if downloaded:
                 images = [image for image in os.walk(chapter_dir)][0][2]
 
         # If the chapter directory does not exists
         if not Path(chapter_dir).exists():
-            os.makedirs(Path(chapter_dir).absolute())
+            os.makedirs(chapter_dir)
 
         for i in range(len(images)):
             image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
-            image_path = chapter_dir + image_name
+            image_path = Path(chapter_dir, image_name)
 
             if cached or not downloaded:
                 image = tools.download_image(images[i], chapter_dir, image_name)
