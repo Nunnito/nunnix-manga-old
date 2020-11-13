@@ -17,26 +17,30 @@ Image {
     id: image
     asynchronous: true
 
-    width: reader.width
+    width: column.width
     height: heightResized
+    x: column.width <= reader.width ? (reader.width / 2 - width) + (width / 2 - scrollBar.width / 2) : reader.x - scrollBar.width
 
-    sourceSize: {
-        if ((currentIndex == index - 1 || currentIndex == index || currentIndex == index + 1)) {
-            return Qt.size(realWidth, realHeight)
-        }
-        else {
-            return Qt.size(realWidth / 100, realHeight / 100)
-        }
-    }
+    sourceSize: updateSourceSize()
 
     onIsCurrentItemChanged: {
-        if (isCurrentItem && status == 1) {
+        if (isCurrentItem) {
             currentIndex = index
         }
     }
     onStatusChanged: {
         if (status == 1 && !loaded) {
             loaded = true
+        }
+    }
+
+    function updateSourceSize() {
+        if ((currentIndex == index - 1 || currentIndex == index - 2 ||
+            currentIndex == index || currentIndex == index + 1)) {
+                return Qt.size(realWidth, realHeight)
+        }
+        else {
+            return Qt.size(realWidth / 100, realHeight / 100)
         }
     }
 }

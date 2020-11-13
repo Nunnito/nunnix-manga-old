@@ -133,8 +133,10 @@ class Viewer(QObject):
 
     @pyqtSlot(str, str, str)
     def delete_manga(self, source, name, chapter):
-        chapter = re.sub(windows_expr, "", chapter)  # Windows folders support.
-        name = re.sub(windows_expr, "", name)  # Windows folders support.
+        # Windows folders support.
+        chapter = re.sub(windows_expr, "", chapter)
+        name = re.sub(windows_expr, "", name)
+
         chapter_dir = downloads_dir + source + "/" + name + "/" + chapter + "/"
 
         for image in os.walk(chapter_dir):
