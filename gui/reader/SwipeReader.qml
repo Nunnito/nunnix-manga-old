@@ -46,6 +46,7 @@ Flickable {
 
         onWheel: {
             swipeReader.contentY -= wheel.angleDelta.y / moveFlickable
+            swipeReader.contentX -= wheel.angleDelta.x / moveFlickable
         }
     }
     
