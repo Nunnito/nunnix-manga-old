@@ -13,6 +13,9 @@ Flickable {
 
     property bool zoomInAdjust: false
     property bool zoomOutAdjust: false
+    property bool usingMouse: false
+
+    property int angleDeltaCount: 0
     property int adjustToWidth: reader.width - scrollBar.width
 
     id: swipeReader
@@ -23,7 +26,6 @@ Flickable {
     contentWidth: column.width
 
     boundsMovement: Flickable.StopAtBounds
-    pixelAligned: false
     interactive: true
 
     ScrollBar.vertical: scrollBar
@@ -45,8 +47,29 @@ Flickable {
         cursorShape: Qt.OpenHandCursor
 
         onWheel: {
-            swipeReader.contentY -= wheel.angleDelta.y / moveFlickable
-            swipeReader.contentX -= wheel.angleDelta.x / moveFlickable
+            if (wheel.modifiers & Qt.ControlModifier) {
+                angleDeltaCount += wheel.angleDelta.y
+
+                if (angleDeltaCount >= 120) {
+                    zoomIn()
+                    angleDeltaCount = 0
+                }
+                if (angleDeltaCount <= -120) {
+                    zoomOut()
+                    angleDeltaCount = 0
+                }
+            }
+            else {
+                if (wheel.angleDelta.y % 120 == 0 && wheel.angleDelta.y != 0) {
+                    usingMouse = true
+                    swipeReader.contentY -= wheel.angleDelta.y + 0.1
+                }
+                else {
+                    usingMouse = false
+                    swipeReader.contentY -= wheel.angleDelta.y / moveFlickable
+                    swipeReader.contentX -= wheel.angleDelta.x / moveFlickable
+                }
+            }
         }
     }
     
@@ -73,7 +96,7 @@ Flickable {
         contentY = oldYPosition * contentHeight
     }
     onContentYChanged: {
-        if (contentY != ~~contentY) {
+        if (contentY != ~~contentY || (usingMouse && contentY != ~~contentY)) {
             oldYPosition = contentY / contentHeight
         }
     }
