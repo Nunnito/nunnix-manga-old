@@ -1,6 +1,7 @@
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick 2.15
+import "../../../wheel_area"
 
 Column {
     // Search combo box alias.
@@ -43,6 +44,10 @@ Column {
 
             contentItem: ListView {
                 clip: true
+
+                boundsMovement: Flickable.StopAtBounds
+                interactive: false
+                WheelArea {parent: parent}
 
                 implicitHeight: contentHeight
                 model: comboBox.popup.visible ? comboBox.delegateModel : null

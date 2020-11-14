@@ -43,7 +43,7 @@ Column {
     property int searchInputRadius: 5
     property int iconSize: 24
 
-    property int currentPage
+    property int currentPage: 1
     property bool isNewSearch
     property bool isLoading: false
     property bool isEnd: false

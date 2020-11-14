@@ -13,8 +13,6 @@ Column {
     // Reload button properties.
     id: reloadButton
     visible: false
-    x: mainWindow.width / 2 - leftBar.width * 2 - searchFlickable.leftMargin
-    y: mainWindow.height / 2 - (titleBar.height + searchFlickable.topMargin) * 2
 
     RoundButton {
         id: icon

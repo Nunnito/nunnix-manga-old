@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "../../wheel_area"
 
 Popup {
     // Advanced search alias.
@@ -25,8 +26,9 @@ Popup {
         width: parent.width
         height: parent.height
         contentHeight: columnControls.height + titleBar.height
-        maximumFlickVelocity: normalMaximumFlickVelocity
-        flickDeceleration: normalFlickDeceleration
+        boundsMovement: Flickable.StopAtBounds
+
+        WheelArea {parent: flickable}
 
         // Scroll indicator.
         ScrollIndicator.vertical: ScrollIndicator {active: true}

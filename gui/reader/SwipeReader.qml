@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "../wheel_area"
 
 Flickable {
     property alias column: column
@@ -13,7 +14,6 @@ Flickable {
 
     property bool zoomInAdjust: false
     property bool zoomOutAdjust: false
-    property bool usingMouse: false
 
     property int angleDeltaCount: 0
     property int adjustToWidth: reader.width - scrollBar.width
@@ -38,13 +38,12 @@ Flickable {
         spacing: normalSpacing
     }
 
-    MouseArea {
+    WheelArea {
         id: mouseArea
-        z: -1
-
-        width: parent.height
-        height: parent.height
         cursorShape: Qt.OpenHandCursor
+
+        parent: swipeReader
+        useContentX: true
 
         onWheel: {
             if (wheel.modifiers & Qt.ControlModifier) {
@@ -59,20 +58,9 @@ Flickable {
                     angleDeltaCount = 0
                 }
             }
-            else {
-                if (wheel.angleDelta.y % 120 == 0 && wheel.angleDelta.y != 0) {
-                    usingMouse = true
-                    swipeReader.contentY -= wheel.angleDelta.y + 0.1
-                }
-                else {
-                    usingMouse = false
-                    swipeReader.contentY -= wheel.angleDelta.y / moveFlickable
-                    swipeReader.contentX -= wheel.angleDelta.x / moveFlickable
-                }
-            }
         }
     }
-    
+
     Connections {
         target: MangaDownloader
 
@@ -96,7 +84,7 @@ Flickable {
         contentY = oldYPosition * contentHeight
     }
     onContentYChanged: {
-        if (contentY != ~~contentY || (usingMouse && contentY != ~~contentY)) {
+        if (contentY != ~~contentY || (mouseArea.usingMouse && contentY != ~~contentY)) {
             oldYPosition = contentY / contentHeight
         }
     }

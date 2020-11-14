@@ -3,6 +3,7 @@ import QtQuick.Controls 2.15
 import "manga_data"
 import "manga_chapters"
 import "manga_tool_bar"
+import "../wheel_area"
 
 Item {
     // MangaView alias
@@ -59,9 +60,9 @@ Item {
             height: parent.height - mangaToolBar.height
             contentHeight: dataManga.row.height + mangaChapters.height + mangaToolBar.height
 
-            maximumFlickVelocity: normalMaximumFlickVelocity
-            flickDeceleration: normalFlickDeceleration
+            interactive: false
             boundsMovement: Flickable.StopAtBounds
+
             ScrollBar.vertical: ScrollBar { }
 
             Column {
@@ -71,6 +72,8 @@ Item {
                 TotalChaptersData {id: totalChapters}  // Chapters data
                 MangaChapters {id: mangaChapters}      // Chapters data
             }
+
+            WheelArea {parent: flickableView}
         }
 
         Connections {

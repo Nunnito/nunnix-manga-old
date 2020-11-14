@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "../../wheel_area"
 
 Flickable {
     // Search flickable alias
@@ -23,12 +24,13 @@ Flickable {
     bottomMargin: normalSpacing * 2
     leftMargin: normalSpacing
 
-    maximumFlickVelocity: normalMaximumFlickVelocity
-    flickDeceleration: normalFlickDeceleration
-    boundsBehavior: Flickable.OvershootBounds
-    interactive: (!reloadButton.visible && !busyIndicator.visible && !infoIcon.visible)
-    contentHeight: container.children.length == 0 ? parent.height : searchColumn.height
+    boundsMovement: Flickable.StopAtBounds
+    interactive: false
+
+    contentHeight: container.children.length == 0 ? 0 : searchColumn.height
     contentWidth: width - normalSpacing
+
+    WheelArea {parent: searchFlickable}
 
     Column {
         id: searchColumn
@@ -62,6 +64,8 @@ Flickable {
 
         visible: isError
         label.text: errorText
+        x: infoIcon.x
+        y: infoIcon.y
     }
     InfoIcon {
         id: infoIcon
@@ -74,14 +78,15 @@ Flickable {
     // Appears in a new search.
     BusyIndicator {
         id: busyIndicator
-        x: reloadButton.x + 60
-        y: reloadButton.y + 20
+        x: infoIcon.x + 60
+        y: infoIcon.y + 20
 
         visible: !reloadButton.visible && !infoIcon.visible && container.children.length == 0
     }
 
     Component.onCompleted: {
         genSearchData(true)
+        isNewSearch = true
     }
 
     Connections {
