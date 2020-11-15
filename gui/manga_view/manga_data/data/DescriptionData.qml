@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "../../../wheel_area"
 
 // Description data
 Column {
@@ -33,9 +34,11 @@ Column {
         height: image.height - (parent.y + label.height)
 
         clip: true
-        contentHeight: description.height
-        boundsBehavior: Flickable.OvershootBounds
         rightMargin: normalSpacing
+        contentHeight: description.height
+
+        boundsMovement: Flickable.StopAtBounds
+        interactive: false
 
         ScrollIndicator.vertical: ScrollIndicator {active: true}
 
@@ -56,18 +59,12 @@ Column {
             height: 100
             visible: !description.text
         }
+        WheelArea {
+            enabled: flickable.contentHeight >= flickable.height ? true : false
+            parent: flickable
 
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.NoButton
+            moveHalfMouse: true
             propagateComposedEvents: true
-
-            onEntered: {
-                if (flickable.contentHeight > flickable.height) {
-                    flickableView.interactive = false
-                }
-            }
         }
     }
 

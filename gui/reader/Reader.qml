@@ -2,9 +2,17 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Item {
+    property int currentIndex
+    property int totalPages
+
     id: reader
+
     Column {
+        height: reader.height
+        width: reader.width
+
         SwipeReader {id: swipeReader}
+        ControlsBar {id: controlsBar}
     }
 
     ScrollBar {
