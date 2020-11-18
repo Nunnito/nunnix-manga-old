@@ -21,7 +21,7 @@ ApplicationWindow {
 
 	property int moveFlickable: {
 		if (os == "win32") {
-			return 1
+			return 4
 		}
 		if (os == "linux") {
 			return 4
