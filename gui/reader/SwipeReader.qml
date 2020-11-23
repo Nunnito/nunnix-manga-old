@@ -13,6 +13,7 @@ Flickable {
 
     property bool zoomInAdjust: false
     property bool zoomOutAdjust: false
+    property bool addingImage: false
 
     property int angleDeltaCount: 0
     property int adjustToWidth: reader.width - scrollBar.width
@@ -67,16 +68,19 @@ Flickable {
         target: MangaDownloader
 
         function onGet_images(images, imgWidth, imgHeight, buttonLink, imagesCount, downloadCount) {
-            totalPages = imagesCount
+            if (chapterLink == buttonLink) {
+                totalPages = imagesCount
+                addingImage = true
 
-            var image = Qt.createComponent("ChapterImage.qml")
-            image = image.createObject(column)
+                var image = Qt.createComponent("ChapterImage.qml")
+                image = image.createObject(column)
 
-            image.realWidth = imgWidth
-            image.realHeight = imgHeight
-            image.index = setIndex
-            image.imagePath = images
-            setIndex++
+                image.realWidth = imgWidth
+                image.realHeight = imgHeight
+                image.index = setIndex
+                image.imagePath = images
+                setIndex++
+            }
         }
     }
 
@@ -85,8 +89,11 @@ Flickable {
         mouseArea.cursorShape = dragging ? Qt.ClosedHandCursor : Qt.OpenHandCursor
     }
     onContentHeightChanged: {
-        newYPosition = contentY / contentHeight
-        contentY = oldYPosition * contentHeight
+        if (!addingImage) {
+            newYPosition = contentY / contentHeight
+            contentY = oldYPosition * contentHeight
+        }
+        addingImage = false
     }
     onContentYChanged: {
         if (contentY != ~~contentY || (mouseArea.usingMouse && contentY != ~~contentY)) {

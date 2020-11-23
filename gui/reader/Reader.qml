@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Item {
+    property int chapterIndex
+    property string chapterLink
     property int currentIndex
     property int totalPages
 
@@ -45,5 +47,11 @@ Item {
         sequence: StandardKey.ZoomIn
 
         onActivated: swipeReader.zoomIn()
+    }
+
+    onCurrentIndexChanged: {
+        if (currentIndex == totalPages - 1) {
+            stackView.children[StackView.index - 1].mangaChapters.children[chapterIndex].read = true
+        }
     }
 }
