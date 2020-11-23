@@ -24,10 +24,4 @@ ItemDelegate {
     icon.width: iconSize
     icon.height: iconSize
     icon.color: !highlighted ? iconColor : primaryColor
-
-    onClicked: {
-        if (stackView.currentItem.name != target) {
-            stackView.pop()
-        }
-    }
 }

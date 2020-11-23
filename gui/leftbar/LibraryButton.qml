@@ -12,7 +12,7 @@ LeftBarButton {
     // On clicked, switch to the library.
     onClicked: {
         if (!highlighted) {
-            stackView.push("../library/Library.qml")
+            stackView.replace("../library/Library.qml")
         }
     }    
 }
