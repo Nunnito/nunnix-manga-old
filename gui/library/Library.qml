@@ -1,11 +1,12 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import "../search/search_flickable/"
 
 
-Rectangle {
+Column {
     property string name: "library"
 
-    width: 10
-    height: 10
-    color: "transparent"
+    SavedFlickable {id: savedFlickable}
+
+    Component.onCompleted: MangaLibrary.get_saved_mangas()    
 }
