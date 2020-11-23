@@ -8,6 +8,7 @@ Menu {
     MenuItem {
         id: download
         text: downloaded ? qsTr("Delete") : qsTr("Download")
+        visible: !downloading
 
         onTriggered: downloaded ? deleteManga() : queued = true
     }

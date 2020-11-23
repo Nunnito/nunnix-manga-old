@@ -24,10 +24,10 @@ ItemDelegate {
     property string buttonColor: textColor
     property string downloadStatus: queued ? queuedText : downloading ? downloadingText : downloaded ? downloadedText : ""
 
-    property bool cached: downloaded ? false : true
+    property bool cached: downloaded ? false : downloading ? false : true
     property int index
     property int total
-    property int count
+    property int count: 0
 
     id: chapterButton
     width: parent.width

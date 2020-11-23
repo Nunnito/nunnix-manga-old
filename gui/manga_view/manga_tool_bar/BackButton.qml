@@ -17,5 +17,5 @@ RoundButton {
     icon.width: iconSize
     icon.height: iconSize
 
-    onClicked: stackView.pop()
+    onClicked: stackView.pop(), leftBar.visible = true
 }
