@@ -2,7 +2,7 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QVariant
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
 from PyQt5.QtGui import QGuiApplication
-from scrapers.tools import tools
+from tools import tools
 from threading import Thread
 from pathlib import Path
 from scrapers import *
@@ -79,6 +79,7 @@ class Searcher(QObject):
         return data
 
 
+# TODO: Parse data through Python
 # Manga viewer (data)
 class Viewer(QObject):
     manga_data = pyqtSignal("QVariant", "QVariant", str, str, bool, arguments=["mangaData", "source", "error", "saved"])
@@ -106,6 +107,8 @@ class Viewer(QObject):
 
     # Set manga data
     def set_manga_data_thread(self, url, source, name, forced):
+        name = re.sub(windows_expr, "", name)
+
         config_manga_file = str(Path(manga_config_dir, source, name, name)) + ".json"
         data_saved = {}
 
@@ -147,10 +150,30 @@ class Viewer(QObject):
                 os.remove(image_path)
 
 
-# Manga reader
+# TODO: Advanced Manga reader
 class Reader(QObject):
     def __init__(self):
         QObject.__init__(self)
+
+
+class Library(QObject):
+    set_save_manga = pyqtSignal(str, str, str, arguments=["thumbnail", "title", "link"])
+
+    def __init__(self):
+        QObject.__init__(self)
+
+    @pyqtSlot()
+    def get_saved_mangas(self):
+        depth = 2
+
+        for files in tools.walklevel(str(Path(config_dir, "manga")), depth):
+            manga_config_path = Path(files[0], "".join(files[2]))
+
+            if manga_config_path.is_file():
+                with open(manga_config_path) as f:
+                    file = json.load(f)
+                if file["bookmarked"]:
+                    self.set_save_manga.emit(file["thumbnail"], file["title"], file["link"])
 
 
 class Downloader(QObject):
@@ -177,7 +200,7 @@ class Downloader(QObject):
         chapter = re.sub(windows_expr, "", chapter)
 
         images_size = {}
-        images_config_path = Path(manga_config_dir, source, name, chapter)
+        images_config_path = Path(manga_config_dir, source, name, "chapters")
         if not images_config_path.exists():
             os.makedirs(images_config_path)
 
@@ -204,15 +227,15 @@ class Downloader(QObject):
                 while not image:
                     image = tools.download_image(images[i], chapter_dir, image_name)
 
-            if os.path.exists(str(images_config_path) + ".json") and images_size == {}:
-                with open(str(images_config_path) + ".json") as f:
+            if os.path.exists(str(Path(images_config_path, chapter)) + ".json") and images_size == {}:
+                with open(str(Path(images_config_path, chapter)) + ".json") as f:
                     sizes = json.load(f)
                     width = sizes[image_name][0]
                     height = sizes[image_name][1]
             else:
                 width, height = tools.get_image_size(image_path)
                 images_size[image_name] = [width, height]
-                with open(str(images_config_path) + ".json", "w") as image_config:
+                with open(str(Path(images_config_path, chapter)) + ".json", "w") as image_config:
                     json.dump(images_size, image_config, indent=4)
 
             self.get_images.emit(Path(image_path).as_uri(), width, height, link, len(images), i + 1)
@@ -224,7 +247,7 @@ config_file = tools.config_file()
 scale_factor = config_file["system"]["scale_factor"]
 current_scraper = config_file["scrapers"]["current"]
 
-thumbnail_dir, cache_save_dir, downloads_dir, config_dir, manga_config_dir = tools.get_cache_dir()
+thumbnail_dir, cache_save_dir, downloads_dir, config_dir, manga_config_dir = tools.get_dirs()
 
 scraper_data = {}
 manga_source = eval(current_scraper)
@@ -243,6 +266,7 @@ application = QGuiApplication(sys.argv)
 manga_searcher = Searcher()
 manga_viewer = Viewer()
 manga_reader = Reader()
+manga_library = Library()
 manga_downloader = Downloader()
 engine = QQmlApplicationEngine()
 
@@ -251,6 +275,7 @@ context = engine.rootContext()
 context.setContextProperty("MangaSearcher", manga_searcher)
 context.setContextProperty("MangaViewer", manga_viewer)
 context.setContextProperty("MangaReader", manga_reader)
+context.setContextProperty("MangaLibrary", manga_library)
 context.setContextProperty("MangaDownloader", manga_downloader)
 context.setContextProperty("configFile", config_file)
 context.setContextProperty("scraperData", scraper_data)
