@@ -104,7 +104,7 @@ def config_writer(*keys, value=""):
     exec(string_to_exec)
 
     # Writes.
-    with open(Path(config, "config.json"), "w") as write_config:
+    with open(Path(config_path, "config.json"), "w") as write_config:
         json.dump(file_read, write_config, indent=4)
 
 
