@@ -137,7 +137,7 @@ ItemDelegate {
 
 
     onClicked: {
-        stackView.push("../../../reader/Reader.qml")
+        stackView.push("../../../reader/Reader.qml", {"chapterLink": chapterLink})
         MangaDownloader.set_images(chapterLink, mangaSource, title, chapterName, cached, chapterLink, downloaded)
     }
 
