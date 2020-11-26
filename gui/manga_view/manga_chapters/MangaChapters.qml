@@ -162,6 +162,12 @@ Column {
         selecting = false
     }
 
+    function selectAll() {
+        for (var i=0; i < children.length; i++) {
+            children[i].highlighted = true
+        }
+    }
+
     function isDeselectedAll() {
         for (var i=0; i < children.length; i++) {
             if (children[i].highlighted) {

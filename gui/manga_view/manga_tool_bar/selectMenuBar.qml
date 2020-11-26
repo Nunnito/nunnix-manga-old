@@ -70,6 +70,25 @@ RowLayout {
         Layout.fillWidth: true
         color: "transparent"
     }
+
+    Button {
+        id: selectAllButton
+
+        Layout.rightMargin: normalSpacing / 2
+
+        text: qsTr("Select all")
+        flat: true
+        highlighted: true
+
+        contentItem: Text {
+            text: parent.text  
+            color: primaryColor
+            font.bold: true
+            font.capitalization: Font.AllUppercase
+        }
+
+        onClicked: mangaChapters.selectAll()
+    }
     
     Button {
         id: cancelButton

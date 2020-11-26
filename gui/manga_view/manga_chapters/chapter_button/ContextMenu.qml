@@ -7,10 +7,9 @@ Menu {
     // Download chapter
     MenuItem {
         id: download
-        text: downloaded ? qsTr("Delete") : qsTr("Download")
-        visible: !downloading
+        text: downloaded ? qsTr("Delete") : downloading || queued ? qsTr("Cancel") : qsTr("Download")
 
-        onTriggered: downloaded ? deleteManga() : queued = true
+        onTriggered: downloaded ? deleteManga() : downloading || queued ? cancelManga() : queued = true
     }
     // Bookmark/unbookmark chapter
     MenuItem {

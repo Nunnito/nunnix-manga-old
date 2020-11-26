@@ -20,6 +20,7 @@ ItemDelegate {
     property bool downloading
     property bool read
     property bool bookmarked
+    property bool currentDownload
 
     property string buttonColor: textColor
     property string downloadStatus: queued ? queuedText : downloading ? downloadingText : downloaded ? downloadedText : ""
@@ -137,7 +138,7 @@ ItemDelegate {
 
 
     onClicked: {
-        stackView.push("../../../reader/Reader.qml", {"chapterLink": chapterLink})
+        stackView.push("../../../reader/Reader.qml", {"chapterLink": chapterLink, "chapterIndex": index})
         MangaDownloader.set_images(chapterLink, mangaSource, title, chapterName, cached, chapterLink, downloaded, downloading)
     }
 
@@ -183,6 +184,7 @@ ItemDelegate {
         if (queued && !downloadInProgress) {
             cached = false
             downloadInProgress = true
+            currentDownload = true
             MangaDownloader.set_images(chapterLink, mangaSource, title, chapterName, cached, chapterLink, downloaded, downloading)
             saveManga()
         }
@@ -206,6 +208,20 @@ ItemDelegate {
         downloaded = false
     }
 
+    function cancelManga() {
+        if (downloading) {
+            MangaDownloader.cancel_manga()
+            downloadInProgress = false
+            queued = false
+            refreshDownload()
+            print("wa")
+        }
+        queued = false
+        downloading = false
+        currentDownload = false
+        deleteManga()
+    }
+
     // Download the next chapter in queue
     function refreshDownload() {
         for (var i=mangaChapters.children.length - 1; i >= 0; i--) {
@@ -220,7 +236,7 @@ ItemDelegate {
     Connections {
         target: MangaDownloader
         function onGet_images(images, imgWidth, imgHeight, buttonLink, imagesCount, downloadCount) {
-            if (buttonLink == chapterLink && downloadCount != -1) {
+            if (buttonLink == chapterLink && downloadCount != -1 && currentDownload) {
                 queued = false
                 downloading = true
                 total = imagesCount
@@ -233,6 +249,7 @@ ItemDelegate {
                 downloading = false
                 downloaded = true
                 downloadInProgress = false
+                currentDownload = false
                 refreshDownload()
             }
         }

@@ -141,6 +141,8 @@ class Viewer(QObject):
         name = re.sub(windows_expr, "", name)
 
         chapter_dir = Path(downloads_dir, source, name, chapter)
+        chapter_config_dir = Path(config_dir, "manga", source, name, "chapters", chapter)
+        chapter_config = str(chapter_config_dir) + ".json"
 
         for image in os.walk(chapter_dir.absolute()):
             images_name = image[2]
@@ -148,6 +150,10 @@ class Viewer(QObject):
             for image_name in images_name:
                 image_path = Path(image[0], image_name)
                 os.remove(image_path)
+
+        if os.path.exists(chapter_config):
+            print("removido")
+            os.remove(chapter_config)
 
 
 # TODO: Advanced Manga reader
@@ -183,6 +189,7 @@ class Downloader(QObject):
 
     def __init__(self):
         QObject.__init__(self)
+        self.cancel_download = False
 
     # Set images thread
     @pyqtSlot(str, str, str, str, bool, str, bool, bool)
@@ -190,6 +197,10 @@ class Downloader(QObject):
         data = Thread(target=self.set_images_thread, args=[url, source, name,
                       chapter, cached, index, downloaded, downloading])
         data.start()
+
+    @pyqtSlot()
+    def cancel_manga(self):
+        self.cancel_download = True
 
     # Set images
     def set_images_thread(self, url, source, name, chapter, cached, link, downloaded, downloading):
@@ -222,6 +233,10 @@ class Downloader(QObject):
 
         # Iterate through images.
         for i in range(len(images)):
+            if self.cancel_download:
+                self.cancel_download = False
+                return None
+
             image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
             image_config = str(Path(images_config_path, chapter)) + ".json"
             count = i + 1
@@ -241,7 +256,7 @@ class Downloader(QObject):
                     sizes = json.load(f)
                     width, height = sizes[image_name]
             # Else, create it.
-            else:
+            elif not self.cancel_download:
                 width, height = tools.get_image_size(image_path)
                 images_size[image_name] = [width, height]
                 with open(image_config, "w") as f:
