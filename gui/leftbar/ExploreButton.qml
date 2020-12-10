@@ -12,6 +12,7 @@ LeftBarButton {
     // On clicked, switch to the searcher.
     onClicked: {
         if (!highlighted) {
+            swipeView.decrementCurrentIndex()
             stackView.replace("../search/Searcher.qml")
         }
     }

@@ -13,7 +13,7 @@ ItemDelegate {
     property var pastCurrentItem
 
     id: leftBarButton
-    highlighted: stackView.currentItem.name == target ? true : false
+    highlighted: (stackView.currentItem.name == target && !swipeView.currentIndex) ? true : false
     display: AbstractButton.IconOnly
 
     Layout.preferredWidth: parent.parent.width
