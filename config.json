@@ -1,9 +1,0 @@
-{
-    "system": {
-        "scale_factor": 1
-    },
-    "scrapers": {
-        "current": "lectortmo",
-        "current_alias": "LectorTMO"
-    }
-}
