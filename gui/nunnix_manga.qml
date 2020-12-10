@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import "leftbar"
 import "titlebar"
+import "downloader"
 
 ApplicationWindow {
 	visible: true
@@ -77,12 +78,21 @@ ApplicationWindow {
 			LeftBar {id: leftBar}
 
 			// Each part of the application is loaded here.
-			StackView {
-				id: stackView
+			SwipeView {
+				id: swipeView
 
 				height: parent.height
 				width: leftBar.visible ? mainWindow.width - leftBar.width - layout.spacing : mainWindow.width - layout.spacing
-				initialItem: "library/Library.qml"
+				interactive: false
+
+				StackView {
+					id: stackView
+
+					height: parent.height
+					width: leftBar.visible ? mainWindow.width - leftBar.width - layout.spacing : mainWindow.width - layout.spacing
+					initialItem: "library/Library.qml"
+				}
+				Downloader {id: downloader}
 			}
 		}
 	}
