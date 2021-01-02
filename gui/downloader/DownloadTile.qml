@@ -11,6 +11,10 @@ Item {
     property string name
     property string chapter
 
+    property bool queued: true
+    property bool downloaded: false
+    property bool downloading: false
+
     property int total_images: 0
     property int downloaded_images: 0
 
@@ -31,6 +35,8 @@ Item {
         Drag.hotSpot.y: height / 2
 
         Label {
+            id: downloadName
+
             color: textColor
             font.pixelSize: normalTextFontSize
 
@@ -42,6 +48,8 @@ Item {
         }
 
         Label {
+            id: downloadStatus
+
             color: placeHolderColor
             font.pixelSize: smallTextFontSize
 
@@ -50,10 +58,12 @@ Item {
             rightPadding: normalSpacing
             bottomPadding: normalSpacing / 4
 
-            text: downloaded_images + "/" + total_images
+            text: queuedText
         }
 
         Label {
+            id: downloadSource
+
             color: placeHolderColor
             font.pixelSize: smallTextFontSize
 
@@ -122,8 +132,20 @@ Item {
 
         function onDownload_progress(nImages, nDownloads, mangaID) {
             if (mangaID == url + source + name + chapter) {
+                queued = false
+                downloading = true
+
                 total_images = nImages
                 downloaded_images = nDownloads
+
+                downloadStatus.text = downloaded_images + "/" + total_images
+
+                if (total_images == downloaded_images) {
+                    downloadStatus.text = downloadedText
+                    downloaded = true
+                    downloading = false
+                    parent.downloading = false
+                }
             }
         }
     }

@@ -9,6 +9,11 @@ Column {
     property int dragTouching
     property int dragIndex
 
+    property string queuedText: qsTr("Queued")
+    property string downloadedText: qsTr("Downloaded")
+
+    property bool downloading: false
+
     visible: swipeView.currentIndex
 
     height: parent.height
@@ -41,6 +46,9 @@ Column {
         downloads.append(downloadObject)
         downloadCount++
 
-        MangaDownloader.download_manga(url, source, name, chapter)
+        if (!downloading) {
+            downloading = true
+            MangaDownloader.download_manga(url, source, name, chapter)
+        }
     }
 }

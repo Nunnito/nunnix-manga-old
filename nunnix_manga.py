@@ -2,9 +2,10 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QVariant
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
 from PyQt5.QtGui import QGuiApplication
-from tools import tools
 from threading import Thread
 from pathlib import Path
+from tools import tools
+from time import sleep
 from scrapers import *
 import scrapers
 import json
