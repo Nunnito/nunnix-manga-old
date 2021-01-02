@@ -4,11 +4,21 @@ import QtGraphicalEffects 1.15
 
 Item {
     property alias dropArea: dropArea
+    property alias text: downloadButton.text
+
+    property string url
+    property string source
+    property string name
+    property string chapter
+
+    property int total_images: 0
+    property int downloaded_images: 0
 
     id: downloadItem
 
     width: parent.width
     height: normalSpacing * 4 - normalSpacing / 2
+    opacity: dragArea.drag.active ? 0.75 : 1
 
     ItemDelegate {
         id: downloadButton
@@ -19,6 +29,41 @@ Item {
         Drag.active: dragArea.drag.active
         Drag.hotSpot.x: height / 2
         Drag.hotSpot.y: height / 2
+
+        Label {
+            color: textColor
+            font.pixelSize: normalTextFontSize
+
+            anchors.top: parent.top
+            leftPadding: normalSpacing
+            topPadding: normalSpacing / 2
+
+            text: chapter + " - " + name
+        }
+
+        Label {
+            color: placeHolderColor
+            font.pixelSize: smallTextFontSize
+
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            rightPadding: normalSpacing
+            bottomPadding: normalSpacing / 4
+
+            text: downloaded_images + "/" + total_images
+        }
+
+        Label {
+            color: placeHolderColor
+            font.pixelSize: smallTextFontSize
+
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+            leftPadding: normalSpacing
+            bottomPadding: normalSpacing / 4
+
+            text: source
+        }
 
         Image {
             id: dragButton
@@ -53,18 +98,6 @@ Item {
                 }
                 onPressed: dragIndex = index
             }
-
-            states: [
-                State {
-                    when: dragArea.drag.active
-                    name: "dragging"
-
-                    PropertyChanges {
-                        target: downloadButton
-                        opacity: 0.75
-                    }
-                }
-            ]
         }
 
         Rectangle {
@@ -82,5 +115,16 @@ Item {
         height: normalSpacing * 4 - normalSpacing / 2
 
         onEntered: dragTouching = index
+    }
+
+    Connections {
+        target: MangaDownloader
+
+        function onDownload_progress(nImages, nDownloads, mangaID) {
+            if (mangaID == url + source + name + chapter) {
+                total_images = nImages
+                downloaded_images = nDownloads
+            }
+        }
     }
 }

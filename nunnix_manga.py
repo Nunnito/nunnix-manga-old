@@ -186,21 +186,48 @@ class Downloader(QObject):
     get_images = pyqtSignal(str, int, int, str, int, int, arguments=[
         "images", "imgWidth", "imgHeight" "buttonLink", "imagesCount", "downloadCount"])
     downloaded = pyqtSignal(str, arguments="buttonLink")
+    download_progress = pyqtSignal(int, int, str, arguments=["nImages", "nDownloads", "mangaID"])
 
     def __init__(self):
         QObject.__init__(self)
         self.cancel_download = False
 
     # Set images thread
-    @pyqtSlot(str, str, str, str, bool, str, bool, bool)
-    def set_images(self, url, source, name, chapter, cached, index, downloaded, downloading):
-        data = Thread(target=self.set_images_thread, args=[url, source, name,
-                      chapter, cached, index, downloaded, downloading])
+    @pyqtSlot(str, str, str, str)
+    def download_manga(self, url, source, name, chapter):
+        data = Thread(target=self.download_manga_thread, args=[url, source, name, chapter])
         data.start()
 
     @pyqtSlot()
     def cancel_manga(self):
         self.cancel_download = True
+
+    @pyqtSlot(str)
+    def download_manga_thread(self, url, source, name, chapter):
+        mangaID = url + source + name + chapter  # MangaID
+
+        # Windows folders support.
+        name = re.sub(windows_expr, "", name)
+        chapter = re.sub(windows_expr, "", chapter)
+
+        images = manga_source.get_chapters_images(url)
+        chapter_dir = Path(downloads_dir, source, name, chapter)
+
+        n_images = len(images)
+
+        # If the chapter directory does not exists.
+        if not chapter_dir.exists():
+            os.makedirs(chapter_dir)
+
+        # Iterate through images.
+        for i in range(n_images):
+            image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
+
+            image = tools.download_image(images[i], chapter_dir, image_name)
+            while not image:
+                image = tools.download_image(images[i], chapter_dir, image_name)
+
+            self.download_progress.emit(n_images, i + 1, mangaID)  # MangaID
 
     # Set images
     def set_images_thread(self, url, source, name, chapter, cached, link, downloaded, downloading):

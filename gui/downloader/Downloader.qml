@@ -21,7 +21,8 @@ Column {
 
         model: downloads
 
-        delegate: DownloadTile {}
+        delegate: DownloadTile {url: Url; source: Source; chapter: Chapter; name: Name}
+
         displaced: Transition {
             NumberAnimation {properties: "x, y"; duration: 100}
         }
@@ -30,10 +31,16 @@ Column {
     ListModel {id: downloads}
 
     function downloadManga(url, source, name, chapter) {
-        var downloadTile = Qt.createComponent("DownloadTile.qml")
-        downloads.append(downloadTile)
-
-        console.log(url, source, name, chapter, downloadCount, visible)
+        var downloadObject = {
+            "Url": url,
+            "Source": source,
+            "Name": name,
+            "Chapter": chapter
+        }
+     
+        downloads.append(downloadObject)
         downloadCount++
+
+        MangaDownloader.download_manga(url, source, name, chapter)
     }
 }
