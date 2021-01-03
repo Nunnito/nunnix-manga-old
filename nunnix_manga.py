@@ -215,6 +215,12 @@ class Downloader(QObject):
         name = re.sub(windows_expr, "", name)
         chapter = re.sub(windows_expr, "", chapter)
 
+        # Setting the image size.
+        images_size = {}
+        images_config_path = Path(manga_config_dir, source, name, "chapters")
+        if not images_config_path.exists():
+            os.makedirs(images_config_path)
+
         images = manga_source.get_chapters_images(url)
         chapter_dir = Path(downloads_dir, source, name, chapter)
 
@@ -230,6 +236,9 @@ class Downloader(QObject):
                 sleep(1)
 
             image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
+            image_config = str(Path(images_config_path, chapter)) + ".json"
+
+            image_path = Path(chapter_dir, image_name)
 
             image = tools.download_image(images[i], chapter_dir, image_name)
             while not image:
@@ -239,10 +248,30 @@ class Downloader(QObject):
                 self.cancel_download = False
                 return None
 
+            if os.path.exists(image_config):
+                with open(image_config) as f:
+                    config_length = len(json.load(f))
+            else:
+                config_length = 0
+
+            print(config_length, n_images)
+
+            # If the configuration image exists and it's complete.
+            if os.path.exists(image_config) and images_size == {} and config_length == n_images:
+                with open(image_config) as f:
+                    sizes = json.load(f)
+                    width, height = sizes[image_name]
+            # Else, create it.
+            else:
+                width, height = tools.get_image_size(image_path)
+                images_size[image_name] = [width, height]
+                with open(image_config, "w") as f:
+                    json.dump(images_size, f, indent=4)
+
             self.download_progress.emit(n_images, i + 1, mangaID)  # MangaID
 
-    # Set images
-    def set_images_thread(self, url, source, name, chapter, cached, link, downloaded, downloading):
+    # Read manga
+    def read_manga_thread(self, url, source, name, chapter):
         # Windows folders support.
         name = re.sub(windows_expr, "", name)
         chapter = re.sub(windows_expr, "", chapter)
@@ -252,62 +281,6 @@ class Downloader(QObject):
         images_config_path = Path(manga_config_dir, source, name, "chapters")
         if not images_config_path.exists():
             os.makedirs(images_config_path)
-
-        # If the image will not be saved.
-        if cached:
-            chapter_dir = Path(cache_save_dir, source, name, chapter)
-            images = manga_source.get_chapters_images(url)
-        # If the image will be saved and downloaded.
-        elif not downloaded and not cached and not downloading:
-            chapter_dir = Path(downloads_dir, source, name, chapter)
-            images = manga_source.get_chapters_images(url)
-        # If the image is already downloaded.
-        else:
-            chapter_dir = Path(downloads_dir, source, name, chapter)
-            images = [image for image in os.walk(chapter_dir)][0][2]
-
-        # If the chapter directory does not exists.
-        if not chapter_dir.exists():
-            os.makedirs(chapter_dir)
-
-        # Iterate through images.
-        for i in range(len(images)):
-            if self.cancel_download:
-                self.cancel_download = False
-                return None
-
-            image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
-            image_config = str(Path(images_config_path, chapter)) + ".json"
-            count = i + 1
-
-            image_path = Path(chapter_dir, image_name)
-            uri_image_path = Path(image_path).as_uri()
-
-            # If the images is cached or not downloaded.
-            if cached or not downloaded:
-                image = tools.download_image(images[i], chapter_dir, image_name)
-                while not image:
-                    image = tools.download_image(images[i], chapter_dir, image_name)
-
-            # If the configuration image exists.
-            if os.path.exists(image_config) and images_size == {}:
-                with open(image_config) as f:
-                    sizes = json.load(f)
-                    width, height = sizes[image_name]
-            # Else, create it.
-            elif not self.cancel_download:
-                width, height = tools.get_image_size(image_path)
-                images_size[image_name] = [width, height]
-                with open(image_config, "w") as f:
-                    json.dump(images_size, f, indent=4)
-
-            if cached:
-                count = -1
-            # Emit the images.
-            self.get_images.emit(uri_image_path, width, height, link, len(images), count)
-
-        if not cached:
-            self.downloaded.emit(link)
 
 
 config_file = tools.config_file()
