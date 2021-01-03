@@ -105,6 +105,7 @@ Item {
                 onReleased: {
                     downloads.move(index, dragTouching, 1)
                     downloadButton.y = 0
+                    mangaMoved()
                 }
                 onPressed: dragIndex = index
             }
@@ -144,7 +145,7 @@ Item {
                     downloadStatus.text = downloadedText
                     downloaded = true
                     downloading = false
-                    parent.downloading = false
+                    mangaDownloaded()
                 }
             }
         }

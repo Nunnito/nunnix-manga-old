@@ -14,6 +14,9 @@ Column {
 
     property bool downloading: false
 
+    signal mangaMoved()
+    signal mangaDownloaded()
+
     visible: swipeView.currentIndex
 
     height: parent.height
@@ -50,5 +53,20 @@ Column {
             downloading = true
             MangaDownloader.download_manga(url, source, name, chapter)
         }
+    }
+
+    onMangaDownloaded: {
+        for (var i = 0; i < downloads.count; i++) {
+            if (listView.itemAtIndex(i).queued) {
+                var url = listView.itemAtIndex(i).url
+                var source = listView.itemAtIndex(i).source
+                var name = listView.itemAtIndex(i).name
+                var chapter = listView.itemAtIndex(i).chapter
+
+                MangaDownloader.download_manga(url, source, name, chapter)
+                return
+            }
+        }
+        downloading = false
     }
 }
