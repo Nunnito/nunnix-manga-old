@@ -153,7 +153,6 @@ class Viewer(QObject):
                 os.remove(image_path)
 
         if os.path.exists(chapter_config):
-            print("removido")
             os.remove(chapter_config)
 
 
@@ -230,15 +229,15 @@ class Downloader(QObject):
             while self.pause:  # Sleep for 1 second while self.pause is True
                 sleep(1)
 
-            if self.cancel_download:
-                self.cancel_download = False
-                return None
-
             image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
 
             image = tools.download_image(images[i], chapter_dir, image_name)
             while not image:
                 image = tools.download_image(images[i], chapter_dir, image_name)
+
+            if self.cancel_download:
+                self.cancel_download = False
+                return None
 
             self.download_progress.emit(n_images, i + 1, mangaID)  # MangaID
 

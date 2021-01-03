@@ -186,13 +186,6 @@ Item {
         }
     }
 
-    // Sleep function, to wait.
-    function sleep(delayTime, callBack) {
-        var timer = Qt.createQmlObject("import QtQuick 2.15; Timer {}", parent)
-        timer.interval = delayTime
-        timer.triggered.connect(callBack)
-        timer.start()
-    }
 
     function saveManga() {
         var mangaDict = {}

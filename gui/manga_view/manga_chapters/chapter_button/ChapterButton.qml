@@ -214,7 +214,6 @@ ItemDelegate {
             downloadInProgress = false
             queued = false
             refreshDownload()
-            print("wa")
         }
         queued = false
         downloading = false

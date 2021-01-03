@@ -105,4 +105,12 @@ ApplicationWindow {
 		textEdit.copy()
 		textEdit.destroy()
 	}
+
+    // Sleep function, to wait.
+    function sleep(delayTime, callBack) {
+        var timer = Qt.createQmlObject("import QtQuick 2.15; Timer {}", mainWindow)
+        timer.interval = delayTime
+        timer.triggered.connect(callBack)
+        timer.start()
+    }
 }

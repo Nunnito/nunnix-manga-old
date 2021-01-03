@@ -20,7 +20,7 @@ Item {
 
     id: downloadItem
 
-    width: parent.width
+    width: parent != null ? parent.width : 0
     height: normalSpacing * 4 - normalSpacing / 2
     opacity: dragArea.drag.active ? 0.75 : 1
 
