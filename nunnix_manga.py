@@ -192,6 +192,7 @@ class Downloader(QObject):
     def __init__(self):
         QObject.__init__(self)
         self.cancel_download = False
+        self.pause = False
 
     # Set images thread
     @pyqtSlot(str, str, str, str)
@@ -202,6 +203,10 @@ class Downloader(QObject):
     @pyqtSlot()
     def cancel_manga(self):
         self.cancel_download = True
+
+    @pyqtSlot()
+    def toggle_pause(self):
+        self.pause = not self.pause
 
     @pyqtSlot(str)
     def download_manga_thread(self, url, source, name, chapter):
@@ -222,6 +227,13 @@ class Downloader(QObject):
 
         # Iterate through images.
         for i in range(n_images):
+            while self.pause:  # Sleep for 1 second while self.pause is True
+                sleep(1)
+
+            if self.cancel_download:
+                self.cancel_download = False
+                return None
+
             image_name = str(i) + re.search(r"\..{3,4}$", images[i]).group()
 
             image = tools.download_image(images[i], chapter_dir, image_name)
