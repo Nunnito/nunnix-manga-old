@@ -1,4 +1,3 @@
-from posix import listdir
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QVariant
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
@@ -299,7 +298,7 @@ class Downloader(QObject):
                 with open(image_config) as f:
                     sizes = json.load(f)
                     width, height = sizes[image_name]
-                self.set_images.emit(image, width, height, url, len(images))
+                self.set_images.emit(Path(image).as_uri(), width, height, url, len(images))
         else:
             pass
 
