@@ -299,7 +299,6 @@ class Downloader(QObject):
                 with open(image_config) as f:
                     sizes = json.load(f)
                     width, height = sizes[image_name]
-                print(image)
                 self.set_images.emit(image, width, height, url, len(images))
         else:
             pass
@@ -312,10 +311,10 @@ current_scraper = config_file["scrapers"]["current"]
 thumbnail_dir, cache_save_dir, downloads_dir, config_dir, manga_config_dir = tools.get_dirs()
 
 scraper_data = {}
-manga_source = eval(current_scraper)
+manga_source = getattr(__import__("scrapers"), current_scraper)
 
 for scraper in scrapers.__all__:
-    scraper_data[eval(scraper).name] = scraper
+    scraper_data[getattr(__import__("scrapers"), scraper).name] = scraper
 
 windows_expr = re.compile(r"[\\/:*?\"<>|]")
 
