@@ -1,7 +1,7 @@
 from os import listdir
 import re
 
-scrapers = listdir("scrapers/")
+scrapers = listdir(re.sub(r"__init__.py.?$", "", __file__))
 scrapers_list = []
 
 
