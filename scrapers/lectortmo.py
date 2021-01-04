@@ -339,7 +339,7 @@ def search_manga(
 
 
 def get_search_controls():
-    with open(__file__.replace(".py", ".json")) as controls:
+    with open(__file__.replace(".py", ".json"), encoding="utf-8") as controls:
         read_controls = controls.read()
 
     return read_controls
