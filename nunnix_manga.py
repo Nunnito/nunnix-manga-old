@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QVariant
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
-from PyQt5.QtGui import QGuiApplication
+from PyQt5.QtGui import QGuiApplication, QIcon
 from threading import Thread
 from pathlib import Path
 from tools import tools
@@ -321,7 +321,9 @@ windows_expr = re.compile(r"[\\/:*?\"<>|]")
 os.environ["QT_QUICK_CONTROLS_STYLE"] = "Material"
 os.environ["QT_QUICK_CONTROLS_MATERIAL_VARIANT"] = "Dense"
 os.environ["QT_SCALE_FACTOR"] = str(scale_factor)
+
 application = QGuiApplication(sys.argv)
+application.setWindowIcon(QIcon("resources/icon.png"))
 
 manga_searcher = Searcher()
 manga_viewer = Viewer()
