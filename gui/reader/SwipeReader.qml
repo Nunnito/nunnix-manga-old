@@ -67,9 +67,9 @@ Flickable {
     Connections {
         target: MangaDownloader
 
-        function onGet_images(images, imgWidth, imgHeight, buttonLink, imagesCount, downloadCount) {
-            if (chapterLink == buttonLink) {
-                totalPages = imagesCount
+        function onSet_images(chapterImage, imgWidth, imgHeight, url, _totalPages) {
+            if (chapterLink == url) {
+                totalPages = _totalPages
                 addingImage = true
 
                 var image = Qt.createComponent("ChapterImage.qml")
@@ -78,7 +78,7 @@ Flickable {
                 image.realWidth = imgWidth
                 image.realHeight = imgHeight
                 image.index = setIndex
-                image.imagePath = images
+                image.imagePath = chapterImage
                 setIndex++
             }
         }

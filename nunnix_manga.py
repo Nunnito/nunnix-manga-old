@@ -1,3 +1,4 @@
+from posix import listdir
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, QVariant
 from PyQt5.QtQml import QQmlApplicationEngine, QQmlEngine
 from requests.exceptions import ConnectionError, ReadTimeout
@@ -183,8 +184,8 @@ class Library(QObject):
 
 
 class Downloader(QObject):
-    get_images = pyqtSignal(str, int, int, str, int, int, arguments=[
-        "images", "imgWidth", "imgHeight" "buttonLink", "imagesCount", "downloadCount"])
+    set_images = pyqtSignal(str, int, int, str, int, arguments=[
+        "image", "imgWidth", "imgHeight", "url", "_totalPages"])
     downloaded = pyqtSignal(str, arguments="buttonLink")
     download_progress = pyqtSignal(int, int, str, arguments=["nImages", "nDownloads", "mangaID"])
 
@@ -197,6 +198,12 @@ class Downloader(QObject):
     @pyqtSlot(str, str, str, str)
     def download_manga(self, url, source, name, chapter):
         data = Thread(target=self.download_manga_thread, args=[url, source, name, chapter])
+        data.start()
+
+    # Read manga thread
+    @pyqtSlot(str, str, str, str, bool)
+    def read_manga(self, url, source, name, chapter, downloaded):
+        data = Thread(target=self.read_manga_thread, args=[url, source, name, chapter, downloaded])
         data.start()
 
     @pyqtSlot()
@@ -254,13 +261,9 @@ class Downloader(QObject):
             else:
                 config_length = 0
 
-            print(config_length, n_images)
-
             # If the configuration image exists and it's complete.
             if os.path.exists(image_config) and images_size == {} and config_length == n_images:
-                with open(image_config) as f:
-                    sizes = json.load(f)
-                    width, height = sizes[image_name]
+                pass
             # Else, create it.
             else:
                 width, height = tools.get_image_size(image_path)
@@ -271,7 +274,7 @@ class Downloader(QObject):
             self.download_progress.emit(n_images, i + 1, mangaID)  # MangaID
 
     # Read manga
-    def read_manga_thread(self, url, source, name, chapter):
+    def read_manga_thread(self, url, source, name, chapter, downloaded):
         # Windows folders support.
         name = re.sub(windows_expr, "", name)
         chapter = re.sub(windows_expr, "", chapter)
@@ -279,8 +282,27 @@ class Downloader(QObject):
         # Setting the image size.
         images_size = {}
         images_config_path = Path(manga_config_dir, source, name, "chapters")
+        image_config = str(Path(images_config_path, chapter)) + ".json"
         if not images_config_path.exists():
             os.makedirs(images_config_path)
+
+        chapter_dir = Path(downloads_dir, source, name, chapter)
+
+        # If the chapter is downloaded.
+        if downloaded:
+            images = [str(Path(chapter_dir, image)) for image in os.listdir(chapter_dir)]
+            images.sort(key=lambda x: int(re.search(r"(\d+)\..{3,4}$", x).groups()[0]))
+
+            for image in images:
+                image_name = re.search(r"\w+\..{3,4}$", image).group()
+
+                with open(image_config) as f:
+                    sizes = json.load(f)
+                    width, height = sizes[image_name]
+                print(image)
+                self.set_images.emit(image, width, height, url, len(images))
+        else:
+            pass
 
 
 config_file = tools.config_file()

@@ -139,7 +139,7 @@ ItemDelegate {
 
     onClicked: {
         stackView.push("../../../reader/Reader.qml", {"chapterLink": chapterLink, "chapterIndex": index})
-        MangaDownloader.set_images(chapterLink, mangaSource, title, chapterName, cached, chapterLink, downloaded, downloading)
+        MangaDownloader.read_manga(chapterLink, mangaSource, title, chapterName, downloaded)
     }
 
     onReadChanged: {
@@ -234,23 +234,9 @@ ItemDelegate {
 
     Connections {
         target: MangaDownloader
-        function onGet_images(images, imgWidth, imgHeight, buttonLink, imagesCount, downloadCount) {
-            if (buttonLink == chapterLink && downloadCount != -1 && currentDownload) {
-                queued = false
-                downloading = true
-                total = imagesCount
-                count = downloadCount
-            }
-        }
 
-        function onDownloaded(buttonLink) {
-            if (buttonLink == chapterLink) {
-                downloading = false
-                downloaded = true
-                downloadInProgress = false
-                currentDownload = false
-                refreshDownload()
-            }
+        function onDownload_progress(nImages, nDownloads, mangaID) {
+            // TODO
         }
     }
 }
