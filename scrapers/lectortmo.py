@@ -11,12 +11,18 @@ HEADERS = {
 
 def get_source(url, image_mode=False):
     try:
-        if image_mode:
-            url = requests.head(url, headers=HEADERS, timeout=30).headers["Location"]
-            chapter_id = re.search(r"\w+/\w+/(\w+)", url).groups()[0]
-            url = f"https://lectortmo.com/viewer/{chapter_id}/cascade"
-
         print("\nLoading page data...")
+        if image_mode:
+            url = requests.head(url, headers=HEADERS, timeout=30)
+            if url.status_code == 200:
+                url = url.headers["Location"]
+                chapter_id = re.search(r"\w+/\w+/(\w+)", url).groups()[0]
+                url = f"https://lectortmo.com/viewer/{chapter_id}/cascade"
+            else:
+                error = f"HTTP error {url.status_code}"
+                print(error)
+                return error
+
         src = requests.get(url, headers=HEADERS, timeout=30)
 
         if src.status_code == 200:
@@ -29,7 +35,7 @@ def get_source(url, image_mode=False):
 
         return parsed_source
 
-    except (ConnectionError, ReadTimeout) as error:
+    except (ConnectionError, ReadTimeout, KeyError) as error:
         print(error)
         return error
 
