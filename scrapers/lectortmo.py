@@ -14,7 +14,7 @@ def get_source(url, image_mode=False):
         print("\nLoading page data...")
         if image_mode:
             url = requests.head(url, headers=HEADERS, timeout=30)
-            if url.status_code == 200:
+            if url.status_code == 200 or url.status_code == 302:
                 url = url.headers["Location"]
                 chapter_id = re.search(r"\w+/\w+/(\w+)", url).groups()[0]
                 url = f"https://lectortmo.com/viewer/{chapter_id}/cascade"
