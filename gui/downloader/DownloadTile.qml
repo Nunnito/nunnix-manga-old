@@ -17,6 +17,7 @@ Item {
 
     property int total_images: 0
     property int downloaded_images: 0
+    property int mangaIndex
 
     id: downloadItem
 
@@ -145,9 +146,17 @@ Item {
                     downloadStatus.text = downloadedText
                     downloaded = true
                     downloading = false
+                    MangaDownloader.set_downloaded(name, source, mangaIndex)
                     mangaDownloaded()
                 }
             }
         }
+    }
+
+    onQueuedChanged: {
+        MangaDownloader.set_queued(name, source, mangaIndex, queued)
+    }
+    onDownloadingChanged: {
+        MangaDownloader.set_downloading(name, source, mangaIndex, downloading)
     }
 }

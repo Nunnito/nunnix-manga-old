@@ -21,12 +21,13 @@ Column {
 
     DownloaderList {id: downloaderList}
 
-    function downloadManga(url, source, name, chapter) {
+    function downloadManga(url, source, name, chapter, mangaIndex) {
         var downloadObject = {
             "Url": url,
             "Source": source,
             "Name": name,
-            "Chapter": chapter
+            "Chapter": chapter,
+            "Index": mangaIndex
         }
 
         downloaderList.downloads.append(downloadObject)

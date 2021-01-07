@@ -14,7 +14,7 @@ ListView {
 
     model: downloads
 
-    delegate: DownloadTile {url: Url; source: Source; chapter: Chapter; name: Name}
+    delegate: DownloadTile {url: Url; source: Source; chapter: Chapter; name: Name; mangaIndex: Index}
 
     displaced: Transition {
         NumberAnimation {properties: "x, y"; duration: 100}
