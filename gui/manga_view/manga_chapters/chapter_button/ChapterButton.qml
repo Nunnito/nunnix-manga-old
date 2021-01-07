@@ -178,29 +178,12 @@ ItemDelegate {
         }
     }
 
-    onQueuedChanged: {
-        saveManga()
-
-        if (queued && !downloadInProgress) {
-            cached = false
-            downloadInProgress = true
-            currentDownload = true
-            MangaDownloader.set_images(chapterLink, mangaSource, title, chapterName, cached, chapterLink, downloaded, downloading)
-            saveManga()
-        }
-    }
-
-    onDownloadedChanged: {
-        saveManga()
-    }
-
     function markPreviousAsRead(firstIndex) {
         markAsReadRecursive = true
         for (var i=firstIndex+1; i < mangaChapters.children.length; i++) {
             mangaChapters.children[i].read = true
         }
         markAsReadRecursive = false
-        saveManga()
     }
 
     function deleteManga() {
@@ -208,35 +191,22 @@ ItemDelegate {
         downloaded = false
     }
 
-    function cancelManga() {
-        if (downloading) {
-            MangaDownloader.cancel_manga()
-            downloadInProgress = false
-            queued = false
-            refreshDownload()
-        }
-        queued = false
-        downloading = false
-        currentDownload = false
-        deleteManga()
-    }
-
-    // Download the next chapter in queue
-    function refreshDownload() {
-        for (var i=mangaChapters.children.length - 1; i >= 0; i--) {
-            if (mangaChapters.children[i].queued == true) {
-                mangaChapters.children[i].queued = false
-                mangaChapters.children[i].queued = true
-            }
-        }
-    }
-
-
     Connections {
         target: MangaDownloader
 
         function onDownload_progress(nImages, nDownloads, mangaID) {
-            // TODO
+            if (mangaID == chapterLink + mangaSource + mangaView.title + chapterName) {
+                queued = false
+                downloading = true
+
+                total = nImages
+                count = nDownloads
+
+                if (total == count) {
+                    downloaded = true
+                    downloading = false
+                }
+            }
         }
     }
 }

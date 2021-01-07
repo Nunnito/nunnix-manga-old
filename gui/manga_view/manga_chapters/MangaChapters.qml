@@ -112,11 +112,13 @@ Column {
         for (var i=0; i < children.length; i++) {
             if (unread) {
                 if (!children[i].read) {
-                    downloader.downloadManga(children[i].chapterLink, mangaSource, mangaView.title, children[i].chapterName) 
+                    downloader.downloadManga(children[i].chapterLink, mangaSource, mangaView.title, children[i].chapterName, children[i].index)
+                    children[i].queued = true
                 }
             }
             else {
-                downloader.downloadManga(children[i].chapterLink, mangaSource, mangaView.title, children[i].chapterName)
+                downloader.downloadManga(children[i].chapterLink, mangaSource, mangaView.title, children[i].chapterName, children[i].index)
+                children[i].queued = true
             }
         }
     }
@@ -140,7 +142,8 @@ Column {
     function downloadSelected() {
         for (var i=children.length - 1; i >= 0; i--) {
             if (children[i].highlighted) {
-                downloader.downloadManga(children[i].chapterLink, mangaSource, mangaView.title, children[i].chapterName)
+                downloader.downloadManga(children[i].chapterLink, mangaSource, mangaView.title, children[i].chapterName, children[i].index)
+                children[i].queued = true
             }
         }
     }

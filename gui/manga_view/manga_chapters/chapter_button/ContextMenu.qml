@@ -9,7 +9,7 @@ Menu {
         id: download
         text: downloaded ? qsTr("Delete") : downloading || queued ? qsTr("Cancel") : qsTr("Download")
 
-        onTriggered: downloader.downloadManga(chapterLink, mangaSource, mangaView.title, chapterName)
+        onTriggered: downloader.downloadManga(chapterLink, mangaSource, mangaView.title, chapterName, index), queued = true
     }
     // Bookmark/unbookmark chapter
     MenuItem {
