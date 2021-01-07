@@ -213,6 +213,46 @@ class Downloader(QObject):
     def toggle_pause(self):
         self.pause = not self.pause
 
+    @pyqtSlot(str, str, int)
+    def set_downloaded(self, name, source, n_chapter):
+        name = re.sub(windows_expr, "", name)
+
+        config_manga_file = Path(manga_config_dir, source, name, name + ".json")
+
+        with open(config_manga_file) as config:
+            read_config = json.load(config)
+            read_config["chapters"]["chapter_" + str(n_chapter)]["downloaded"] = True
+            read_config["chapters"]["chapter_" + str(n_chapter)]["downloading"] = False
+
+        with open(config_manga_file, "w") as config:
+            json.dump(read_config, config, indent=4, ensure_ascii=False)
+
+    @pyqtSlot(str, str, int, bool)
+    def set_queued(self, name, source, n_chapter, queued):
+        name = re.sub(windows_expr, "", name)
+
+        config_manga_file = Path(manga_config_dir, source, name, name + ".json")
+
+        with open(config_manga_file) as config:
+            read_config = json.load(config)
+            read_config["chapters"]["chapter_" + str(n_chapter)]["queued"] = queued
+
+        with open(config_manga_file, "w") as config:
+            json.dump(read_config, config, indent=4, ensure_ascii=False)
+
+    @pyqtSlot(str, str, int, bool)
+    def set_downloading(self, name, source, n_chapter, downloading):
+        name = re.sub(windows_expr, "", name)
+
+        config_manga_file = Path(manga_config_dir, source, name, name + ".json")
+
+        with open(config_manga_file) as config:
+            read_config = json.load(config)
+            read_config["chapters"]["chapter_" + str(n_chapter)]["downloading"] = downloading
+
+        with open(config_manga_file, "w") as config:
+            json.dump(read_config, config, indent=4, ensure_ascii=False)
+
     @pyqtSlot(str)
     def download_manga_thread(self, url, source, name, chapter):
         mangaID = url + source + name + chapter  # MangaID
